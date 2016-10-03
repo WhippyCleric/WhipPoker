@@ -4,6 +4,8 @@ package com.whippy.poker.state.beans;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 
+import com.whippy.poker.common.beans.Table;
+
 
 public class TableTest {
 

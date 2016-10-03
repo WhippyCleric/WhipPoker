@@ -1,12 +1,12 @@
 //J-
-package com.whippy.poker.state.events;
+package com.whippy.poker.common.events;
 
 /**
- * A PokerEvent representing a fold action
+ * A PokerEvent representing a timeout
  * @author mdunn
  *
  */
-public class FoldEvent implements PokerEvent {
+public class TimeoutEvent implements PokerEvent {
 
         //~ ----------------------------------------------------------------------------------------------------------------
         //~ Instance fields
@@ -19,11 +19,11 @@ public class FoldEvent implements PokerEvent {
         //~ ----------------------------------------------------------------------------------------------------------------
 
         /**
-         * Create a new fold event
+         * Create a new timeout event
          *
          * @param playerAlias The alias of the player performing the action
          */
-        public FoldEvent(String playerAlias) {
+        public TimeoutEvent(String playerAlias) {
                 this.playerAlias = playerAlias;
         }
 
@@ -33,7 +33,7 @@ public class FoldEvent implements PokerEvent {
 
         @Override
         public PokerEventType getEventType() {
-                return PokerEventType.FOLD;
+                return PokerEventType.TIMEOUT;
         }
 
         @Override

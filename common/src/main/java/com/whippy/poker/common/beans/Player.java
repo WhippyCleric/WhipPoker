@@ -1,5 +1,5 @@
 //J-
-package com.whippy.poker.state.beans;
+package com.whippy.poker.common.beans;
 
 /**
  * Represents a player for poker. A player only has an alias (i.e. name / id) and a stack of chips stored as numeric value

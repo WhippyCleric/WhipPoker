@@ -1,33 +1,30 @@
 //J-
-package com.whippy.poker.state.events;
+package com.whippy.poker.common.events;
 
 /**
- * A poker event representing a bet action
+ * A PokerEvent representing a call action
  * @author mdunn
  *
  */
-public class BetEvent implements PokerEvent {
+public class CallEvent implements PokerEvent {
 
         //~ ----------------------------------------------------------------------------------------------------------------
         //~ Instance fields
         //~ ----------------------------------------------------------------------------------------------------------------
 
         private String playerAlias;
-        private int chipAmount;
 
         //~ ----------------------------------------------------------------------------------------------------------------
         //~ Constructors
         //~ ----------------------------------------------------------------------------------------------------------------
 
         /**
-         * Create a new bet event
+         * Create a new call event
          *
          * @param playerAlias The alias of the player performing the action
-         * @param chipAmount the size of the bet
          */
-        public BetEvent(String playerAlias, int chipAmount) {
+        public CallEvent(String playerAlias) {
                 this.playerAlias = playerAlias;
-                this.chipAmount = chipAmount;
         }
 
         //~ ----------------------------------------------------------------------------------------------------------------
@@ -36,21 +33,12 @@ public class BetEvent implements PokerEvent {
 
         @Override
         public PokerEventType getEventType() {
-                return PokerEventType.BET;
+                return PokerEventType.CALL;
         }
 
         @Override
         public String getPlayerAlias() {
                 return playerAlias;
-        }
-
-        /**
-         * Returns the size of the bet
-         *
-         * @return the amount of the bet
-         */
-        public int getChipAmount() {
-                return this.chipAmount;
         }
 
 }

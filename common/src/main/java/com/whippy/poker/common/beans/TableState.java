@@ -1,5 +1,5 @@
 //J-
-package com.whippy.poker.state.beans;
+package com.whippy.poker.common.beans;
 
 /**
  * Represents the state of a table, either IN_HAND or PENDING

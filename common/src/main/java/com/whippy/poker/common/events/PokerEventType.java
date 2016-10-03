@@ -1,5 +1,5 @@
 //J-
-package com.whippy.poker.state.events;
+package com.whippy.poker.common.events;
 
 /**
  * Enum representing the different types of events for Players

@@ -1,5 +1,8 @@
 //J-
-package com.whippy.poker.state.beans;
+package com.whippy.poker.common.beans;
+
+import com.whippy.poker.common.beans.Suit;
+import com.whippy.poker.common.beans.Value;
 
 /**
  * Represents a Card containing a Suit and a Value

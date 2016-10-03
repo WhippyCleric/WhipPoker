@@ -1,5 +1,5 @@
 //J-
-package com.whippy.poker.state.beans;
+package com.whippy.poker.common.beans;
 
 /**
  * Represents the state of a seat at the table. Either EMPTY (no player), OCCUPIED_WAITING(player sat with a hand waiting for their turn), OCCUPIED_NOHAND (player sat with not hand), or OCCUPIED_ACTION (player sat and it is their turn to act)

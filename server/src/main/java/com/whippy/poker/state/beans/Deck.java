@@ -4,6 +4,10 @@ package com.whippy.poker.state.beans;
 import java.util.Collections;
 import java.util.Stack;
 
+import com.whippy.poker.common.beans.Card;
+import com.whippy.poker.common.beans.Suit;
+import com.whippy.poker.common.beans.Value;
+
 /**
  * Represents a full deck of cards (52 cards)
  *

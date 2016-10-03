@@ -7,6 +7,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.whippy.poker.common.beans.Player;
+import com.whippy.poker.common.beans.Table;
+import com.whippy.poker.common.beans.TableState;
 import com.whippy.poker.state.orchestrators.Dealer;
 
 public class DealerTest {

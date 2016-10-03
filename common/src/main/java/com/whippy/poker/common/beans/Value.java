@@ -1,21 +1,22 @@
 //J-
-package com.whippy.poker.state.beans;
+package com.whippy.poker.common.beans;
 
 /**
- * Represents a suit, either Diamonds, Hearts, Clubs or Spades. Each having a numeric value from 0 to 3 respectively associated with them.
- *
+ * Represents the value of a card, starting with TWO and going up to ACE. Each card has a numeric value ranging from 2 to 14 respectively
  * @author mdunn
  *
  */
-public enum Suit {
-
+public enum Value {
 
         //~ ----------------------------------------------------------------------------------------------------------------
         //~ Enum constants
         //~ ----------------------------------------------------------------------------------------------------------------
 
-        DIAMONDS(0), HEARTS(1), CLUBS(2), SPADES(3);
+        TWO(2), THREE(3), FOUR(4), FIVE(5), SIX(6), SEVEN(7), EIGHT(8), NINE(9), TEN(10), JACK(11), QUEEN(12), KING(13), ACE(14);
 
+        //~ ----------------------------------------------------------------------------------------------------------------
+        //~ Instance fields
+        //~ ----------------------------------------------------------------------------------------------------------------
 
         private int numericValue;
 
@@ -23,7 +24,7 @@ public enum Suit {
         //~ Constructors
         //~ ----------------------------------------------------------------------------------------------------------------
 
-        private Suit(int numericValue) {
+        private Value(int numericValue) {
                 this.numericValue = numericValue;
         }
 
@@ -32,9 +33,9 @@ public enum Suit {
         //~ ----------------------------------------------------------------------------------------------------------------
 
         /**
-         * Gets the numeric value of the suit
+         * Gets the numeric value of the card value
          *
-         * @return the numeric representation of the suit
+         * @return the numeric value associated with a card
          */
         public int getNumericValue() {
                 return numericValue;

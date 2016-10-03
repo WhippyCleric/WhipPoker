@@ -1,22 +1,21 @@
 //J-
-package com.whippy.poker.state.beans;
+package com.whippy.poker.common.beans;
 
 /**
- * Represents the value of a card, starting with TWO and going up to ACE. Each card has a numeric value ranging from 2 to 14 respectively
+ * Represents a suit, either Diamonds, Hearts, Clubs or Spades. Each having a numeric value from 0 to 3 respectively associated with them.
+ *
  * @author mdunn
  *
  */
-public enum Value {
+public enum Suit {
+
 
         //~ ----------------------------------------------------------------------------------------------------------------
         //~ Enum constants
         //~ ----------------------------------------------------------------------------------------------------------------
 
-        TWO(2), THREE(3), FOUR(4), FIVE(5), SIX(6), SEVEN(7), EIGHT(8), NINE(9), TEN(10), JACK(11), QUEEN(12), KING(13), ACE(14);
+        DIAMONDS(0), HEARTS(1), CLUBS(2), SPADES(3);
 
-        //~ ----------------------------------------------------------------------------------------------------------------
-        //~ Instance fields
-        //~ ----------------------------------------------------------------------------------------------------------------
 
         private int numericValue;
 
@@ -24,7 +23,7 @@ public enum Value {
         //~ Constructors
         //~ ----------------------------------------------------------------------------------------------------------------
 
-        private Value(int numericValue) {
+        private Suit(int numericValue) {
                 this.numericValue = numericValue;
         }
 
@@ -33,9 +32,9 @@ public enum Value {
         //~ ----------------------------------------------------------------------------------------------------------------
 
         /**
-         * Gets the numeric value of the card value
+         * Gets the numeric value of the suit
          *
-         * @return the numeric value associated with a card
+         * @return the numeric representation of the suit
          */
         public int getNumericValue() {
                 return numericValue;

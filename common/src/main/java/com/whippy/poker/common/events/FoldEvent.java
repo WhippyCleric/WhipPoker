@@ -1,12 +1,12 @@
 //J-
-package com.whippy.poker.state.events;
+package com.whippy.poker.common.events;
 
 /**
- * A PokerEvent representing a call action
+ * A PokerEvent representing a fold action
  * @author mdunn
  *
  */
-public class CallEvent implements PokerEvent {
+public class FoldEvent implements PokerEvent {
 
         //~ ----------------------------------------------------------------------------------------------------------------
         //~ Instance fields
@@ -19,11 +19,11 @@ public class CallEvent implements PokerEvent {
         //~ ----------------------------------------------------------------------------------------------------------------
 
         /**
-         * Create a new call event
+         * Create a new fold event
          *
          * @param playerAlias The alias of the player performing the action
          */
-        public CallEvent(String playerAlias) {
+        public FoldEvent(String playerAlias) {
                 this.playerAlias = playerAlias;
         }
 
@@ -33,7 +33,7 @@ public class CallEvent implements PokerEvent {
 
         @Override
         public PokerEventType getEventType() {
-                return PokerEventType.CALL;
+                return PokerEventType.FOLD;
         }
 
         @Override

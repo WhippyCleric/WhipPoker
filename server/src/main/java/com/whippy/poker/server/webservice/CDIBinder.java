@@ -14,5 +14,6 @@ public class CDIBinder extends AbstractBinder {
         protected void configure() {
 
         }
+
 }
 //J+

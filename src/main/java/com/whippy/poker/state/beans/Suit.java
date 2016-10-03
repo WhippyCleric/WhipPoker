@@ -1,6 +1,12 @@
 //J-
 package com.whippy.poker.state.beans;
 
+/**
+ * Represents a suit, either Diamonds, Hearts, Clubs or Spades. Each having a numeric value from 0 to 3 respectively associated with them.
+ *
+ * @author mdunn
+ *
+ */
 public enum Suit {
 
 
@@ -25,6 +31,11 @@ public enum Suit {
         //~ Methods
         //~ ----------------------------------------------------------------------------------------------------------------
 
+        /**
+         * Gets the numeric value of the suit
+         *
+         * @return the numeric representation of the suit
+         */
         public int getNumericValue() {
                 return numericValue;
         }

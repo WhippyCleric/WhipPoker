@@ -1,6 +1,11 @@
 //J-
 package com.whippy.poker.state.beans;
 
+/**
+ * Represents the value of a card, starting with TWO and going up to ACE. Each card has a numeric value ranging from 2 to 14 respectively
+ * @author mdunn
+ *
+ */
 public enum Value {
 
         //~ ----------------------------------------------------------------------------------------------------------------
@@ -27,6 +32,11 @@ public enum Value {
         //~ Methods
         //~ ----------------------------------------------------------------------------------------------------------------
 
+        /**
+         * Gets the numeric value of the card value
+         *
+         * @return the numeric value associated with a card
+         */
         public int getNumericValue() {
                 return numericValue;
         }

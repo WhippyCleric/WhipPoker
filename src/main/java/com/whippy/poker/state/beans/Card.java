@@ -1,11 +1,23 @@
 //J-
 package com.whippy.poker.state.beans;
 
+/**
+ * Represents a Card containing a Suit and a Value
+ *
+ * @author mdunn
+ *
+ */
 public class Card {
 
         private Suit suit;
         private Value value;
 
+        /**
+         * Create a card with a given suit and value
+         *
+         * @param suit the suit of the card
+         * @param value the value of the card
+         */
         public Card(Suit suit, Value value){
                 if(suit==null || value == null){
                         throw new IllegalArgumentException("Null value passed for either Suit or Value: Suit: " + suit + " Value: " + value);
@@ -14,10 +26,18 @@ public class Card {
                 this.value = value;
         }
 
+        /**
+         *
+         * @return the suit of the card
+         */
         public Suit getSuit() {
                 return suit;
         }
 
+        /**
+         *
+         * @return the value of the card
+         */
         public Value getValue() {
                 return value;
         }

@@ -9,13 +9,12 @@ import org.junit.Test;
 
 import com.whippy.poker.common.beans.Player;
 import com.whippy.poker.common.beans.TableState;
-import com.whippy.poker.server.beans.Table;
 import com.whippy.poker.server.orchestrators.Dealer;
 
 public class DealerTest {
 
 	//~ ----------------------------------------------------------------------------------------------------------------
-	//~ Methods 
+	//~ Methods
 	//~ ----------------------------------------------------------------------------------------------------------------
 
 	private static final int TABLE_ID = 0;
@@ -40,11 +39,11 @@ public class DealerTest {
 
 
 		//Create a couple of players
-		Player player1 = new Player(PLAYER_1, INIT_CHIPS);
-		Player player2 = new Player(PLAYER_2, INIT_CHIPS);
-		Player player3 = new Player(PLAYER_3, INIT_CHIPS);
-		Player player4 = new Player(PLAYER_4, INIT_CHIPS);
-		Player player5 = new Player(PLAYER_5, INIT_CHIPS);
+		Player player1 = new Player(PLAYER_1);
+		Player player2 = new Player(PLAYER_2);
+		Player player3 = new Player(PLAYER_3);
+		Player player4 = new Player(PLAYER_4);
+		Player player5 = new Player(PLAYER_5);
 
 		//Sit the players at the table
 		table.seatPlayer(player1);

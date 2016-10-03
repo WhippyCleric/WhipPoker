@@ -17,6 +17,20 @@ public class ClientSeat {
                 this.number = number;
         }
 
+        public ClientSeat(){}
+
+        public void setPlayer(Player player) {
+                this.player = player;
+        }
+
+        public void setState(SeatState state) {
+                this.state = state;
+        }
+
+        public void setNumber(int number) {
+                this.number = number;
+        }
+
         public Player getPlayer() {
                 return player;
         }

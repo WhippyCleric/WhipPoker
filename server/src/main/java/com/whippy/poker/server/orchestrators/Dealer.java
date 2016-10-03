@@ -4,6 +4,8 @@ package com.whippy.poker.server.orchestrators;
 import com.whippy.poker.common.beans.Hand;
 import com.whippy.poker.common.beans.SeatState;
 import com.whippy.poker.common.beans.TableState;
+import com.whippy.poker.common.events.PokerEvent;
+import com.whippy.poker.server.beans.DealerState;
 import com.whippy.poker.server.beans.Deck;
 import com.whippy.poker.server.beans.Seat;
 import com.whippy.poker.server.beans.Table;
@@ -17,6 +19,7 @@ public class Dealer implements Runnable {
 
         private Table table;
         private Deck deck;
+        private DealerState state;
 
 
         /**
@@ -26,7 +29,7 @@ public class Dealer implements Runnable {
          */
         public Dealer(Table table){
                 this.table = table;
-                table.seatDealer();
+                state = DealerState.ACTING;
         }
 
         /**
@@ -52,8 +55,13 @@ public class Dealer implements Runnable {
                                 }
                         }
                         int firstToAct = findNextSeat(table.getDealerPosition(), 2);
+                        state = DealerState.WAITING_ON_PLAYER;
                         table.getSeat(firstToAct).triggerAction();
                 }
+        }
+
+        public void processAction(PokerEvent event){
+                state = DealerState.ACTING;
         }
 
         @Override

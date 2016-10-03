@@ -16,6 +16,26 @@ public class ClientTable {
                 this.dealerPosition = dealerPosition;
         }
 
+        public void setSeats(ClientSeat[] seats) {
+                this.seats = seats;
+        }
+
+        public void setId(int id) {
+                this.id = id;
+        }
+
+        public void setState(TableState state) {
+                this.state = state;
+        }
+
+        public void setDealerPosition(int dealerPosition) {
+                this.dealerPosition = dealerPosition;
+        }
+
+        public ClientTable(){
+
+        }
+
         public ClientSeat[] getSeats() {
                 return seats;
         }

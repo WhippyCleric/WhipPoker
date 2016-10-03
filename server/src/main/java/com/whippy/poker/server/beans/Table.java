@@ -16,9 +16,7 @@ import com.whippy.poker.common.beans.TableState;
  */
 public class Table {
 
-        //~ ----------------------------------------------------------------------------------------------------------------
-        //~ Instance fields
-        //~ ----------------------------------------------------------------------------------------------------------------
+
 
         private Seat[] seats;
         private int id;
@@ -36,6 +34,10 @@ public class Table {
                         seats[i] = new Seat(i);
                 }
                 state = TableState.PENDING_DEAL;
+        }
+
+        public Seat[] getSeats() {
+                return seats;
         }
 
         /**

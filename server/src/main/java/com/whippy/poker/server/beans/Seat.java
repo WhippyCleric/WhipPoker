@@ -105,5 +105,13 @@ public class Seat {
                 return seatString.toString();
         }
 
+        public Player getPlayer() {
+                return this.player;
+        }
+
+        public Hand getHand() {
+                return this.hand;
+        }
+
 }
 //J+

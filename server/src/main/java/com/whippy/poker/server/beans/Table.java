@@ -1,9 +1,13 @@
 //J-
-package com.whippy.poker.common.beans;
+package com.whippy.poker.server.beans;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.whippy.poker.common.beans.Player;
+import com.whippy.poker.common.beans.SeatState;
+import com.whippy.poker.common.beans.TableState;
 
 /**
  * Represents a table of seats

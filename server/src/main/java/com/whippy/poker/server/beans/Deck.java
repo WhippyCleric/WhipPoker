@@ -1,5 +1,5 @@
 //J-
-package com.whippy.poker.state.beans;
+package com.whippy.poker.server.beans;
 
 import java.util.Collections;
 import java.util.Stack;

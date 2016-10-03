@@ -1,5 +1,9 @@
 //J-
-package com.whippy.poker.common.beans;
+package com.whippy.poker.server.beans;
+
+import com.whippy.poker.common.beans.Hand;
+import com.whippy.poker.common.beans.Player;
+import com.whippy.poker.common.beans.SeatState;
 
 /**
  * Represents a seat at a table

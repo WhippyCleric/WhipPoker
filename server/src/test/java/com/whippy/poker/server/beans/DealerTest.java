@@ -1,5 +1,5 @@
 //J-
-package com.whippy.poker.state.beans;
+package com.whippy.poker.server.beans;
 
 import static org.junit.Assert.fail;
 
@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.whippy.poker.common.beans.Player;
-import com.whippy.poker.common.beans.Table;
 import com.whippy.poker.common.beans.TableState;
-import com.whippy.poker.state.orchestrators.Dealer;
+import com.whippy.poker.server.beans.Table;
+import com.whippy.poker.server.orchestrators.Dealer;
 
 public class DealerTest {
 

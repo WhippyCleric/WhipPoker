@@ -1,12 +1,12 @@
 //J-
-package com.whippy.poker.state.orchestrators;
+package com.whippy.poker.server.orchestrators;
 
 import com.whippy.poker.common.beans.Hand;
-import com.whippy.poker.common.beans.Seat;
 import com.whippy.poker.common.beans.SeatState;
-import com.whippy.poker.common.beans.Table;
 import com.whippy.poker.common.beans.TableState;
-import com.whippy.poker.state.beans.Deck;
+import com.whippy.poker.server.beans.Deck;
+import com.whippy.poker.server.beans.Seat;
+import com.whippy.poker.server.beans.Table;
 
 /**
  * Acts as the dealer for a given table

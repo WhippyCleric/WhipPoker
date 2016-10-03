@@ -1,10 +1,10 @@
 //J-
-package com.whippy.poker.state.beans;
+package com.whippy.poker.server.beans;
 
 import static org.junit.Assert.fail;
 import org.junit.Test;
 
-import com.whippy.poker.common.beans.Table;
+import com.whippy.poker.server.beans.Table;
 
 
 public class TableTest {

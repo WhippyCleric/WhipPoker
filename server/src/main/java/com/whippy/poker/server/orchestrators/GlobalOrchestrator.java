@@ -51,7 +51,7 @@ public class GlobalOrchestrator {
                                 hand = seats[i].getHand();
                         }
                 }
-                ClientTable clientTable = new ClientTable(clientSeats, table.getId(), table.getState(), table.getDealerPosition(), table.getPot());
+                ClientTable clientTable = new ClientTable(clientSeats, table.getId(), table.getState(), table.getDealerPosition(), table.getPot(), table.getCentreCards());
                 return new ClientState(clientTable, hand);
         }
 

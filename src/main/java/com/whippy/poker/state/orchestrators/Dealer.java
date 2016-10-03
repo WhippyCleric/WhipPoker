@@ -67,7 +67,7 @@ public class Dealer implements Runnable {
 
         }
 
-        public int findNextSeat(int currentSeat, int offset){
+        private int findNextSeat(int currentSeat, int offset){
                 int next = currentSeat+1;
                 while(true){
                         if(next>=table.getSize()){

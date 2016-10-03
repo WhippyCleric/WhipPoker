@@ -110,6 +110,13 @@ public class Dealer implements Runnable {
                 setupNextPlayer(nextToAct);
         }
 
+        private void processFold(String playerAlias){
+                Seat playerSeat = table.getSeatForPlayer(playerAlias);
+                playerSeat.setState(SeatState.OCCUPIED_NOHAND);
+                int nextToAct = findNextSeat(playerSeat.getNumber(), 0);
+                setupNextPlayer(nextToAct);
+        }
+
         private void triggerNextStep(){
                 if(table.getState().equals(TableState.PRE_FLOP)){
                         dealFlop();
@@ -159,6 +166,8 @@ public class Dealer implements Runnable {
                         state = DealerState.ACTING;
                         if(event.getEventType().equals(PokerEventType.CALL)){
                                 processCall(playerAlias);
+                        }else if(event.getEventType().equals(PokerEventType.FOLD)){
+                                processFold(playerAlias);
                         }
                         state = DealerState.WAITING_ON_PLAYER;
                 }else{
@@ -181,9 +190,6 @@ public class Dealer implements Runnable {
         public void run() {
                 //Give starting stacks
                 giveStartingStack(STARTING_STACK);
-
-                //Take the blinds
-
 
                 //While the table is not being closed
                 while(!table.getState().equals(TableState.CLOSING)){

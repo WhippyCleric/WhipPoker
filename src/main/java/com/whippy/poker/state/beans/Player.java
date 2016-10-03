@@ -56,11 +56,11 @@ public class Player {
 	 * Remove a specified number of chips from the players chip count
 	 * 
 	 * @param chips Number of chips to take from the player
-	 * @throws IllegalAccessException if number of chips to deduct is greater than the number of chips the player has
+	 * @throws IllegalArgumentException if number of chips to deduct is greater than the number of chips the player has
 	 */
-	public void deductChips(int chips) throws IllegalAccessException{
+	public void deductChips(int chips){
 		if(chips>this.chipCount){
-			throw new IllegalAccessException("Player " + alias + " only has " +  this.chipCount + " chips, can't deduct " + chips + " chips.");
+			throw new IllegalArgumentException("Player " + alias + " only has " +  this.chipCount + " chips, can't deduct " + chips + " chips.");
 		}
 		this.chipCount-=chips;
 	}

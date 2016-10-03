@@ -75,12 +75,7 @@ public class Dealer implements Runnable {
                 }
         }
 
-        private void processCall(String playerAlias){
-                Seat playerSeat = table.getSeatForPlayer(playerAlias);
-                playerSeat.getPlayer().deductChips(pendingBet-playerSeat.getCurrentBet());
-                playerSeat.setCurrentBet(pendingBet);
-                playerSeat.setState(SeatState.OCCUPIED_WAITING);
-                int nextToAct = findNextSeat(playerSeat.getNumber(), 0);
+        private void setupNextPlayer(int nextToAct){
                 playerToAct = table.getSeat(nextToAct).getPlayer().getAlias();
                 //Check if we have circled the table
                 if(table.getSeat(nextToAct).getCurrentBet()==pendingBet && pendingBet!=0){
@@ -106,6 +101,15 @@ public class Dealer implements Runnable {
                 }
         }
 
+        private void processCall(String playerAlias){
+                Seat playerSeat = table.getSeatForPlayer(playerAlias);
+                playerSeat.getPlayer().deductChips(pendingBet-playerSeat.getCurrentBet());
+                playerSeat.setCurrentBet(pendingBet);
+                playerSeat.setState(SeatState.OCCUPIED_WAITING);
+                int nextToAct = findNextSeat(playerSeat.getNumber(), 0);
+                setupNextPlayer(nextToAct);
+        }
+
         private void triggerNextStep(){
                 if(table.getState().equals(TableState.PRE_FLOP)){
                         dealFlop();
@@ -123,12 +127,14 @@ public class Dealer implements Runnable {
                 table.setState(TableState.POST_RIVER);
                 table.dealCardToTable(deck.getTopCard());
                 table.getSeat(findNextSeat(table.getDealerPosition(), 0)).triggerAction();
+                playerToAct =  table.getSeat(findNextSeat(table.getDealerPosition(), 0)).getPlayer().getAlias();
         }
 
         private void dealTurn(){
                 table.setState(TableState.PRE_RIVER);
                 table.dealCardToTable(deck.getTopCard());
                 table.getSeat(findNextSeat(table.getDealerPosition(), 0)).triggerAction();
+                playerToAct =  table.getSeat(findNextSeat(table.getDealerPosition(), 0)).getPlayer().getAlias();
         }
 
         private void dealFlop(){
@@ -137,6 +143,7 @@ public class Dealer implements Runnable {
                         table.dealCardToTable(deck.getTopCard());
                 }
                 table.getSeat(findNextSeat(table.getDealerPosition(), 0)).triggerAction();
+                playerToAct =  table.getSeat(findNextSeat(table.getDealerPosition(), 0)).getPlayer().getAlias();
         }
 
         private void collectPot(){

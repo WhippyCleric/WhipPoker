@@ -75,10 +75,11 @@ public class Dealer implements Runnable {
                                 Seat playerSeat = table.getSeatForPlayer(playerAlias);
                                 playerSeat.getPlayer().deductChips(pendingBet);
                                 playerSeat.setState(SeatState.OCCUPIED_WAITING);
-                                int nextToAct = findNextSeat(table.getDealerPosition(), 0);
+                                int nextToAct = findNextSeat(playerSeat.getNumber(), 0);
                                 playerToAct = table.getSeat(nextToAct).getPlayer().getAlias();
                                 table.getSeat(nextToAct).triggerAction();
                         }
+                        state = DealerState.WAITING_ON_PLAYER;
                 }else{
                         throw new IllegalArgumentException("Not this players turn to act");
                 }

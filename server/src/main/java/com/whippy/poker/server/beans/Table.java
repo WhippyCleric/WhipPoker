@@ -122,6 +122,15 @@ public class Table {
                 }
         }
 
+        public Seat getSeatForPlayer(String alias){
+                for(Seat seat : seats){
+                        if(!seat.getState().equals(SeatState.EMPTY) && seat.getPlayer().getAlias().equals(alias)){
+                                return seat;
+                        }
+                }
+                throw new IllegalArgumentException("No such player found at table: " + alias );
+        }
+
 
         /**
          * Sit the player in a random free seat at the table

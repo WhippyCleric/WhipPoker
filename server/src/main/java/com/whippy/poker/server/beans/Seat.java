@@ -66,6 +66,12 @@ public class Seat {
         }
 
 
+
+
+        public void setState(SeatState state) {
+                this.state = state;
+        }
+
         /**
          *
          * @return the current SeatState

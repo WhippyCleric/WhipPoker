@@ -5,6 +5,7 @@ import com.whippy.poker.common.beans.Hand;
 import com.whippy.poker.common.beans.SeatState;
 import com.whippy.poker.common.beans.TableState;
 import com.whippy.poker.common.events.PokerEvent;
+import com.whippy.poker.common.events.PokerEventType;
 import com.whippy.poker.server.beans.DealerState;
 import com.whippy.poker.server.beans.Deck;
 import com.whippy.poker.server.beans.Seat;
@@ -20,7 +21,11 @@ public class Dealer implements Runnable {
         private Table table;
         private Deck deck;
         private DealerState state;
-
+        private String playerToAct = "";
+        private int pendingBet = 0;
+        private final static int BIG_BLIND = 10;
+        private final static int SMALL_BLIND = 5;
+        private final static int STARTING_STACK = 1000;
 
         /**
          * Create a dealer at a given table
@@ -56,16 +61,48 @@ public class Dealer implements Runnable {
                         }
                         int firstToAct = findNextSeat(table.getDealerPosition(), 2);
                         state = DealerState.WAITING_ON_PLAYER;
+                        playerToAct = table.getSeat(firstToAct).getPlayer().getAlias();
+                        pendingBet = BIG_BLIND;
                         table.getSeat(firstToAct).triggerAction();
                 }
         }
 
         public void processAction(PokerEvent event){
-                state = DealerState.ACTING;
+                String playerAlias = event.getPlayerAlias();
+                if(playerAlias.equals(playerToAct)){
+                        state = DealerState.ACTING;
+                        if(event.getEventType().equals(PokerEventType.CALL)){
+                                Seat playerSeat = table.getSeatForPlayer(playerAlias);
+                                playerSeat.getPlayer().deductChips(pendingBet);
+                                playerSeat.setState(SeatState.OCCUPIED_WAITING);
+                                int nextToAct = findNextSeat(table.getDealerPosition(), 0);
+                                playerToAct = table.getSeat(nextToAct).getPlayer().getAlias();
+                                table.getSeat(nextToAct).triggerAction();
+                        }
+                }else{
+                        throw new IllegalArgumentException("Not this players turn to act");
+                }
         }
+
+
+        private void giveStartingStack(int startingStack){
+                for(int i=0 ; i< table.getSize(); i++){
+                        Seat seat = table.getSeat(i);
+                        if(seat.getState().equals(SeatState.OCCUPIED_NOHAND)){
+                                seat.getPlayer().giveChips(startingStack);
+                        }
+                }
+        }
+
 
         @Override
         public void run() {
+                //Give starting stacks
+                giveStartingStack(STARTING_STACK);
+
+                //Take the blinds
+
+
                 //While the table is not being closed
                 while(!table.getState().equals(TableState.CLOSING)){
                         if(table.getState().equals(TableState.PENDING_DEAL)){

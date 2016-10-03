@@ -43,12 +43,17 @@ public class Dealer implements Runnable {
                         table.updateTableState(TableState.IN_HAND);
                         deck = new Deck();
                         deck.shuffle();
+                        System.out.println("Dealing");
                         for(int i=0 ; i< table.getSize(); i++){
                                 Seat seat = table.getSeat(i);
                                 if(seat.getState().equals(SeatState.OCCUPIED_NOHAND)){
                                         seat.giveHand(new Hand(deck.getTopCard(), deck.getTopCard()));
                                 }
                         }
+                        System.out.println("Finding next seat");
+                        int firstToAct = findNextSeat(table.getDealerPosition());
+                        System.out.println("Triggering action on first player");
+                        table.getSeat(firstToAct).triggerAction();
                 }
         }
 
@@ -63,7 +68,23 @@ public class Dealer implements Runnable {
 
         }
 
+        public int findNextSeat(int currentSeat){
+                int next = currentSeat+1;
+                while(true){
+                        if(next==table.getSize()){
+                                next = 0;
+                        }
+                        System.out.println("Checking " +next);
+                        if(next == currentSeat){
+                                throw new IllegalArgumentException("There's no more players");
+                        }
 
+                        if(table.getSeat(next).getState().equals(SeatState.OCCUPIED_WAITING)){
+                                return next;
+                        }
+                        next++;
+                }
 
+        }
 }
 //J+

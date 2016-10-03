@@ -1,8 +1,10 @@
 //J-
 package com.whippy.poker.state.beans;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.whippy.poker.state.orchestrators.Dealer;
@@ -19,10 +21,17 @@ public class DealerTest {
 	private static final String PLAYER_2 = "player2";
 	private static final int INIT_CHIPS = 1000;
 
+	private Table table;
+
+	@Before
+	public void setup(){
+		this.table = new Table(TABLE_SIZE, TABLE_ID);
+	}
+
 	@Test
 	public void testDealer() throws InterruptedException {
 		//Create a table with 10 empty seats
-		Table table = new Table(TABLE_SIZE, TABLE_ID);
+
 
 		//Create a couple of players
 		Player player1 = new Player(PLAYER_1, INIT_CHIPS);
@@ -44,13 +53,15 @@ public class DealerTest {
 		if(table.getState().equals(TableState.IN_HAND)){
 			System.out.println(table.toString());
 		}else{
-			table.updateTableState(TableState.CLOSING);
 			fail("Table should be in a hand");
 		}
 
-		//Close the table
-		table.updateTableState(TableState.CLOSING);
 
+	}
+
+	@After
+	public void shutdown(){
+		//	this.table.updateTableState(TableState.CLOSING);
 	}
 
 }

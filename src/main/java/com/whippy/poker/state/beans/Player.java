@@ -65,5 +65,15 @@ public class Player {
 		this.chipCount-=chips;
 	}
 
+	@Override
+	public String toString(){
+		StringBuilder playerString = new StringBuilder();
+		playerString.append("Name :");
+		playerString.append(this.alias);
+		playerString.append("\nChips :");
+		playerString.append(this.chipCount);
+		return playerString.toString();
+	}
+
 }
 //J=

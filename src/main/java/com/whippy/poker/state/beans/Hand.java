@@ -39,5 +39,10 @@ public class Hand {
 	public Card[] getCards(){
 		return this.hand;
 	}
+
+	@Override
+	public String toString(){
+		return hand[0].toString() + "\n" + hand[1].toString();
+	}
 }
 //J=

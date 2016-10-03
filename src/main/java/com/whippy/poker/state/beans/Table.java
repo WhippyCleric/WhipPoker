@@ -1,6 +1,10 @@
 //J-
 package com.whippy.poker.state.beans;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Represents a table of seats
  *
@@ -26,7 +30,7 @@ public class Table {
                 for(int i=0; i<numberOfSeats; i++){
                         seats[i] = new Seat(i);
                 }
-                state = TableState.PENDING;
+                state = TableState.PENDING_DEAL;
         }
 
         /**
@@ -60,6 +64,28 @@ public class Table {
                 }
         }
 
+
+        /**
+         * Sit the player in a random free seat at the table
+         *
+         * @param player The player to sit at the table
+         * @throws IllegalArgumentException if the table is full
+         */
+        public void seatPlayer(Player player){
+                List<Seat> freeSeats = new ArrayList<Seat>();
+                for(Seat seat : seats){
+                        if(seat.getState().equals(SeatState.EMPTY)){
+                                freeSeats.add(seat);
+                        }
+                }
+                if(freeSeats.size()>0){
+                        Collections.shuffle(freeSeats);
+                        freeSeats.get(0).seatPlayer(player);
+                }else{
+                        throw new IllegalArgumentException("Table full");
+                }
+        }
+
         /**
          *
          * @return The current state of the table
@@ -74,6 +100,20 @@ public class Table {
          */
         public void updateTableState(TableState state){
                 this.state = state;
+        }
+
+        @Override
+        public String toString(){
+                StringBuilder tableString = new StringBuilder();
+                tableString.append("Number: ");
+                tableString.append(this.id);
+                tableString.append("\nState: ");
+                tableString.append(this.state);
+                for(Seat seat : this.seats){
+                        tableString.append("\nSeat: ");
+                        tableString.append(seat.toString());
+                }
+                return tableString.toString();
         }
 
 }

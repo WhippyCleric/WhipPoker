@@ -57,5 +57,10 @@ public class Card {
                 return Integer.valueOf(suit.getNumericValue() + "" + value.getNumericValue());
         }
 
+        @Override
+        public String toString(){
+                return getSuit().toString() + " " + getValue().toString();
+        }
+
 }
 //J+

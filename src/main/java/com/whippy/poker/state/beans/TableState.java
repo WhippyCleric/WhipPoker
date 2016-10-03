@@ -13,7 +13,7 @@ public enum TableState {
         //~ Enum constants
         //~ ----------------------------------------------------------------------------------------------------------------
 
-        IN_HAND, PENDING;
+        IN_HAND, PENDING_DEAL, CLOSING;
 
 }
 //J+

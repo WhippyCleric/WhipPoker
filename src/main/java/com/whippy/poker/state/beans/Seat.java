@@ -83,5 +83,23 @@ public class Seat {
                 }
         }
 
+        @Override
+        public String toString(){
+                StringBuilder seatString = new StringBuilder();
+                seatString.append("Number: ");
+                seatString.append(this.number);
+                seatString.append("\nState: ");
+                seatString.append(this.state);
+                seatString.append("\nPlayer: ");
+                if(this.player!=null){
+                        seatString.append(this.player.toString());
+                }
+                seatString.append("\nHand: ");
+                if(this.hand!=null){
+                        seatString.append(this.hand.toString());
+                }
+                return seatString.toString();
+        }
+
 }
 //J+

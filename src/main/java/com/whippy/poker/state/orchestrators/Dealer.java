@@ -13,7 +13,7 @@ import com.whippy.poker.state.beans.TableState;
  *
  * @author mdunn
  */
-public class Dealer {
+public class Dealer implements Runnable {
 
         private Table table;
         private Deck deck;
@@ -38,6 +38,7 @@ public class Dealer {
                 if(table.getState().equals(TableState.IN_HAND)){
                         throw new IllegalArgumentException("Hand is currently in play");
                 }else{
+                        table.updateTableState(TableState.IN_HAND);
                         deck = new Deck();
                         deck.shuffle();
                         for(int i=0 ; i< table.getSize(); i++){
@@ -47,6 +48,17 @@ public class Dealer {
                                 }
                         }
                 }
+        }
+
+        @Override
+        public void run() {
+                //While the table is not being closed
+                while(!table.getState().equals(TableState.CLOSING)){
+                        if(table.getState().equals(TableState.PENDING_DEAL)){
+                                deal();
+                        }
+                }
+
         }
 
 

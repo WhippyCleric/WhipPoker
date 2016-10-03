@@ -39,7 +39,7 @@ public class Seat {
          */
         public void seatPlayer(Player player){
                 if(!this.state.equals(SeatState.EMPTY)){
-                        throw new IllegalArgumentException("Seat allready occupied");
+                        throw new IllegalArgumentException("Seat already occupied");
                 }else{
                         this.player = player;
                         this.state = SeatState.OCCUPIED_NOHAND;

@@ -16,6 +16,7 @@ public class Seat {
         private SeatState state;
         private Hand hand;
         private final int number;
+        private int currentBet = 0;
 
 
         /**
@@ -48,6 +49,16 @@ public class Seat {
                         this.player = player;
                         this.state = SeatState.OCCUPIED_NOHAND;
                 }
+        }
+
+
+
+        public int getCurrentBet() {
+                return currentBet;
+        }
+
+        public void setCurrentBet(int currentBet) {
+                this.currentBet = currentBet;
         }
 
         /**

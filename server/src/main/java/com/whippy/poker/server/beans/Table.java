@@ -22,6 +22,7 @@ public class Table {
         private int id;
         private TableState state;
         private int dealerPosition;
+        private int pot = 0;
 
         /**
          * Create a table with a selection of empty seats
@@ -38,6 +39,18 @@ public class Table {
 
         public Seat[] getSeats() {
                 return seats;
+        }
+
+        public void putIntoPut(int amount){
+                pot += amount;
+        }
+
+        public int getPot(){
+                return pot;
+        }
+
+        public void emptyPot(){
+                pot = 0;
         }
 
         /**
@@ -183,6 +196,11 @@ public class Table {
                         tableString.append(seat.toString());
                 }
                 return tableString.toString();
+        }
+
+        public void setState(TableState state) {
+                this.state = state;
+
         }
 
 }

@@ -13,7 +13,7 @@ public enum TableState {
         //~ Enum constants
         //~ ----------------------------------------------------------------------------------------------------------------
 
-        IN_HAND, PENDING_DEAL, CLOSING;
+        PENDING_DEAL, PRE_FLOP, PRE_TURN, PRE_RIVER, POST_RIVER, CLOSING;
 
 }
 //J+

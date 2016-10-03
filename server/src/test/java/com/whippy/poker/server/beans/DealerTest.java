@@ -61,7 +61,7 @@ public class DealerTest {
 		dealerThread.start();
 
 		Thread.sleep(500);
-		if(table.getState().equals(TableState.IN_HAND)){
+		if(table.getState().equals(TableState.PRE_FLOP)){
 			System.out.println(table.toString());
 		}else{
 			fail("Table should be in a hand");

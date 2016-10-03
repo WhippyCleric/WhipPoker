@@ -8,12 +8,14 @@ public class ClientTable {
         private int id;
         private TableState state;
         private int dealerPosition;
+        private int currentPot;
 
-        public ClientTable(ClientSeat[] seats, int id, TableState state, int dealerPosition) {
+        public ClientTable(ClientSeat[] seats, int id, TableState state, int dealerPosition, int currentPot) {
                 this.seats = seats;
                 this.id = id;
                 this.state = state;
                 this.dealerPosition = dealerPosition;
+                this.currentPot = currentPot;
         }
 
         public void setSeats(ClientSeat[] seats) {

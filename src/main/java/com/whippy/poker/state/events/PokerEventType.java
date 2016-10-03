@@ -12,6 +12,6 @@ public enum PokerEventType {
         //~ Enum constants
         //~ ----------------------------------------------------------------------------------------------------------------
 
-        BET, FOLD, CALL;
+        BET, FOLD, CALL, TIMEOUT;
 }
 //J+

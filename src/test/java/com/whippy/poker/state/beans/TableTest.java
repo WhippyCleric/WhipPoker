@@ -13,7 +13,7 @@ public class TableTest {
 
         @Test
         public void testInvalidSeat() {
-                Table table = new Table(10);
+                Table table = new Table(10, 0);
                 try {
                         table.getSeat(10);
                         fail("Seat should not exist");

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.whippy.poker.common.beans.Card;
 import com.whippy.poker.common.beans.Player;
 import com.whippy.poker.common.beans.SeatState;
 import com.whippy.poker.common.beans.TableState;
@@ -23,6 +24,7 @@ public class Table {
         private TableState state;
         private int dealerPosition;
         private int pot = 0;
+        private List<Card> centreCards = new ArrayList<Card>();
 
         /**
          * Create a table with a selection of empty seats
@@ -36,6 +38,22 @@ public class Table {
                 }
                 state = TableState.PENDING_DEAL;
         }
+
+
+
+        public List<Card> getCentreCards() {
+                return centreCards;
+        }
+
+        public void dealCardToTable(Card card){
+                this.centreCards.add(card);
+        }
+
+        public void setCentreCards(List<Card> centreCards) {
+                this.centreCards = centreCards;
+        }
+
+
 
         public Seat[] getSeats() {
                 return seats;

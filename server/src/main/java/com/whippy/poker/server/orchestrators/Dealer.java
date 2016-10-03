@@ -83,18 +83,66 @@ public class Dealer implements Runnable {
                 int nextToAct = findNextSeat(playerSeat.getNumber(), 0);
                 playerToAct = table.getSeat(nextToAct).getPlayer().getAlias();
                 //Check if we have circled the table
-                if(table.getSeat(nextToAct).getCurrentBet()==pendingBet){
+                if(table.getSeat(nextToAct).getCurrentBet()==pendingBet && pendingBet!=0){
                         if(nextToAct == bigBlindSeat){
                                 //incase we are on the first circle
                                 bigBlindSeat = -1;
                                 //OPTION TO RAISE
                                 table.getSeat(nextToAct).triggerAction();
                         }else{
-                                throw new UnsupportedOperationException("cant collect the pot yet");
-                                //TIME TO COLLECT INTO THE POT
+                                collectPot();
+                                triggerNextStep();
+                        }
+                }else if(pendingBet==0){
+                        if(nextToAct == bigBlindSeat){
+                                bigBlindSeat = -1;
+                                //OPTION TO RAISE
+                                table.getSeat(nextToAct).triggerAction();
+                        }else{
+                                table.getSeat(nextToAct).triggerAction();
                         }
                 }else{
                         table.getSeat(nextToAct).triggerAction();
+                }
+        }
+
+        private void triggerNextStep(){
+                if(table.getState().equals(TableState.PRE_FLOP)){
+                        dealFlop();
+                }else if(table.getState().equals(TableState.PRE_TURN)){
+                        dealTurn();
+                }else if(table.getState().equals(TableState.PRE_RIVER)){
+                        dealRiver();
+                }else{
+                        throw new UnsupportedOperationException("dunno what to do: " + table.getState());
+                }
+                bigBlindSeat = table.getDealerPosition();
+        }
+
+        private void dealRiver(){
+                table.setState(TableState.POST_RIVER);
+                table.dealCardToTable(deck.getTopCard());
+                table.getSeat(findNextSeat(table.getDealerPosition(), 0)).triggerAction();
+        }
+
+        private void dealTurn(){
+                table.setState(TableState.PRE_RIVER);
+                table.dealCardToTable(deck.getTopCard());
+                table.getSeat(findNextSeat(table.getDealerPosition(), 0)).triggerAction();
+        }
+
+        private void dealFlop(){
+                table.setState(TableState.PRE_TURN);
+                for(int i=0;i<3;i++){
+                        table.dealCardToTable(deck.getTopCard());
+                }
+                table.getSeat(findNextSeat(table.getDealerPosition(), 0)).triggerAction();
+        }
+
+        private void collectPot(){
+                for(Seat seat : table.getSeats()){
+                        table.putIntoPut(seat.getCurrentBet());
+                        seat.setCurrentBet(0);
                 }
         }
 

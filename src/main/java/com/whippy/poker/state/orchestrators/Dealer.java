@@ -33,26 +33,25 @@ public class Dealer implements Runnable {
          *
          * Deal a new round of cards to the table.
          *
-         * @throws IllegalArgumentException if the table is IN_HAND
+         * @throws IllegalArgumentException if the table is IN_HAND, or there's less than 2 players
          *
          */
         public void deal(){
                 if(table.getState().equals(TableState.IN_HAND)){
                         throw new IllegalArgumentException("Hand is currently in play");
+                }else if(table.getSeatedPlayers()<2){
+                        throw new IllegalArgumentException("not enough players to deal");
                 }else{
                         table.updateTableState(TableState.IN_HAND);
                         deck = new Deck();
                         deck.shuffle();
-                        System.out.println("Dealing");
                         for(int i=0 ; i< table.getSize(); i++){
                                 Seat seat = table.getSeat(i);
                                 if(seat.getState().equals(SeatState.OCCUPIED_NOHAND)){
                                         seat.giveHand(new Hand(deck.getTopCard(), deck.getTopCard()));
                                 }
                         }
-                        System.out.println("Finding next seat");
-                        int firstToAct = findNextSeat(table.getDealerPosition());
-                        System.out.println("Triggering action on first player");
+                        int firstToAct = findNextSeat(table.getDealerPosition(), 2);
                         table.getSeat(firstToAct).triggerAction();
                 }
         }
@@ -68,19 +67,18 @@ public class Dealer implements Runnable {
 
         }
 
-        public int findNextSeat(int currentSeat){
+        public int findNextSeat(int currentSeat, int offset){
                 int next = currentSeat+1;
                 while(true){
-                        if(next==table.getSize()){
-                                next = 0;
+                        if(next>=table.getSize()){
+                                next = next - table.getSize();
                         }
-                        System.out.println("Checking " +next);
-                        if(next == currentSeat){
-                                throw new IllegalArgumentException("There's no more players");
-                        }
-
                         if(table.getSeat(next).getState().equals(SeatState.OCCUPIED_WAITING)){
-                                return next;
+                                if(offset==0){
+                                        return next;
+                                }else{
+                                        offset--;
+                                }
                         }
                         next++;
                 }

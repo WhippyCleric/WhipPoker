@@ -19,6 +19,9 @@ public class DealerTest {
 	private static final int TABLE_SIZE = 10;
 	private static final String PLAYER_1 = "player1";
 	private static final String PLAYER_2 = "player2";
+	private static final String PLAYER_3 = "player3";
+	private static final String PLAYER_4 = "player4";
+	private static final String PLAYER_5 = "player5";
 	private static final int INIT_CHIPS = 1000;
 
 	private Table table;
@@ -36,10 +39,16 @@ public class DealerTest {
 		//Create a couple of players
 		Player player1 = new Player(PLAYER_1, INIT_CHIPS);
 		Player player2 = new Player(PLAYER_2, INIT_CHIPS);
+		Player player3 = new Player(PLAYER_3, INIT_CHIPS);
+		Player player4 = new Player(PLAYER_4, INIT_CHIPS);
+		Player player5 = new Player(PLAYER_5, INIT_CHIPS);
 
 		//Sit the players at the table
 		table.seatPlayer(player1);
 		table.seatPlayer(player2);
+		table.seatPlayer(player3);
+		table.seatPlayer(player4);
+		table.seatPlayer(player5);
 
 		//Create a new dealer for the table
 		Dealer dealer = new Dealer(table);
@@ -61,7 +70,7 @@ public class DealerTest {
 
 	@After
 	public void shutdown(){
-		//	this.table.updateTableState(TableState.CLOSING);
+		this.table.updateTableState(TableState.CLOSING);
 	}
 
 }

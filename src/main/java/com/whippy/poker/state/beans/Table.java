@@ -35,6 +35,20 @@ public class Table {
         }
 
         /**
+         * Get the number of players sat at the table
+         * @return the number of players at the table
+         */
+        public int getSeatedPlayers(){
+                int occupiedSeats = 0;
+                for(Seat seat : seats){
+                        if(!seat.getState().equals(SeatState.EMPTY)){
+                                occupiedSeats++;
+                        }
+                }
+                return occupiedSeats;
+        }
+
+        /**
          *
          * @return the id of the table
          */
@@ -147,6 +161,8 @@ public class Table {
                 tableString.append(this.id);
                 tableString.append("\nState: ");
                 tableString.append(this.state);
+                tableString.append("\nDealer Position: ");
+                tableString.append(dealerPosition);
                 for(Seat seat : this.seats){
                         tableString.append("\nSeat: ");
                         tableString.append(seat.toString());

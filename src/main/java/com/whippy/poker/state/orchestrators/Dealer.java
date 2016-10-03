@@ -18,6 +18,7 @@ public class Dealer implements Runnable {
         private Table table;
         private Deck deck;
 
+
         /**
          * Create a dealer at a given table
          *
@@ -25,6 +26,7 @@ public class Dealer implements Runnable {
          */
         public Dealer(Table table){
                 this.table = table;
+                table.seatDealer();
         }
 
         /**
@@ -60,6 +62,7 @@ public class Dealer implements Runnable {
                 }
 
         }
+
 
 
 }

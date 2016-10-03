@@ -19,6 +19,7 @@ public class Table {
         private Seat[] seats;
         private int id;
         private TableState state;
+        private int dealerPosition;
 
         /**
          * Create a table with a selection of empty seats
@@ -47,6 +48,43 @@ public class Table {
          */
         public int getSize(){
                 return seats.length;
+        }
+
+        /**
+         *
+         * @return The current seat numbr for the dealer button
+         */
+        public int getDealerPosition() {
+                return dealerPosition;
+        }
+
+        /**
+         *
+         * @param dealerPosition Set the current seat number for the dealer position
+         */
+        public void setDealerPosition(int dealerPosition) {
+                this.dealerPosition = dealerPosition;
+        }
+
+        /**
+         *
+         * Will put the dealer button in a random occupied space
+         * @throws IllegalArgumentException If the table is empty
+         *
+         */
+        public void seatDealer(){
+                List<Seat> occupiedSeats = new ArrayList<Seat>();
+                for(Seat seat : seats){
+                        if(!seat.getState().equals(SeatState.EMPTY)){
+                                occupiedSeats.add(seat);
+                        }
+                }
+                if(occupiedSeats.size()>0){
+                        Collections.shuffle(occupiedSeats);
+                        this.dealerPosition = occupiedSeats.get(0).getNumber();
+                }else{
+                        throw new IllegalArgumentException("Table empty");
+                }
         }
 
         /**

@@ -1,16 +1,13 @@
 //J-
 package com.whippy.poker.common.beans;
 
-import com.whippy.poker.common.beans.Suit;
-import com.whippy.poker.common.beans.Value;
-
 /**
  * Represents a Card containing a Suit and a Value
  *
  * @author mdunn
  *
  */
-public class Card {
+public class Card implements Comparable<Card> {
 
         private Suit suit;
         private Value value;
@@ -63,6 +60,17 @@ public class Card {
         @Override
         public String toString(){
                 return getSuit().toString() + " " + getValue().toString();
+        }
+
+        @Override
+        public int compareTo(Card o) {
+                if(this.getValue().getNumericValue()<o.getValue().getNumericValue()){
+                        return -1;
+                }else if(o.getValue().getNumericValue()<this.getValue().getNumericValue()){
+                        return 1;
+                }else{
+                        return 0;
+                }
         }
 
 }

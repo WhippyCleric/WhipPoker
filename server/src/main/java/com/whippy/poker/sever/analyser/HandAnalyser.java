@@ -29,8 +29,15 @@ public class HandAnalyser {
                                 return compareHighCard(fiveCardHand1.getCards(), fiveCardHand2.getCards());
                         }
                         if(fiveCardHand1.getHandValue().equals(HandValue.PAIR)){
-                                return comparePair(fiveCardHand1.getCards(), fiveCardHand2.getCards());
+                                return compareSet(fiveCardHand1.getCards(), fiveCardHand2.getCards(), 2);
                         }
+                        if(fiveCardHand1.getHandValue().equals(HandValue.TWO_PAIR)){
+                                return compareTwoPair(fiveCardHand1.getCards(), fiveCardHand2.getCards());
+                        }
+                        if(fiveCardHand1.getHandValue().equals(HandValue.THREE_OF_A_KIND)){
+                                return compareSet(fiveCardHand1.getCards(), fiveCardHand2.getCards(), 3);
+                        }
+
                         //TODO handle run offs
                         return 0;
                 }
@@ -50,6 +57,54 @@ public class HandAnalyser {
                 }
                 return 0;
         }
+
+        public static int compareSet(List<Card> cards1, List<Card> cards2, int cardAmount){
+                int pair1 = 0;
+                int pair2 = 0;
+                Map<Value, List<Card>> valueToInt1 = createValueToCardMap(cards1);
+                Map<Value, List<Card>> valueToInt2 = createValueToCardMap(cards2);
+
+                List<Card> filter1 = new ArrayList<Card>();
+                List<Card> filter2 = new ArrayList<Card>();
+
+                for(Value value : valueToInt1.keySet()){
+                        if(valueToInt1.get(value).size()==cardAmount){
+                                pair1 = value.getNumericValue();
+                        }else{
+                                filter1.addAll(valueToInt1.get(value));
+                        }
+                }
+
+                for(Value value : valueToInt2.keySet()){
+                        if(valueToInt2.get(value).size()==cardAmount){
+                                pair2 = value.getNumericValue();
+                        }else{
+                                filter2.addAll(valueToInt2.get(value));
+                        }
+                }
+
+                if(pair1>pair2){
+                        return -1;
+                }else if(pair2>pair1){
+                        return 1;
+                }
+                //Same pairs
+
+                Collections.sort(filter1, Collections.reverseOrder());
+                Collections.sort(filter2, Collections.reverseOrder());
+                for (int i=0 ; i<filter1.size();i++) {
+                        Card card1 = filter1.get(i);
+                        Card card2 = filter2.get(i);
+                        if(card1.getValue().getNumericValue()<card2.getValue().getNumericValue()){
+                                return 1;
+                        }else if(card1.getValue().getNumericValue()>card2.getValue().getNumericValue()){
+                                return -1;
+                        }
+                }
+                return 0;
+        }
+
+
         public static int comparePair(List<Card> cards1, List<Card> cards2){
                 int pair1 = 0;
                 int pair2 = 0;
@@ -81,6 +136,62 @@ public class HandAnalyser {
                         return 1;
                 }
                 //Same pairs
+
+                Collections.sort(filter1, Collections.reverseOrder());
+                Collections.sort(filter2, Collections.reverseOrder());
+                for (int i=0 ; i<filter1.size();i++) {
+                        Card card1 = filter1.get(i);
+                        Card card2 = filter2.get(i);
+                        if(card1.getValue().getNumericValue()<card2.getValue().getNumericValue()){
+                                return 1;
+                        }else if(card1.getValue().getNumericValue()>card2.getValue().getNumericValue()){
+                                return -1;
+                        }
+                }
+                return 0;
+        }
+
+        public static int compareTwoPair(List<Card> cards1, List<Card> cards2){
+                int pair1 = 0;
+                int pair2 = 0;
+                int pair3 = 0;
+                int pair4 = 0;
+                Map<Value, List<Card>> valueToInt1 = createValueToCardMap(cards1);
+                Map<Value, List<Card>> valueToInt2 = createValueToCardMap(cards2);
+
+                List<Card> filter1 = new ArrayList<Card>();
+                List<Card> filter2 = new ArrayList<Card>();
+
+                for(Value value : valueToInt1.keySet()){
+                        if(valueToInt1.get(value).size()==2){
+                                if(pair1==0){
+                                        pair1 = value.getNumericValue();
+                                }else{
+                                        pair2 = value.getNumericValue();
+                                }
+                        }else{
+                                filter1.addAll(valueToInt1.get(value));
+                        }
+                }
+
+                for(Value value : valueToInt2.keySet()){
+                        if(valueToInt2.get(value).size()==2){
+                                if(pair3==0){
+                                        pair3 = value.getNumericValue();
+                                }else{
+                                        pair4 = value.getNumericValue();
+                                }
+                        }else{
+                                filter2.addAll(valueToInt2.get(value));
+                        }
+                }
+
+                if((pair1>pair3 && pair1>pair4) || (pair2>pair3 && pair2>pair4)){
+                        return -1;
+                }else if((pair3>pair1 && pair3>pair2) || (pair4>pair1 && pair4>pair2)){
+                        return 1;
+                }
+                //Same two pairs
 
                 Collections.sort(filter1, Collections.reverseOrder());
                 Collections.sort(filter2, Collections.reverseOrder());
@@ -169,7 +280,6 @@ public class HandAnalyser {
                         }
                 }
         }
-
 
 
         public static FiveCardHand hasPair(List<Card> cards) {

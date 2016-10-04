@@ -28,6 +28,9 @@ public class HandAnalyser {
                         if(fiveCardHand1.getHandValue().equals(HandValue.HIGH_CARD)){
                                 return compareHighCard(fiveCardHand1.getCards(), fiveCardHand2.getCards());
                         }
+                        if(fiveCardHand1.getHandValue().equals(HandValue.PAIR)){
+                                return comparePair(fiveCardHand1.getCards(), fiveCardHand2.getCards());
+                        }
                         //TODO handle run offs
                         return 0;
                 }
@@ -46,6 +49,66 @@ public class HandAnalyser {
                         }
                 }
                 return 0;
+        }
+        public static int comparePair(List<Card> cards1, List<Card> cards2){
+                int pair1 = 0;
+                int pair2 = 0;
+                Map<Value, List<Card>> valueToInt1 = createValueToCardMap(cards1);
+                Map<Value, List<Card>> valueToInt2 = createValueToCardMap(cards2);
+
+                List<Card> filter1 = new ArrayList<Card>();
+                List<Card> filter2 = new ArrayList<Card>();
+
+                for(Value value : valueToInt1.keySet()){
+                        if(valueToInt1.get(value).size()==2){
+                                pair1 = value.getNumericValue();
+                        }else{
+                                filter1.addAll(valueToInt1.get(value));
+                        }
+                }
+
+                for(Value value : valueToInt2.keySet()){
+                        if(valueToInt2.get(value).size()==2){
+                                pair2 = value.getNumericValue();
+                        }else{
+                                filter2.addAll(valueToInt2.get(value));
+                        }
+                }
+
+                if(pair1>pair2){
+                        return -1;
+                }else if(pair2>pair1){
+                        return 1;
+                }
+                //Same pairs
+
+                Collections.sort(filter1, Collections.reverseOrder());
+                Collections.sort(filter2, Collections.reverseOrder());
+                for (int i=0 ; i<filter1.size();i++) {
+                        Card card1 = filter1.get(i);
+                        Card card2 = filter2.get(i);
+                        if(card1.getValue().getNumericValue()<card2.getValue().getNumericValue()){
+                                return 1;
+                        }else if(card1.getValue().getNumericValue()>card2.getValue().getNumericValue()){
+                                return -1;
+                        }
+                }
+                return 0;
+        }
+
+        private static Map<Value, List<Card>> createValueToCardMap(List<Card> cards) {
+                Map<Value, List<Card>> valueToInt = new HashMap<Value, List<Card>>();
+                for (Card card : cards) {
+                        if(valueToInt.containsKey(card.getValue())){
+                                List<Card> toAdd = new ArrayList<Card>();
+                                toAdd.addAll(valueToInt.get(card.getValue()));
+                                toAdd.add(card);
+                                valueToInt.put(card.getValue(), toAdd);
+                        }else{
+                                valueToInt.put(card.getValue(), new ArrayList<Card>(Arrays.asList(card)));
+                        }
+                }
+                return valueToInt;
         }
 
         public static FiveCardHand getBestHand(Hand hand, List<Card> centreCards){
@@ -110,17 +173,7 @@ public class HandAnalyser {
 
 
         public static FiveCardHand hasPair(List<Card> cards) {
-                Map<Value, List<Card>> valueToInt = new HashMap<Value, List<Card>>();
-                for (Card card : cards) {
-                        if(valueToInt.containsKey(card.getValue())){
-                                List<Card> toAdd = new ArrayList<Card>();
-                                toAdd.addAll(valueToInt.get(card.getValue()));
-                                toAdd.add(card);
-                                valueToInt.put(card.getValue(), toAdd);
-                        }else{
-                                valueToInt.put(card.getValue(), new ArrayList<Card>(Arrays.asList(card)));
-                        }
-                }
+                Map<Value, List<Card>> valueToInt = createValueToCardMap(cards);
 
                 List<Card> finalHand = new ArrayList<Card>();
                 for(Value value : valueToInt.keySet()){
@@ -140,17 +193,7 @@ public class HandAnalyser {
 
 
         public static FiveCardHand hasTwoPair(List<Card> cards) {
-                Map<Value, List<Card>> valueToInt = new HashMap<Value, List<Card>>();
-                for (Card card : cards) {
-                        if(valueToInt.containsKey(card.getValue())){
-                                List<Card> toAdd = new ArrayList<Card>();
-                                toAdd.addAll(valueToInt.get(card.getValue()));
-                                toAdd.add(card);
-                                valueToInt.put(card.getValue(),  toAdd);
-                        }else{
-                                valueToInt.put(card.getValue(), new ArrayList<Card>(Arrays.asList(card)));
-                        }
-                }
+                Map<Value, List<Card>> valueToInt = createValueToCardMap(cards);
 
                 int pairCount = 0;
                 int lowestPair = 0;
@@ -228,17 +271,7 @@ public class HandAnalyser {
         }
 
         public static FiveCardHand hasFullHouse(List<Card> cards) {
-                Map<Value, List<Card>> valueToInt = new HashMap<Value, List<Card>>();
-                for (Card card : cards) {
-                        if(valueToInt.containsKey(card.getValue())){
-                                List<Card> toAdd = new ArrayList<Card>();
-                                toAdd.addAll(valueToInt.get(card.getValue()));
-                                toAdd.add(card);
-                                valueToInt.put(card.getValue(), toAdd);
-                        }else{
-                                valueToInt.put(card.getValue(), new ArrayList<Card>(Arrays.asList(card)));
-                        }
-                }
+                Map<Value, List<Card>> valueToInt = createValueToCardMap(cards);
 
                 List<Card> hand = new ArrayList<Card>();
                 int pair1=0;

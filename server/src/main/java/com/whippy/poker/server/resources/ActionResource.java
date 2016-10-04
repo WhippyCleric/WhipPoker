@@ -10,6 +10,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.whippy.poker.common.events.BetEvent;
 import com.whippy.poker.common.events.CallEvent;
 import com.whippy.poker.common.events.FoldEvent;
 import com.whippy.poker.common.events.PokerEvent;
@@ -47,7 +48,9 @@ public class ActionResource {
         @Consumes({ MediaType.APPLICATION_JSON })
         @Produces({ MediaType.APPLICATION_JSON })
         @Path("/bet")
-        public Response bet(String jsonPlayer){
+        public Response bet(@QueryParam("id") String playerAlais, @QueryParam("amount") int chipAmount){
+                PokerEvent event = new BetEvent(playerAlais, chipAmount);
+                orchestrator.processEvent(event);
                 return Response.ok().build();
         }
 

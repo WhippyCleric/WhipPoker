@@ -7,6 +7,7 @@ import com.whippy.poker.common.beans.Card;
 import com.whippy.poker.common.beans.Hand;
 import com.whippy.poker.common.beans.SeatState;
 import com.whippy.poker.common.beans.TableState;
+import com.whippy.poker.common.events.BetEvent;
 import com.whippy.poker.common.events.PokerEvent;
 import com.whippy.poker.common.events.PokerEventType;
 import com.whippy.poker.server.beans.DealerState;
@@ -113,6 +114,16 @@ public class Dealer implements Runnable {
                 setupNextPlayer(nextToAct);
         }
 
+        private void processBet(String playerAlias, int amount){
+                Seat playerSeat = table.getSeatForPlayer(playerAlias);
+                playerSeat.getPlayer().deductChips(amount + playerSeat.getCurrentBet());
+                pendingBet = playerSeat.getCurrentBet() + amount;
+                playerSeat.setCurrentBet(playerSeat.getCurrentBet() + amount);
+                playerSeat.setState(SeatState.OCCUPIED_WAITING);
+                int nextToAct = findNextSeat(playerSeat.getNumber(), 0);
+                setupNextPlayer(nextToAct);
+        }
+
         private void processFold(String playerAlias){
                 Seat playerSeat = table.getSeatForPlayer(playerAlias);
                 playerSeat.setState(SeatState.OCCUPIED_NOHAND);
@@ -194,6 +205,8 @@ public class Dealer implements Runnable {
                                 processCall(playerAlias);
                         }else if(event.getEventType().equals(PokerEventType.FOLD)){
                                 processFold(playerAlias);
+                        }else if(event.getEventType().equals(PokerEventType.BET)){
+                                processBet(playerAlias, ((BetEvent) event).getChipAmount());
                         }
                         state = DealerState.WAITING_ON_PLAYER;
                 }else{

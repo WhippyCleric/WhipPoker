@@ -75,5 +75,122 @@ public class HandAnalyserTest {
 		cards.add(new Card(Suit.DIAMONDS, Value.TEN));
 		assertNull(HandAnalyser.hasFlush(cards));
 	}
+
+	@Test
+	public void testNoStraightFlushDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.NINE));
+		cards.add(new Card(Suit.CLUBS, Value.SEVEN));
+		cards.add(new Card(Suit.DIAMONDS, Value.FOUR));
+		cards.add(new Card(Suit.SPADES, Value.JACK));
+		cards.add(new Card(Suit.DIAMONDS, Value.KING));
+		cards.add(new Card(Suit.DIAMONDS, Value.TEN));
+		assertFalse(HandAnalyser.hasStraightFlush(cards));
+	}
+
+	@Test
+	public void testStraightFlushDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.TWO));
+		cards.add(new Card(Suit.CLUBS, Value.SEVEN));
+		cards.add(new Card(Suit.DIAMONDS, Value.FIVE));
+		cards.add(new Card(Suit.DIAMONDS, Value.THREE));
+		cards.add(new Card(Suit.DIAMONDS, Value.FOUR));
+		cards.add(new Card(Suit.DIAMONDS, Value.ACE));
+		assertTrue(HandAnalyser.hasStraightFlush(cards));
+	}
+
+	@Test
+	public void testFourOfAKindDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.TWO));
+		cards.add(new Card(Suit.CLUBS, Value.TWO));
+		cards.add(new Card(Suit.DIAMONDS, Value.FIVE));
+		cards.add(new Card(Suit.SPADES, Value.TWO));
+		cards.add(new Card(Suit.HEARTS, Value.TWO));
+		cards.add(new Card(Suit.DIAMONDS, Value.ACE));
+		assertTrue(HandAnalyser.hasFourOfAKind(cards));
+	}
+
+	@Test
+	public void testFourOfAKindNoDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.TWO));
+		cards.add(new Card(Suit.CLUBS, Value.TWO));
+		cards.add(new Card(Suit.DIAMONDS, Value.FIVE));
+		cards.add(new Card(Suit.SPADES, Value.TWO));
+		cards.add(new Card(Suit.HEARTS, Value.KING));
+		cards.add(new Card(Suit.DIAMONDS, Value.ACE));
+		assertFalse(HandAnalyser.hasFourOfAKind(cards));
+	}
+
+	@Test
+	public void testFullHouseNoDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.TWO));
+		cards.add(new Card(Suit.CLUBS, Value.TWO));
+		cards.add(new Card(Suit.DIAMONDS, Value.FIVE));
+		cards.add(new Card(Suit.SPADES, Value.KING));
+		cards.add(new Card(Suit.HEARTS, Value.ACE));
+		cards.add(new Card(Suit.DIAMONDS, Value.ACE));
+		assertFalse(HandAnalyser.hasFullHouse(cards));
+	}
+	@Test
+	public void testFullHouseDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.TWO));
+		cards.add(new Card(Suit.CLUBS, Value.TWO));
+		cards.add(new Card(Suit.CLUBS, Value.ACE));
+		cards.add(new Card(Suit.SPADES, Value.KING));
+		cards.add(new Card(Suit.HEARTS, Value.ACE));
+		cards.add(new Card(Suit.DIAMONDS, Value.ACE));
+		assertTrue(HandAnalyser.hasFullHouse(cards));
+	}
+
+	@Test
+	public void testThreeOfAKindDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.TWO));
+		cards.add(new Card(Suit.CLUBS, Value.JACK));
+		cards.add(new Card(Suit.CLUBS, Value.ACE));
+		cards.add(new Card(Suit.SPADES, Value.KING));
+		cards.add(new Card(Suit.HEARTS, Value.ACE));
+		cards.add(new Card(Suit.DIAMONDS, Value.ACE));
+		assertTrue(HandAnalyser.hasThreeOfAKind(cards));
+	}
+
+	@Test
+	public void testThreeOfAKindNoDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.TWO));
+		cards.add(new Card(Suit.CLUBS, Value.JACK));
+		cards.add(new Card(Suit.CLUBS, Value.ACE));
+		cards.add(new Card(Suit.SPADES, Value.KING));
+		cards.add(new Card(Suit.HEARTS, Value.QUEEN));
+		cards.add(new Card(Suit.DIAMONDS, Value.ACE));
+		assertFalse(HandAnalyser.hasThreeOfAKind(cards));
+	}
+	@Test
+	public void testTwoPairDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.JACK));
+		cards.add(new Card(Suit.CLUBS, Value.JACK));
+		cards.add(new Card(Suit.CLUBS, Value.ACE));
+		cards.add(new Card(Suit.SPADES, Value.KING));
+		cards.add(new Card(Suit.HEARTS, Value.QUEEN));
+		cards.add(new Card(Suit.DIAMONDS, Value.ACE));
+		assertTrue(HandAnalyser.hasTwoPair(cards));
+	}
+	@Test
+	public void testTwoPairNoDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.TWO));
+		cards.add(new Card(Suit.CLUBS, Value.JACK));
+		cards.add(new Card(Suit.CLUBS, Value.ACE));
+		cards.add(new Card(Suit.SPADES, Value.KING));
+		cards.add(new Card(Suit.HEARTS, Value.QUEEN));
+		cards.add(new Card(Suit.DIAMONDS, Value.ACE));
+		assertFalse(HandAnalyser.hasTwoPair(cards));
+	}
 }
 //J=

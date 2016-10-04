@@ -12,6 +12,7 @@ import com.whippy.poker.common.beans.Card;
 import com.whippy.poker.common.beans.Hand;
 import com.whippy.poker.common.beans.HandValue;
 import com.whippy.poker.common.beans.Suit;
+import com.whippy.poker.common.beans.Value;
 
 public class HandAnalyser {
 
@@ -20,14 +21,32 @@ public class HandAnalyser {
         }
 
         public static HandValue getBestHand(Hand hand, List<Card> centreCards){
-                centreCards.addAll(Arrays.asList(hand.getCards()));
+                List<Card> cards = new ArrayList<Card>();
+                cards.addAll(Arrays.asList(hand.getCards()));
+                cards.addAll(centreCards);
                 if(centreCards.size()>=5){
-                        if(hasStraightFlush(centreCards)){
+                        if(hasStraightFlush(cards)){
                                 return HandValue.STRAIGHT_FLUSH;
+                        }else if(hasFourOfAKind(cards)){
+                                return HandValue.FOUR_OF_A_KIND;
+                        }else if(hasFullHouse(cards)){
+                                return HandValue.FULL_HOUSE;
+                        }else if(hasFlush(cards)!=null){
+                                return HandValue.FLUSH;
+                        }else if(hasStraight(cards, null)){
+                                return HandValue.STRAIGHT;
+                        }else if(hasThreeOfAKind(cards)){
+                                return HandValue.THREE_OF_A_KIND;
+                        }else if(hasTwoPair(cards)){
+                                return HandValue.TWO_PAIR;
+                        }else if(hasPair(cards)){
+                                return HandValue.PAIR;
+                        }else{
+                                return HandValue.HIGH_CARD;
                         }
                 }else{
                         //Can only be 2 cards
-                        if(centreCards.get(0).getValue().equals(centreCards.get(1).getValue())){
+                        if(cards.get(0).getValue().equals(cards.get(1).getValue())){
                                 return HandValue.PAIR;
                         }else{
                                 return HandValue.HIGH_CARD;
@@ -36,6 +55,105 @@ public class HandAnalyser {
         }
 
 
+
+        public static boolean hasPair(List<Card> cards) {
+                Map<Value, Integer> ValueToInt = new HashMap<Value, Integer>();
+                for (Card card : cards) {
+                        if(ValueToInt.containsKey(card.getValue())){
+                                ValueToInt.put(card.getValue(), ValueToInt.get(card.getValue()) + 1);
+                        }else{
+                                ValueToInt.put(card.getValue(), 1);
+                        }
+                }
+
+                for(Value value : ValueToInt.keySet()){
+                        if(ValueToInt.get(value)==2){
+                                return true;
+                        }
+                }
+                return false;
+        }
+
+
+        public static boolean hasTwoPair(List<Card> cards) {
+                Map<Value, Integer> ValueToInt = new HashMap<Value, Integer>();
+                for (Card card : cards) {
+                        if(ValueToInt.containsKey(card.getValue())){
+                                ValueToInt.put(card.getValue(), ValueToInt.get(card.getValue()) + 1);
+                        }else{
+                                ValueToInt.put(card.getValue(), 1);
+                        }
+                }
+
+                int pairCount = 0;
+                for(Value value : ValueToInt.keySet()){
+                        if(ValueToInt.get(value)==2){
+                                pairCount++;
+                                if(pairCount==2){
+                                        return true;
+                                }
+                        }
+                }
+                return false;
+        }
+
+        public static boolean hasThreeOfAKind(List<Card> cards) {
+                Map<Value, Integer> ValueToInt = new HashMap<Value, Integer>();
+                for (Card card : cards) {
+                        if(ValueToInt.containsKey(card.getValue())){
+                                ValueToInt.put(card.getValue(), ValueToInt.get(card.getValue()) + 1);
+                        }else{
+                                ValueToInt.put(card.getValue(), 1);
+                        }
+                }
+
+                for(Value value : ValueToInt.keySet()){
+                        if(ValueToInt.get(value)==3){
+                                return true;
+                        }
+                }
+                return false;
+        }
+
+        public static boolean hasFullHouse(List<Card> cards) {
+                Map<Value, Integer> ValueToInt = new HashMap<Value, Integer>();
+                for (Card card : cards) {
+                        if(ValueToInt.containsKey(card.getValue())){
+                                ValueToInt.put(card.getValue(), ValueToInt.get(card.getValue()) + 1);
+                        }else{
+                                ValueToInt.put(card.getValue(), 1);
+                        }
+                }
+
+                boolean hasTrips = false;
+                boolean hasPair = false;
+                for(Value value : ValueToInt.keySet()){
+                        if(ValueToInt.get(value)==3){
+                                hasTrips = true;
+                        }else if(ValueToInt.get(value)==2){
+                                hasPair = true;
+                        }
+                }
+                return hasTrips && hasPair;
+        }
+
+        public static boolean hasFourOfAKind(List<Card> cards) {
+                Map<Value, Integer> ValueToInt = new HashMap<Value, Integer>();
+                for (Card card : cards) {
+                        if(ValueToInt.containsKey(card.getValue())){
+                                ValueToInt.put(card.getValue(), ValueToInt.get(card.getValue()) + 1);
+                        }else{
+                                ValueToInt.put(card.getValue(), 1);
+                        }
+                }
+
+                for(Value value : ValueToInt.keySet()){
+                        if(ValueToInt.get(value)>=4){
+                                return true;
+                        }
+                }
+                return false;
+        }
 
         public static boolean hasStraightFlush(List<Card> cards){
                 Suit flushSuit = hasFlush(cards);
@@ -55,7 +173,7 @@ public class HandAnalyser {
                 if(suit==null){
                         toCheck.addAll(cards);
                 }else{
-                        for (Card card : toCheck) {
+                        for (Card card : cards) {
                                 if(card.getSuit().equals(suit)){
                                         toCheck.add(card);
                                 }

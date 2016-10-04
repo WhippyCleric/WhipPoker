@@ -91,6 +91,17 @@ public class HandAnalyserTest {
 		cards.add(new Card(Suit.DIAMONDS, Value.TEN));
 		assertFalse(HandAnalyser.hasStraightFlush(cards)!=null);
 	}
+	@Test
+	public void testHardStraightFlushDetection(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(Suit.DIAMONDS, Value.NINE));
+		cards.add(new Card(Suit.DIAMONDS, Value.SEVEN));
+		cards.add(new Card(Suit.DIAMONDS, Value.EIGHT));
+		cards.add(new Card(Suit.DIAMONDS, Value.JACK));
+		cards.add(new Card(Suit.DIAMONDS, Value.KING));
+		cards.add(new Card(Suit.DIAMONDS, Value.TEN));
+		assertTrue(HandAnalyser.hasStraightFlush(cards)!=null);
+	}
 
 	@Test
 	public void testStraightFlushDetection(){

@@ -281,11 +281,10 @@ public class HandAnalyser {
         }
 
         public static FiveCardHand hasStraightFlush(List<Card> cards){
-                //TODO THIS WILL FAIL IF WE HAVE 6 CARDs all same suit and highest is not part of the flush!!!
                 FiveCardHand hand = hasFlush(cards);
 
                 if(hand!=null){
-                        hand = hasStraight(hand.getCards(), hand.getCards().get(0).getSuit());
+                        hand = hasStraight(cards, hand.getCards().get(0).getSuit());
                         if(hand!=null){
                                 return new FiveCardHand(hand.getCards(), HandValue.STRAIGHT_FLUSH);
                         }else{

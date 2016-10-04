@@ -18,16 +18,34 @@ import com.whippy.poker.server.beans.FiveCardHand;
 public class HandAnalyser {
 
         public static int compareHands(Hand hand1, Hand hand2, List<Card> centreCards){
-                FiveCardHand handValue1 = getBestHand(hand1, centreCards);
-                FiveCardHand handValue2 = getBestHand(hand2, centreCards);
-                if(handValue1.getHandValue().getValue()>handValue2.getHandValue().getValue()){
+                FiveCardHand fiveCardHand1 = getBestHand(hand1, centreCards);
+                FiveCardHand fiveCardHand2 = getBestHand(hand2, centreCards);
+                if(fiveCardHand1.getHandValue().getValue()>fiveCardHand2.getHandValue().getValue()){
                         return -1;
-                }else if(handValue2.getHandValue().getValue()>handValue1.getHandValue().getValue()){
+                }else if(fiveCardHand2.getHandValue().getValue()>fiveCardHand1.getHandValue().getValue()){
                         return 1;
                 }else{
+                        if(fiveCardHand1.getHandValue().equals(HandValue.HIGH_CARD)){
+                                return compareHighCard(fiveCardHand1.getCards(), fiveCardHand2.getCards());
+                        }
                         //TODO handle run offs
                         return 0;
                 }
+        }
+
+        public static int compareHighCard(List<Card> cards1, List<Card> cards2){
+                Collections.sort(cards1, Collections.reverseOrder());
+                Collections.sort(cards2, Collections.reverseOrder());
+                for (int i=0 ; i<cards1.size();i++) {
+                        Card card1 = cards1.get(i);
+                        Card card2 = cards2.get(i);
+                        if(card1.getValue().getNumericValue()<card2.getValue().getNumericValue()){
+                                return 1;
+                        }else if(card1.getValue().getNumericValue()>card2.getValue().getNumericValue()){
+                                return -1;
+                        }
+                }
+                return 0;
         }
 
         public static FiveCardHand getBestHand(Hand hand, List<Card> centreCards){

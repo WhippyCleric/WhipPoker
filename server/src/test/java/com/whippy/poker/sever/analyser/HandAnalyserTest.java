@@ -11,11 +11,71 @@ import java.util.List;
 import org.junit.Test;
 
 import com.whippy.poker.common.beans.Card;
+import com.whippy.poker.common.beans.Hand;
 import com.whippy.poker.common.beans.Suit;
 import com.whippy.poker.common.beans.Value;
 import com.whippy.poker.server.beans.FiveCardHand;
 
 public class HandAnalyserTest {
+
+
+
+	@Test
+	public void testCompareHighCards(){
+		Card card1 = new Card(Suit.CLUBS, Value.NINE);
+		Card card2 = new Card(Suit.CLUBS, Value.TEN);
+		Hand hand1 = new Hand(card1, card2);
+
+		Card card3 = new Card(Suit.HEARTS, Value.NINE);
+		Card card4 = new Card(Suit.HEARTS, Value.TEN);
+		Hand hand2 = new Hand(card3, card4);
+
+		List<Card> centreCards = new ArrayList<Card>();
+		centreCards.add(new Card(Suit.CLUBS, Value.THREE));
+		centreCards.add(new Card(Suit.CLUBS, Value.ACE));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.QUEEN));
+		centreCards.add(new Card(Suit.SPADES, Value.FOUR));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.EIGHT));
+		assertTrue(HandAnalyser.compareHands(hand1, hand2, centreCards)==0);
+	}
+
+	@Test
+	public void testCompareHighCardsWinner1(){
+		Card card1 = new Card(Suit.CLUBS, Value.KING);
+		Card card2 = new Card(Suit.CLUBS, Value.TEN);
+		Hand hand1 = new Hand(card1, card2);
+
+		Card card3 = new Card(Suit.HEARTS, Value.NINE);
+		Card card4 = new Card(Suit.HEARTS, Value.TEN);
+		Hand hand2 = new Hand(card3, card4);
+
+		List<Card> centreCards = new ArrayList<Card>();
+		centreCards.add(new Card(Suit.CLUBS, Value.THREE));
+		centreCards.add(new Card(Suit.CLUBS, Value.ACE));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.QUEEN));
+		centreCards.add(new Card(Suit.SPADES, Value.FOUR));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.EIGHT));
+		assertTrue(HandAnalyser.compareHands(hand1, hand2, centreCards)==-1);
+	}
+	@Test
+	public void testCompareHighCardsWinner2(){
+		Card card1 = new Card(Suit.CLUBS, Value.NINE);
+		Card card2 = new Card(Suit.CLUBS, Value.TEN);
+		Hand hand1 = new Hand(card1, card2);
+
+		Card card3 = new Card(Suit.HEARTS, Value.KING);
+		Card card4 = new Card(Suit.HEARTS, Value.TEN);
+		Hand hand2 = new Hand(card3, card4);
+
+		List<Card> centreCards = new ArrayList<Card>();
+		centreCards.add(new Card(Suit.CLUBS, Value.THREE));
+		centreCards.add(new Card(Suit.CLUBS, Value.ACE));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.QUEEN));
+		centreCards.add(new Card(Suit.SPADES, Value.FOUR));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.EIGHT));
+		assertTrue(HandAnalyser.compareHands(hand1, hand2, centreCards)==1);
+	}
+
 
 	@Test
 	public void testStraightDetection(){

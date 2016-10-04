@@ -115,6 +115,9 @@ public class Dealer implements Runnable {
         }
 
         private void processBet(String playerAlias, int amount){
+                if(amount>table.getSeatForPlayer(playerAlias).getPlayer().getChipCount()){
+                        throw new IllegalArgumentException("Can not bet more chips than you have");
+                }
                 Seat playerSeat = table.getSeatForPlayer(playerAlias);
                 playerSeat.getPlayer().deductChips(amount + playerSeat.getCurrentBet());
                 pendingBet = playerSeat.getCurrentBet() + amount;
@@ -157,6 +160,7 @@ public class Dealer implements Runnable {
                 }else if(table.getState().equals(TableState.PRE_RIVER)){
                         dealRiver();
                 }else{
+                        Seat[] seats = table.getSeats();
                         throw new UnsupportedOperationException("dunno what to do: " + table.getState());
                 }
                 bigBlindSeat = table.getDealerPosition();

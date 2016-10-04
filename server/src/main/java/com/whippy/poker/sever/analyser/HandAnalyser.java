@@ -52,7 +52,6 @@ public class HandAnalyser {
                         if(fiveCardHand1.getHandValue().equals(HandValue.STRAIGHT_FLUSH)){
                                 return compareStraights(fiveCardHand1.getCards(), fiveCardHand2.getCards());
                         }
-                        //TODO handle run offs
                         return 0;
                 }
         }

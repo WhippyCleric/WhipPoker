@@ -1,6 +1,9 @@
 //J-
 package com.whippy.poker.server.orchestrators;
 
+import java.util.ArrayList;
+
+import com.whippy.poker.common.beans.Card;
 import com.whippy.poker.common.beans.Hand;
 import com.whippy.poker.common.beans.SeatState;
 import com.whippy.poker.common.beans.TableState;
@@ -113,8 +116,26 @@ public class Dealer implements Runnable {
         private void processFold(String playerAlias){
                 Seat playerSeat = table.getSeatForPlayer(playerAlias);
                 playerSeat.setState(SeatState.OCCUPIED_NOHAND);
+
                 int nextToAct = findNextSeat(playerSeat.getNumber(), 0);
-                setupNextPlayer(nextToAct);
+                int numberinHand = table.getPlayersWithCards();
+                if(numberinHand>1){
+                        setupNextPlayer(nextToAct);
+                }else{
+
+                        collectPot();
+                        for(Seat seat: table.getSeats()){
+                                if(seat.getState().equals(SeatState.OCCUPIED_WAITING) || seat.getState().equals(SeatState.OCCUPIED_ACTION)){
+                                        seat.setState(SeatState.OCCUPIED_NOHAND);
+                                        seat.getPlayer().giveChips(table.getPot());
+                                        table.emptyPot();
+                                        table.setCentreCards(new ArrayList<Card>());
+                                        table.setDealerPosition(findNextDealer());
+                                        table.setState(TableState.PENDING_DEAL);
+                                        break;
+                                }
+                        }
+                }
         }
 
         private void triggerNextStep(){
@@ -151,7 +172,9 @@ public class Dealer implements Runnable {
                 for(int i=0;i<3;i++){
                         table.dealCardToTable(deck.getTopCard());
                 }
-                Seat nextSeat = table.getSeat(findNextSeat(table.getDealerPosition(), 0));
+                int nextSeatNumber = findNextSeat(table.getDealerPosition(), 0);
+
+                Seat nextSeat = table.getSeat(nextSeatNumber);
                 playerToAct = nextSeat.getPlayer().getAlias();
                 nextSeat.triggerAction();
         }
@@ -215,6 +238,20 @@ public class Dealer implements Runnable {
                                 }else{
                                         offset--;
                                 }
+                        }
+                        next++;
+                }
+
+        }
+
+        private int findNextDealer(){
+                int next = table.getDealerPosition()+1;
+                while(true){
+                        if(next>=table.getSize()){
+                                next = next - table.getSize();
+                        }
+                        if(table.getSeat(next).getState().equals(SeatState.OCCUPIED_NOHAND)){
+                                return next;
                         }
                         next++;
                 }

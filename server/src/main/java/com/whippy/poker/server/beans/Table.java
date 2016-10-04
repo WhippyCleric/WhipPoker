@@ -221,5 +221,17 @@ public class Table {
 
         }
 
+
+
+        public int getPlayersWithCards() {
+                int playersWithCards = 0;
+                for(Seat seat : seats){
+                        if(seat.getState().equals(SeatState.OCCUPIED_WAITING) || seat.getState().equals(SeatState.OCCUPIED_ACTION)){
+                                playersWithCards++;
+                        }
+                }
+                return playersWithCards;
+        }
+
 }
 //J+

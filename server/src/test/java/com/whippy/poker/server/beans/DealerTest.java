@@ -60,7 +60,7 @@ public class DealerTest {
 
 		dealerThread.start();
 
-		Thread.sleep(500);
+		Thread.sleep(1500);
 		if(table.getState().equals(TableState.PRE_FLOP)){
 			System.out.println(table.toString());
 		}else{

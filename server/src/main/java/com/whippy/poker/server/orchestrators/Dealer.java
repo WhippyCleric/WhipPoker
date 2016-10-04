@@ -219,6 +219,12 @@ public class Dealer implements Runnable {
 
                 //While the table is not being closed
                 while(!table.getState().equals(TableState.CLOSING)){
+                        try {
+                                Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                        }
                         if(table.getState().equals(TableState.PENDING_DEAL)){
                                 deal();
                         }

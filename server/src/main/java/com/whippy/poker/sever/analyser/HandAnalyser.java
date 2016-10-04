@@ -40,11 +40,23 @@ public class HandAnalyser {
                         if(fiveCardHand1.getHandValue().equals(HandValue.STRAIGHT)){
                                 return compareStraights(fiveCardHand1.getCards(), fiveCardHand2.getCards());
                         }
-
+                        if(fiveCardHand1.getHandValue().equals(HandValue.FLUSH)){
+                                return compareHighCard(fiveCardHand1.getCards(), fiveCardHand2.getCards());
+                        }
+                        if(fiveCardHand1.getHandValue().equals(HandValue.FULL_HOUSE)){
+                                return compareSet(fiveCardHand1.getCards(), fiveCardHand2.getCards(), 3);
+                        }
+                        if(fiveCardHand1.getHandValue().equals(HandValue.FOUR_OF_A_KIND)){
+                                return compareSet(fiveCardHand1.getCards(), fiveCardHand2.getCards(), 4);
+                        }
+                        if(fiveCardHand1.getHandValue().equals(HandValue.STRAIGHT_FLUSH)){
+                                return compareStraights(fiveCardHand1.getCards(), fiveCardHand2.getCards());
+                        }
                         //TODO handle run offs
                         return 0;
                 }
         }
+
 
         private static int compareStraights(List<Card> cards1, List<Card> cards2) {
                 Collections.sort(cards1, Collections.reverseOrder());

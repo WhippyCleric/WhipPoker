@@ -59,6 +59,63 @@ public class HandAnalyserTest {
 	}
 
 	@Test
+	public void testCompareStraights(){
+		Card card1 = new Card(Suit.CLUBS, Value.NINE);
+		Card card2 = new Card(Suit.HEARTS, Value.TEN);
+		Hand hand1 = new Hand(card1, card2);
+
+		Card card3 = new Card(Suit.DIAMONDS, Value.TEN);
+		Card card4 = new Card(Suit.SPADES, Value.NINE);
+		Hand hand2 = new Hand(card3, card4);
+
+		List<Card> centreCards = new ArrayList<Card>();
+		centreCards.add(new Card(Suit.CLUBS, Value.JACK));
+		centreCards.add(new Card(Suit.CLUBS, Value.QUEEN));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.KING));
+		centreCards.add(new Card(Suit.SPADES, Value.FOUR));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.EIGHT));
+		assertTrue(HandAnalyser.compareHands(hand1, hand2, centreCards)==0);
+	}
+
+	@Test
+	public void testCompareStraightsWin1(){
+		Card card1 = new Card(Suit.CLUBS, Value.ACE);
+		Card card2 = new Card(Suit.HEARTS, Value.TEN);
+		Hand hand1 = new Hand(card1, card2);
+
+		Card card3 = new Card(Suit.DIAMONDS, Value.TEN);
+		Card card4 = new Card(Suit.SPADES, Value.NINE);
+		Hand hand2 = new Hand(card3, card4);
+
+		List<Card> centreCards = new ArrayList<Card>();
+		centreCards.add(new Card(Suit.CLUBS, Value.JACK));
+		centreCards.add(new Card(Suit.CLUBS, Value.QUEEN));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.KING));
+		centreCards.add(new Card(Suit.SPADES, Value.FOUR));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.EIGHT));
+		assertTrue(HandAnalyser.compareHands(hand1, hand2, centreCards)==-1);
+	}
+
+	@Test
+	public void testCompareStraightsWin2(){
+		Card card1 = new Card(Suit.CLUBS, Value.NINE);
+		Card card2 = new Card(Suit.HEARTS, Value.TEN);
+		Hand hand1 = new Hand(card1, card2);
+
+		Card card3 = new Card(Suit.DIAMONDS, Value.TEN);
+		Card card4 = new Card(Suit.SPADES, Value.ACE);
+		Hand hand2 = new Hand(card3, card4);
+
+		List<Card> centreCards = new ArrayList<Card>();
+		centreCards.add(new Card(Suit.CLUBS, Value.JACK));
+		centreCards.add(new Card(Suit.CLUBS, Value.QUEEN));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.KING));
+		centreCards.add(new Card(Suit.SPADES, Value.FOUR));
+		centreCards.add(new Card(Suit.DIAMONDS, Value.EIGHT));
+		assertTrue(HandAnalyser.compareHands(hand1, hand2, centreCards)==1);
+	}
+
+	@Test
 	public void testCompareTwoPairsWin1(){
 		Card card1 = new Card(Suit.CLUBS, Value.JACK);
 		Card card2 = new Card(Suit.HEARTS, Value.JACK);

@@ -37,8 +37,23 @@ public class HandAnalyser {
                         if(fiveCardHand1.getHandValue().equals(HandValue.THREE_OF_A_KIND)){
                                 return compareSet(fiveCardHand1.getCards(), fiveCardHand2.getCards(), 3);
                         }
+                        if(fiveCardHand1.getHandValue().equals(HandValue.STRAIGHT)){
+                                return compareStraights(fiveCardHand1.getCards(), fiveCardHand2.getCards());
+                        }
 
                         //TODO handle run offs
+                        return 0;
+                }
+        }
+
+        private static int compareStraights(List<Card> cards1, List<Card> cards2) {
+                Collections.sort(cards1, Collections.reverseOrder());
+                Collections.sort(cards2, Collections.reverseOrder());
+                if(cards1.get(0).getValue().getNumericValue()>cards2.get(0).getValue().getNumericValue()){
+                        return -1;
+                }else if(cards1.get(0).getValue().getNumericValue()<cards2.get(0).getValue().getNumericValue()){
+                        return 1;
+                }else{
                         return 0;
                 }
         }

@@ -148,6 +148,7 @@ public class Dealer implements Runnable {
                                         table.setCentreCards(new ArrayList<Card>());
                                         table.setDealerPosition(findNextDealer());
                                         table.setState(TableState.PENDING_DEAL);
+
                                         break;
                                 }
                         }
@@ -178,10 +179,13 @@ public class Dealer implements Runnable {
         private void triggerNextStep(){
                 if(table.getState().equals(TableState.PRE_FLOP)){
                         dealFlop();
+                        pendingBet=0;
                 }else if(table.getState().equals(TableState.PRE_TURN)){
                         dealTurn();
+                        pendingBet=0;
                 }else if(table.getState().equals(TableState.PRE_RIVER)){
                         dealRiver();
+                        pendingBet=0;
                 }else{
                         List<Seat> seatsInHand = table.getSeatsInHand();
                         List<Seat> winningSeats = getWinningSeats(seatsInHand);

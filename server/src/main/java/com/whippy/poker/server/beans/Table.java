@@ -71,6 +71,16 @@ public class Table {
                 pot = 0;
         }
 
+        public List<Seat> getSeatsInHand(){
+                List<Seat> seatedPlayers = new ArrayList<Seat>();
+                for (Seat seat : seats) {
+                        if(seat.getState().equals(SeatState.OCCUPIED_ACTION) || seat.getState().equals(SeatState.OCCUPIED_WAITING)){
+                                seatedPlayers.add(seat);
+                        }
+                }
+                return seatedPlayers;
+        }
+
         /**
          * Get the number of players sat at the table
          * @return the number of players at the table

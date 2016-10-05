@@ -14,7 +14,7 @@ public class Player {
 	//~ ----------------------------------------------------------------------------------------------------------------
 
 	private String alias;
-	private int chipCount;
+	private double chipCount;
 
 	/**
 	 * Creates a Player
@@ -41,7 +41,7 @@ public class Player {
 		this.alias = alias;
 	}
 
-	public void setChipCount(int chipCount) {
+	public void setChipCount(double chipCount) {
 		this.chipCount = chipCount;
 	}
 
@@ -49,7 +49,7 @@ public class Player {
 	 *
 	 * @return The number of chips the player has
 	 */
-	public int getChipCount() {
+	public double getChipCount() {
 		return chipCount;
 	}
 
@@ -58,7 +58,7 @@ public class Player {
 	 *
 	 * @param chips Number of chips to give the player
 	 */
-	public void giveChips(int chips){
+	public void giveChips(double chips){
 		this.chipCount+=chips;
 	}
 

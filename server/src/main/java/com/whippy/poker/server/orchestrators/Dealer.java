@@ -2,6 +2,7 @@
 package com.whippy.poker.server.orchestrators;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.whippy.poker.common.beans.Card;
 import com.whippy.poker.common.beans.Hand;
@@ -14,6 +15,7 @@ import com.whippy.poker.server.beans.DealerState;
 import com.whippy.poker.server.beans.Deck;
 import com.whippy.poker.server.beans.Seat;
 import com.whippy.poker.server.beans.Table;
+import com.whippy.poker.sever.analyser.HandAnalyser;
 
 /**
  * Acts as the dealer for a given table
@@ -152,6 +154,27 @@ public class Dealer implements Runnable {
                 }
         }
 
+        private List<Seat> getWinningSeats(List<Seat> seatsInHand){
+                Seat winningSeat = null;
+                List<Seat> additionalWinners = new ArrayList<Seat>();
+                for (Seat seat : seatsInHand) {
+                        if(winningSeat==null){
+                                winningSeat=seat;
+                        }else{
+                                int winner = HandAnalyser.compareHands(winningSeat.getHand(), seat.getHand(), table.getCentreCards());
+                                if(winner>0){
+                                        winningSeat = seat;
+                                        additionalWinners = new ArrayList<Seat>();
+                                }else if(winner==0){
+                                        //Multiple winners
+                                        additionalWinners.add(seat);
+                                }
+                        }
+                }
+                additionalWinners.add(winningSeat);
+                return additionalWinners;
+        }
+
         private void triggerNextStep(){
                 if(table.getState().equals(TableState.PRE_FLOP)){
                         dealFlop();
@@ -160,8 +183,18 @@ public class Dealer implements Runnable {
                 }else if(table.getState().equals(TableState.PRE_RIVER)){
                         dealRiver();
                 }else{
-                        Seat[] seats = table.getSeats();
-                        throw new UnsupportedOperationException("dunno what to do: " + table.getState());
+                        List<Seat> seatsInHand = table.getSeatsInHand();
+                        List<Seat> winningSeats = getWinningSeats(seatsInHand);
+                        collectPot();
+                        for (Seat winningSeat : winningSeats) {
+                                winningSeat.getPlayer().giveChips(table.getPot()/winningSeats.size());
+                        }
+                        for (Seat seat : seatsInHand) {
+                                seat.setState(SeatState.OCCUPIED_NOHAND);
+                        }
+                        table.setCentreCards(new ArrayList<Card>());
+                        table.setDealerPosition(findNextDealer());
+                        table.setState(TableState.PENDING_DEAL);
                 }
                 bigBlindSeat = table.getDealerPosition();
         }

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+          <script src="../scripts/vendors/jquery-1.12.3.min.js"></script>
+    <!--script src="../scripts/vendors/bootstrap.min.js"></script>
+    <script src="../scripts/vendors/angular.js"></script>
+    <script src="../scripts/vendors/ui-bootstrap-custom-1.3.3.js"></script>
+    <script src="../scripts/vendors/date.js"></script>
+    <script src="../scripts/vendors/xml2json.js"></script>
+    <script src="../scripts/vendors/angular-ui-router.js"></script>
+    <script src="../scripts/vendors/ngDialog.js"></script>
+    <script src="../scripts/vendors/angular-momentjs.js"></script>
+    <script src="../scripts/vendors/moment.js"></script>
+     <script src="../scripts/myScripts/services/stateService.js"></script>
+     <script src="../scripts/myScripts/controllers/stateController.js"></script-->
+       
+    </head>
+
+  <body  ng-app="poker_module">
+     
+   <div ng-controller="stateCtrl" ng-init="initCont()">
+        <!--script>getState()</script-->
+    <button ng-click="start()" ng-show="showStartButton">START GAME</button>
+
+       <table style="width:100%; height:auto">
+          <tr style="height:30%;">
+            <td style="width:15%;"></td>
+            <td style="width:15%;"> <table style="width:100%; height:100%">
+           <tr style="height:70%">
+                 <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot01}} alt="logo"></td> 
+                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot02}} alt="logo"></td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;">{{seat0.player.alias}}</td>
+                <td style="width:50%;">Chips: {{seat0.player.chipCount}}</td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;"></td>
+                <td style="width:50%;">Bet: {{seat0.currentBet}}</td>
+           </tr>
+       </table></td> 
+            <td style="width:15%;"> <table style="width:100%; height:100%">
+           <tr style="height:70%">
+                   <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot11}} alt="logo"></td> 
+                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot12}} alt="logo"></td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;">{{seat1.player.alias}}</td>
+                <td style="width:50%;">Chips: {{seat1.player.chipCount}}</td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;"></td>
+                <td style="width:50%;">Bet: {{seat1.currentBet}}</td>
+           </tr>
+       </table></td>
+            <td style="width:15%;"> <table style="width:100%; height:100%">
+           <tr style="height:70%">
+                 <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot21}} alt="logo"></td> 
+                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot22}} alt="logo"></td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;">{{seat2.player.alias}}</td>
+                <td style="width:50%;">Chips: {{seat2.player.chipCount}}</td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;"></td>
+                <td style="width:50%;">Bet: {{seat2.currentBet}}</td>
+           </tr>
+       </table></td>
+            <td style="width:15%;"> <table style="width:100%; height:100%">
+           <tr style="height:70%">
+                 <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot31}} alt="logo"></td> 
+                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot32}} alt="logo"></td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;">{{seat3.player.alias}}</td>
+                <td style="width:50%;">Chips: {{seat3.player.chipCount}}</td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;"></td>
+                <td style="width:50%;">Bet: {{seat3.currentBet}}</td>
+           </tr>
+       </table></td> 
+            <td style="width:15%;"></td>
+          </tr>
+          <tr style="height:30%;">
+            <td style="width:15%;"> <table style="width:100%; height:100%">
+           <tr style="height:70%">
+                 <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot91}} alt="logo"></td> 
+                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot92}} alt="logo"></td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;">{{seat9.player.alias}}</td>
+                <td style="width:50%;">Chips: {{seat9.player.chipCount}}</td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;"></td>
+                <td style="width:50%;">Bet: {{seat9.currentBet}}</td>
+           </tr>
+       </table></td> 
+            <td style="width:15%;"></td>
+            <td style="width:15%;"></td>
+            <td style="width:15%;"></td>
+            <td style="width:15%;"></td>
+            <td style="width:15%;"> <table style="width:100%; height:100%">
+           <tr style="height:70%">
+                <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot41}} alt="logo"></td> 
+                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot42}} alt="logo"></td> </td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;">{{seat4.player.alias}}</td>
+                <td style="width:50%;">Chips: {{seat4.player.chipCount}}</td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;"></td>
+                <td style="width:50%;">Bet: {{seat4.currentBet}}</td>
+           </tr>
+       </table></td> 
+      
+            <tr style="height:30%;">
+            <td style="width:15%;"></td>
+            <td style="width:15%;"> <table style="width:100%; height:100%">
+           <tr style="height:70%">
+                 <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot81}} alt="logo"></td> 
+                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot82}} alt="logo"></td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;">{{seat8.player.alias}}</td>
+                <td style="width:50%;">Chips: {{seat8.player.chipCount}}</td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;"></td>
+                <td style="width:50%;">Bet: {{seat8.currentBet}}</td>
+           </tr>
+       </table></td> 
+            <td style="width:15%;"> <table style="width:100%; height:100%">
+           <tr style="height:70%">
+                 <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot71}} alt="logo"></td> 
+                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot72}} alt="logo"></td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;">{{seat7.player.alias}}</td>
+                <td style="width:50%;">Chips: {{seat7.player.chipCount}}</td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;"></td>
+                <td style="width:50%;">Bet: {{seat7.currentBet}}</td>
+           </tr>
+       </table></td>
+            <td style="width:15%;"> <table style="width:100%; height:100%">
+           <tr style="height:70%">
+                 <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot61}} alt="logo"></td> 
+                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot62}} alt="logo"></td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;">{{seat6.player.alias}}</td>
+                <td style="width:50%;">Chips: {{seat6.player.chipCount}}</td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;"></td>
+                <td style="width:50%;">Bet: {{seat6.currentBet}}</td>
+           </tr>
+       </table></td>
+            <td style="width:15%;"> <table style="width:100%; height:100%">
+           <tr style="height:70%">
+                 <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot51}} alt="logo"></td> 
+                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot52}} alt="logo"></td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;">{{seat5.player.alias}}</td>
+                <td style="width:50%;">Chips: {{seat5.player.chipCount}}</td>
+           </tr>
+           <tr style="height:15%">
+                <td style="width:50%;"></td>
+                <td style="width:50%;">Bet: {{seat5.currentBet}}</td>
+           </tr>
+       </table></td>
+            <td style="width:15%;"></td>
+      </tr>
+        </table>
+       
+       <div style="width:100%; height:auto">
+                 <table style="width:100%; height:auto">
+                     <tr>
+                        <td><button >BET</button></td>
+                         <td>
+                              <form name="myForm" ng-controller="ExampleController">
+                 
+                          <label>Amount:
+                            <input type="text" name="input" ng-model="10"
+                                   ng-pattern="10" required ng-trim="false">
+                          </label>
+                                      
+            </form>
+                         </td>
+                         <td>  <button >CALL</button></td>
+                         <td>  <button >FOLD</button></td>
+                     </tr>
+                </table>
+               
+          
+      
+    </div>
+    
+    
+    
+    
+      </div>
+      
+      
+      
+
+      
+  </body>
+</html>

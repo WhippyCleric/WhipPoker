@@ -1,0 +1,150 @@
+body {
+  
+}
+
+.container {
+    width: 430px;
+    max-width: 430px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    margin-bottom: auto;
+}
+
+#signup {
+    padding: 0px 25px 25px;
+    background: #fff;
+    box-shadow: 
+        0px 0px 0px 5px rgba( 255,255,255,0.4 ), 
+        0px 4px 20px rgba( 0,0,0,0.33 );
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: table;
+    position: static;
+}
+
+#signup .header {
+    margin-bottom: 20px;
+}
+
+#signup .header h3 {
+    color: #333333;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#signup .header p {
+    color: #8f8f8f;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+#signup .sep {
+    height: 1px;
+    background: #e8e8e8;
+    width: 430px;
+    margin: 0px -20px;
+}
+
+#signup .inputs-login {
+    margin-top: 25px;
+    display: inline-block;
+}
+
+#signup .inputs-login label {
+    color: #8f8f8f;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 7px;
+    display: block;
+}
+
+input::-webkit-input-placeholder {
+    color:    #b5b5b5;
+}
+
+input:-moz-placeholder {
+    color:    #b5b5b5;
+}
+
+#signup .inputs-login input[type=text], input[type=password] {
+    background: #f5f5f5;
+    font-size: 1.3rem;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border: none;
+    width: 200px;
+    margin-bottom: 20px;
+    box-shadow: inset 0px 2px 3px rgba( 0,0,0,0.1 );
+    clear: both;
+   float: right;
+    
+}
+.logo-authentification{
+    width: 140px;
+    margin-top: 20px;
+    height: 99px;
+    display: inline-block;
+}
+
+
+#signup .inputs-login label.terms {
+    float: left;
+    font-size: 14px;
+    font-style: italic;
+}
+
+
+.inputs-login{
+    width: 250px;
+    margin-top: 20px;
+    padding-top:3px; 
+    padding-bottom: 3px;
+    color: #fff;
+    font-size: 14px;
+    float:right;
+    display: table;
+    position: static;
+    clear: both;
+}
+#submit{
+    font: arial;
+    font-size: 15px;
+    color: #fff;
+    padding-left: 8px;
+    padding-right: 8px;
+    position: absolute;
+    right: 0.3rem;
+   
+}
+
+
+.errorConnect{
+    color: red;
+    font-size: 12px;
+}
+.errorDiv{
+    position: relative;
+    width: 250px;
+    float:right;
+    margin-bottom: 5px;
+}
+.inputs-login >a{
+    cursor: default;
+}
+.legal-notice{
+    margin-top: 40px;
+   
+}
+.legal-notice p{
+    font-size: 11px;
+    color: #aaa;
+}
+.legal-notice p span{
+    font-size: 10px;
+    color: #ddd;
+}

@@ -36,7 +36,8 @@ public class Table {
                 for(int i=0; i<numberOfSeats; i++){
                         seats[i] = new Seat(i);
                 }
-                state = TableState.PENDING_DEAL;
+                state = TableState.PENDING_START;
+                dealerPosition = -1;
         }
 
 

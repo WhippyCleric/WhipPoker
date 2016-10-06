@@ -1,0 +1,5 @@
+{
+    "AppConfig": {
+        "urlRegister": "http://localhost:8080/whip-poker-server-0.1/register/registerPlayer",
+    }
+}

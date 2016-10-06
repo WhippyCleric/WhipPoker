@@ -8,6 +8,7 @@ import com.whippy.poker.common.beans.ClientState;
 import com.whippy.poker.common.beans.ClientTable;
 import com.whippy.poker.common.beans.Hand;
 import com.whippy.poker.common.beans.Player;
+import com.whippy.poker.common.beans.TableState;
 import com.whippy.poker.common.events.PokerEvent;
 import com.whippy.poker.server.beans.Seat;
 import com.whippy.poker.server.beans.Table;
@@ -37,6 +38,7 @@ public class GlobalOrchestrator {
 
         public void start(){
                 Thread dealerThread = new Thread(dealer);
+                table.setState(TableState.PENDING_DEAL);
                 table.seatDealer();
                 dealerThread.start();
         }

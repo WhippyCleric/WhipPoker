@@ -57,7 +57,7 @@ public class DealerTest {
 
 		//Start the dealer
 		Thread dealerThread = new Thread(dealer);
-
+		table.setState(TableState.PENDING_DEAL);
 		dealerThread.start();
 
 		Thread.sleep(1500);

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="poker_module">
+
+    <head>
+        <meta charset="utf-8">
+        <!-- this meta tag is used to oblige the IE's user to use the last version of rendering engine-->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- this tag is used to avoid the zoom when site is rendering on the mobile, the site use the whole screen and be to the zoom level 1-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+    <body>
+        <div ng-controller="loginCtrl" ng-controller="loginCtrl">
+
+            <div class="container">
+
+                <form id="signup">
+
+                    <div class="header">
+
+                        <h3>Whip Poker</h3>
+
+                    </div>
+
+                    <div class="sep"></div>
+                    
+                     <div class="logo-authentification">
+                        <img src="../../images/logoWhipPoker.png" alt="logo">
+                    </div>
+                    
+                    <div class="inputs-login">
+
+                        <input type="text" placeholder="Username" ng-model="userName" autofocus />
+                        <input type="password" placeholder="Password" ng-model="password" />
+                        <div class="errorDiv">
+                            <span class="errorConnect" ng-show="failConnect" ng-bind="failConnectMessage"></span>
+                        </div>
+                        <!--<a id="submit" href="../#/webDemo">SIGN UP</a>-->
+                    </div>
+                    <div style="position:relative">
+                         <button id="submit" class="btn-primary" ng-click="go('/webMx')" > Log in</button>
+                    </div>
+                    
+
+                </form>
+
+
+            </div>
+            ​
+        </div>
+        <!-- end body-->
+    </body>
+
+</html>

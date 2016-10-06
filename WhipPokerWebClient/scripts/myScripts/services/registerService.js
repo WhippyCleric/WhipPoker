@@ -20,6 +20,7 @@ app.service('registerService',function($http,$rootScope,$q,WEB_URLS){
             }).
             then(function (response) {
                 user=response.data.alias;
+      
                 resolve(response.data.alias);
             }, function (response) {
                 reject(response);

@@ -2,9 +2,9 @@ var stateController = function ($scope, stateService, WEB_URLS, $window, $http) 
 
     $scope.initCont = function(){
         $scope.showStartButton=true;
-            $scope.showBetButton=false;
-            $scope.showCallButton=false;
-            $scope.showFoldButton=false;
+        $scope.showBetButtons=false;
+      
+        $scope.notTurn=true;
         $scope.getState();
     };
     
@@ -15,15 +15,48 @@ var stateController = function ($scope, stateService, WEB_URLS, $window, $http) 
   };
 
     $scope.start = function(){
-            $scope.showStartButton=false;
-            $scope.showBetButton=true;
-            $scope.showCallButton=true;
-            $scope.showFoldButton=true;
-        
+
             var method = 'GET';
             $http({
                 method: method
                 , url: WEB_URLS.START
+                , headers: 'Content-Type:application/JSON'
+                , timeout: 60000
+            })
+    };
+    
+       
+    $scope.bet = function(amount){
+            var method = 'POST';
+            var dataSend = JSON.stringify(amount);
+            $http({
+                method: method
+                , url: WEB_URLS.BET + "?id=" + $scope.userSession.user
+                , data: dataSend
+                , headers: 'Content-Type:application/JSON'
+                , timeout: 60000
+            })
+    };
+    
+    $scope.call = function(){
+            var method = 'POST';
+            var dataSend = "";
+            $http({
+                method: method
+                , url: WEB_URLS.CALL + "?id=" + $scope.userSession.user
+                , data: dataSend
+                , headers: 'Content-Type:application/JSON'
+                , timeout: 60000
+            })
+    };
+    
+    $scope.fold = function(){
+            var method = 'POST';
+            var dataSend = "";
+            $http({
+                method: method
+                , url: WEB_URLS.FOLD + "?id=" + $scope.userSession.user
+                , data: dataSend
                 , headers: 'Content-Type:application/JSON'
                 , timeout: 60000
             })

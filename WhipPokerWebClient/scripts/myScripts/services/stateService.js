@@ -11,7 +11,31 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 , timeout: 60000
             }).
             then(function (response) {
+                $rootScope.datadump = JSON.stringify(response.data);
                 var seatsArray = response.data.table.seats;
+               
+                if(response.data.table.state!="PENDING_START"){
+                    $rootScope.showStartButton=false;
+                    $rootScope.showBetButtons=true;
+                }
+                
+                var cardsArray = response.data.table.currentCards;
+                if(cardsArray[0]!=null){
+                    $rootScope.centerCard1= "../../images/" + cardsArray[0].suit + cardsArray[0].value + ".png";
+                }
+                if(cardsArray[1]!=null){
+                    $rootScope.centerCard2= "../../images/" + cardsArray[1].suit + cardsArray[1].value + ".png";
+                }
+                if(cardsArray[2]!=null){
+                    $rootScope.centerCard3= "../../images/" + cardsArray[2].suit + cardsArray[2].value + ".png";
+                }
+                if(cardsArray[3]!=null){
+                    $rootScope.centerCard4= "../../images/" + cardsArray[3].suit + cardsArray[3].value + ".png";
+                }
+                if(cardsArray[4]!=null){
+                    $rootScope.centerCard5= "../../images/" + cardsArray[4].suit + cardsArray[4].value + ".png";
+                }
+               
                 if(seatsArray[0].player !=null){
                     $rootScope.seat0 = seatsArray[0];
                      if(seatsArray[0].state=='OCCUPIED_WAITING' || seatsArray[0].state=='OCCUPIED_ACTION'){
@@ -21,6 +45,11 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          }else{
                             $rootScope.cardSlot01 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
                             $rootScope.cardSlot02 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                            if(seatsArray[0].state=='OCCUPIED_ACTION'){
+                                $rootScope.notTurn=false;
+                            }else{
+                                 $rootScope.notTurn=true;
+                            }
                          }
                     }
        
@@ -35,6 +64,11 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          }else{
                             $rootScope.cardSlot11 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
                             $rootScope.cardSlot12 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                             if(seatsArray[1].state=='OCCUPIED_ACTION'){
+                                $rootScope.notTurn=false;
+                            }else{
+                                 $rootScope.notTurn=true;
+                            }
                          }
                     }
                 }
@@ -48,6 +82,11 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          }else{
                             $rootScope.cardSlot21 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
                             $rootScope.cardSlot22 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                             if(seatsArray[2].state=='OCCUPIED_ACTION'){
+                                $rootScope.notTurn=false;
+                            }else{
+                                 $rootScope.notTurn=true;
+                            }
                          }
                     }
                 }
@@ -61,6 +100,11 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          }else{
                             $rootScope.cardSlot31 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
                             $rootScope.cardSlot32 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                             if(seatsArray[3].state=='OCCUPIED_ACTION'){
+                                $rootScope.notTurn=false;
+                            }else{
+                                 $rootScope.notTurn=true;
+                            }
                          }
                     }
                 }
@@ -74,6 +118,11 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          }else{
                             $rootScope.cardSlot41 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
                             $rootScope.cardSlot42 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                             if(seatsArray[4].state=='OCCUPIED_ACTION'){
+                                $rootScope.notTurn=false;
+                            }else{
+                                 $rootScope.notTurn=true;
+                            }
                          }
                     }
                 }
@@ -87,6 +136,11 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          }else{
                             $rootScope.cardSlot51 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
                             $rootScope.cardSlot52 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                             if(seatsArray[5].state=='OCCUPIED_ACTION'){
+                                $rootScope.notTurn=false;
+                            }else{
+                                 $rootScope.notTurn=true;
+                            }
                          }
                     }
                 }
@@ -100,6 +154,11 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          }else{
                             $rootScope.cardSlot61 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
                             $rootScope.cardSlot62 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                             if(seatsArray[6].state=='OCCUPIED_ACTION'){
+                                $rootScope.notTurn=false;
+                            }else{
+                                 $rootScope.notTurn=true;
+                            }
                          }
                     }
                 }
@@ -113,6 +172,11 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          }else{
                             $rootScope.cardSlot71 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
                             $rootScope.cardSlot72 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                             if(seatsArray[7].state=='OCCUPIED_ACTION'){
+                                $rootScope.notTurn=false;
+                            }else{
+                                 $rootScope.notTurn=true;
+                            }
                          }
                     }
                 }
@@ -126,6 +190,11 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          }else{
                             $rootScope.cardSlot81 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
                             $rootScope.cardSlot82 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                             if(seatsArray[8].state=='OCCUPIED_ACTION'){
+                                $rootScope.notTurn=false;
+                            }else{
+                                 $rootScope.notTurn=true;
+                            }
                          }
                     }
                 }
@@ -139,11 +208,15 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          }else{
                             $rootScope.cardSlot91 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
                             $rootScope.cardSlot92 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                             if(seatsArray[9].state=='OCCUPIED_ACTION'){
+                                $rootScope.notTurn=false;
+                            }else{
+                                 $rootScope.notTurn=true;
+                            }
                          }
                     }
                 }
   
-
                 resolve(response.data);
             }, function (response) {
                 reject(response);

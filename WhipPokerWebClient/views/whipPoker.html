@@ -27,8 +27,11 @@
      
    <div ng-controller="stateCtrl" ng-init="initCont()">
         <!--script>getState()</script-->
-    <button ng-click="start()" ng-show="showStartButton">START GAME</button>
-
+    <button ng-click="start()" ng-show="showStartButton">START</button>
+       <p>username {{userSession}}</p>
+       <p>showBet {{showBetButtons}}</p>
+       <p>notturn {{notTurn}}</p>
+       
        <table style="width:100%; height:auto">
           <tr style="height:30%;">
             <td style="width:15%;"></td>
@@ -91,38 +94,66 @@
             <td style="width:15%;"></td>
           </tr>
           <tr style="height:30%;">
-            <td style="width:15%;"> <table style="width:100%; height:100%">
-           <tr style="height:70%">
-                 <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot91}} alt="logo"></td> 
-                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot92}} alt="logo"></td>
-           </tr>
-           <tr style="height:15%">
-                <td style="width:50%;">{{seat9.player.alias}}</td>
-                <td style="width:50%;">Chips: {{seat9.player.chipCount}}</td>
-           </tr>
-           <tr style="height:15%">
-                <td style="width:50%;"></td>
-                <td style="width:50%;">Bet: {{seat9.currentBet}}</td>
-           </tr>
-       </table></td> 
-            <td style="width:15%;"></td>
-            <td style="width:15%;"></td>
-            <td style="width:15%;"></td>
-            <td style="width:15%;"></td>
-            <td style="width:15%;"> <table style="width:100%; height:100%">
-           <tr style="height:70%">
-                <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot41}} alt="logo"></td> 
-                <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot42}} alt="logo"></td> </td>
-           </tr>
-           <tr style="height:15%">
-                <td style="width:50%;">{{seat4.player.alias}}</td>
-                <td style="width:50%;">Chips: {{seat4.player.chipCount}}</td>
-           </tr>
-           <tr style="height:15%">
-                <td style="width:50%;"></td>
-                <td style="width:50%;">Bet: {{seat4.currentBet}}</td>
-           </tr>
-       </table></td> 
+            <td style="width:15%;"> 
+                <table style="width:100%; height:100%">
+                   <tr style="height:70%">
+                         <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot91}} alt="logo"></td> 
+                        <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot92}} alt="logo"></td>
+                   </tr>
+                   <tr style="height:15%">
+                        <td style="width:50%;">{{seat9.player.alias}}</td>
+                        <td style="width:50%;">Chips: {{seat9.player.chipCount}}</td>
+                   </tr>
+                   <tr style="height:15%">
+                        <td style="width:50%;"></td>
+                        <td style="width:50%;">Bet: {{seat9.currentBet}}</td>
+                   </tr>
+               </table>
+              </td> 
+            
+              <td style="width:15%;"></td>
+            <td style="width:15%;">
+                 <table style="width:100%; height:100%">
+                   <tr style="height:100%">
+                        <td style="width:50%;">  <img width="100%" height = "auto" src={{centerCard1}} alt="logo"></td> 
+                        <td style="width:50%;"> <img width="100%" height = "auto" src={{centerCard2}} alt="logo"></td> 
+                   </tr>
+                </table>
+            </td>
+            <td style="width:15%;">
+                <table style="width:100%; height:100%">
+                   <tr style="height:100%">
+                        <td style="width:50%;">  <img width="100%" height = "auto" src={{centerCard3}} alt="logo"></td> 
+                        <td style="width:50%;"> <img width="100%" height = "auto" src={{centerCard4}} alt="logo"></td> 
+                   </tr>
+                </table>
+            </td>
+            <td style="width:15%;">
+                <table style="width:100%; height:100%">
+                   <tr style="height:100%">
+                        <td style="width:50%;">  <img width="100%" height = "auto" src={{centerCard5}} alt="logo"></td> 
+                        <td style="width:50%;">  </td>
+                   </tr>
+                </table>
+            </td>
+            
+              
+              <td style="width:15%;"> 
+                <table style="width:100%; height:100%">
+                   <tr style="height:70%">
+                        <td style="width:50%;">  <img width="100%" height = "auto" src={{cardSlot41}} alt="logo"></td> 
+                        <td style="width:50%;"> <img width="100%" height = "auto" src={{cardSlot42}} alt="logo"></td> 
+                   </tr>
+                   <tr style="height:15%">
+                        <td style="width:50%;">{{seat4.player.alias}}</td>
+                        <td style="width:50%;">Chips: {{seat4.player.chipCount}}</td>
+                   </tr>
+                   <tr style="height:15%">
+                        <td style="width:50%;"></td>
+                        <td style="width:50%;">Bet: {{seat4.currentBet}}</td>
+                   </tr>
+               </table>
+       <    /td> 
       
             <tr style="height:30%;">
             <td style="width:15%;"></td>
@@ -189,19 +220,19 @@
        <div style="width:100%; height:auto">
                  <table style="width:100%; height:auto">
                      <tr>
-                        <td><button >BET</button></td>
+                        <td><button ng-click="bet(bet.amount)">BET</button></td>
                          <td>
-                              <form name="myForm" ng-controller="ExampleController">
+                              <form name="myForm">
                  
                           <label>Amount:
-                            <input type="text" name="input" ng-model="10"
-                                   ng-pattern="10" required ng-trim="false">
+                            <input type="text" name="input" ng-model="bet.amount"
+                                   required ng-trim="false">
                           </label>
                                       
             </form>
                          </td>
-                         <td>  <button >CALL</button></td>
-                         <td>  <button >FOLD</button></td>
+                         <td>  <button ng-click="call()">CALL</button></td>
+                         <td>  <button ng-click="fold()">FOLD</button></td>
                      </tr>
                 </table>
                
@@ -209,7 +240,7 @@
       
     </div>
     
-    
+    <p>{{datadump}}</p>
     
     
       </div>

@@ -20,7 +20,11 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 }
                 
                 $rootScope.currentPot = response.data.table.currentPot;
-                
+                if(response.data.table.pendingBet==0 || response.data.table.pendingBet == response.data.currentBet){
+                    $rootScope.callCheck = 'CHECK';
+                }else{
+                    $rootScope.callCheck = 'CALL';
+                }
                 var cardsArray = response.data.table.currentCards;
                 if(cardsArray[0]!=null){
                     $rootScope.centerCard1= "../../images/" + cardsArray[0].suit + cardsArray[0].value + ".png";
@@ -50,7 +54,6 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                
                 if(seatsArray[0].player !=null){
                     $rootScope.seat0 = seatsArray[0];
-                    
                      if(seatsArray[0].state=='OCCUPIED_WAITING' || seatsArray[0].state=='OCCUPIED_ACTION'){
                          if(response.data.table.state=="SHOWDOWN"){
                               $rootScope.cardSlot01 = "../../images/" + seatsArray[0].hand.cards[0].suit + seatsArray[0].hand.cards[0].value + ".png";

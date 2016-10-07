@@ -31,6 +31,7 @@ var stateController = function ($rootScope, $scope, stateService, WEB_URLS, $win
         $rootScope.centerCard5= "../../images/blank.png";
         
         $rootScope.notTurn=true;
+        
         $scope.getState();
     };
     

@@ -47,6 +47,7 @@ public class GlobalOrchestrator {
                 Seat[] seats = table.getSeats();
                 ClientSeat[] clientSeats = new ClientSeat[seats.length];
                 Hand hand = null;
+                int currentBet = 0;
                 for(int i=0; i<clientSeats.length;i++){
                         if(table.getState().equals(TableState.SHOWDOWN)){
                                 clientSeats[i] = new ClientSeat(seats[i].getPlayer(), seats[i].getState(), seats[i].getNumber(), seats[i].getCurrentBet(), seats[i].getHand());
@@ -55,10 +56,11 @@ public class GlobalOrchestrator {
                         }
                         if(seats[i].getPlayer()!=null && seats[i].getPlayer().getAlias().equals(player)){
                                 hand = seats[i].getHand();
+                                currentBet = seats[i].getCurrentBet();
                         }
                 }
-                ClientTable clientTable = new ClientTable(clientSeats, table.getId(), table.getState(), table.getDealerPosition(), table.getPot(), table.getCentreCards());
-                return new ClientState(clientTable, hand);
+                ClientTable clientTable = new ClientTable(clientSeats, table.getId(), table.getState(), table.getDealerPosition(), table.getPot(), table.getCentreCards(), table.getPendingBet());
+                return new ClientState(clientTable, hand, currentBet);
         }
 
 }

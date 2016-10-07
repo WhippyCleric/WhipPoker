@@ -25,6 +25,7 @@ public class Table {
         private int dealerPosition;
         private int pot = 0;
         private List<Card> centreCards = new ArrayList<Card>();
+        private int pendingBet;
 
         /**
          * Create a table with a selection of empty seats
@@ -242,6 +243,16 @@ public class Table {
                         }
                 }
                 return playersWithCards;
+        }
+
+
+
+        public int getPendingBet() {
+                return pendingBet;
+        }
+
+        public void setPendingBet(int pendingBet){
+                this.pendingBet = pendingBet;
         }
 
 }

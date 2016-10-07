@@ -9,10 +9,12 @@ public class ClientState {
 
         private ClientTable table;
         private Hand hand;
+        private int currentBet;
 
-        public ClientState(ClientTable table, Hand hand) {
+        public ClientState(ClientTable table, Hand hand, int currentBet) {
                 this.table = table;
                 this.hand = hand;
+                this.currentBet = currentBet;
         }
 
         public ClientState(){
@@ -33,6 +35,14 @@ public class ClientState {
 
         public Hand getHand() {
                 return hand;
+        }
+
+        public int getCurrentBet() {
+                return currentBet;
+        }
+
+        public void setCurrentBet(int currentBet) {
+                this.currentBet = currentBet;
         }
 
 }

@@ -22,18 +22,28 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 var cardsArray = response.data.table.currentCards;
                 if(cardsArray[0]!=null){
                     $rootScope.centerCard1= "../../images/" + cardsArray[0].suit + cardsArray[0].value + ".png";
+                }else{
+                    $rootScope.centerCard1= "../../images/blank.png";
                 }
                 if(cardsArray[1]!=null){
                     $rootScope.centerCard2= "../../images/" + cardsArray[1].suit + cardsArray[1].value + ".png";
+                }else{
+                    $rootScope.centerCard2= "../../images/blank.png";
                 }
                 if(cardsArray[2]!=null){
                     $rootScope.centerCard3= "../../images/" + cardsArray[2].suit + cardsArray[2].value + ".png";
+                }else{
+                    $rootScope.centerCard3= "../../images/blank.png";
                 }
                 if(cardsArray[3]!=null){
                     $rootScope.centerCard4= "../../images/" + cardsArray[3].suit + cardsArray[3].value + ".png";
+                }else{
+                    $rootScope.centerCard4= "../../images/blank.png";
                 }
                 if(cardsArray[4]!=null){
                     $rootScope.centerCard5= "../../images/" + cardsArray[4].suit + cardsArray[4].value + ".png";
+                }else{
+                    $rootScope.centerCard5= "../../images/blank.png";
                 }
                
                 if(seatsArray[0].player !=null){
@@ -51,6 +61,9 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                                  $rootScope.notTurn=true;
                             }
                          }
+                    }else{
+                         $rootScope.cardSlot01 = "../../images/blank.png";
+                         $rootScope.cardSlot02 = "../../images/blank.png";
                     }
        
                 }
@@ -70,6 +83,9 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                                  $rootScope.notTurn=true;
                             }
                          }
+                    }else{
+                         $rootScope.cardSlot11 = "../../images/blank.png";
+                         $rootScope.cardSlot12 = "../../images/blank.png";
                     }
                 }
                 
@@ -88,6 +104,9 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                                  $rootScope.notTurn=true;
                             }
                          }
+                    }else{
+                         $rootScope.cardSlot21 = "../../images/blank.png";
+                         $rootScope.cardSlot22 = "../../images/blank.png";
                     }
                 }
                 
@@ -106,6 +125,9 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                                  $rootScope.notTurn=true;
                             }
                          }
+                    }else{
+                         $rootScope.cardSlot31 = "../../images/blank.png";
+                         $rootScope.cardSlot32 = "../../images/blank.png";
                     }
                 }
                 
@@ -124,6 +146,9 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                                  $rootScope.notTurn=true;
                             }
                          }
+                    }else{
+                         $rootScope.cardSlot41 = "../../images/blank.png";
+                         $rootScope.cardSlot42 = "../../images/blank.png";
                     }
                 }
                 
@@ -142,6 +167,9 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                                  $rootScope.notTurn=true;
                             }
                          }
+                    }else{
+                         $rootScope.cardSlot51 = "../../images/blank.png";
+                         $rootScope.cardSlot52 = "../../images/blank.png";
                     }
                 }
                 
@@ -161,6 +189,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                             }
                          }
                     }
+                    else{
+                         $rootScope.cardSlot61 = "../../images/blank.png";
+                         $rootScope.cardSlot62 = "../../images/blank.png";
+                    }
                 }
                 
                 if(seatsArray[7].player !=null){
@@ -179,6 +211,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                             }
                          }
                     }
+                    else{
+                         $rootScope.cardSlot71 = "../../images/blank.png";
+                         $rootScope.cardSlot72 = "../../images/blank.png";
+                    }
                 }
                 
                 if(seatsArray[8].player !=null){
@@ -196,6 +232,9 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                                  $rootScope.notTurn=true;
                             }
                          }
+                    }else{
+                         $rootScope.cardSlot81 = "../../images/blank.png";
+                         $rootScope.cardSlot82 = "../../images/blank.png";
                     }
                 }
                 
@@ -214,6 +253,9 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                                  $rootScope.notTurn=true;
                             }
                          }
+                    }else{
+                         $rootScope.cardSlot91 = "../../images/blank.png";
+                         $rootScope.cardSlot92 = "../../images/blank.png";
                     }
                 }
   

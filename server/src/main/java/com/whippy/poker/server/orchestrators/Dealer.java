@@ -28,12 +28,13 @@ public class Dealer implements Runnable {
         private Deck deck;
         private DealerState state;
         private String playerToAct = "";
+        int firstToAct = -1;
         private int pendingBet = 0;
         private final static int BIG_BLIND = 10;
         private final static int SMALL_BLIND = 5;
         private final static int STARTING_STACK = 1000;
         private int bigBlindSeat = -1;
-
+        private boolean actedThisRound = false;
         /**
          * Create a dealer at a given table
          *
@@ -73,7 +74,7 @@ public class Dealer implements Runnable {
                         table.getSeat(bigBlindPosition).setCurrentBet(BIG_BLIND);
                         table.getSeat(bigBlindPosition).getPlayer().deductChips(BIG_BLIND);
                         bigBlindSeat = bigBlindPosition;
-                        int firstToAct = findNextSeat(table.getDealerPosition(), 2);
+                        firstToAct = findNextSeat(table.getDealerPosition(), 2);
                         state = DealerState.WAITING_ON_PLAYER;
                         playerToAct = table.getSeat(firstToAct).getPlayer().getAlias();
                         pendingBet = BIG_BLIND;
@@ -83,26 +84,35 @@ public class Dealer implements Runnable {
 
         private void setupNextPlayer(int nextToAct){
                 playerToAct = table.getSeat(nextToAct).getPlayer().getAlias();
+                System.out.println("Next player in the loop is " + playerToAct);
                 //Check if we have circled the table
-                if(table.getSeat(nextToAct).getCurrentBet()==pendingBet && pendingBet!=0){
-                        if(nextToAct == bigBlindSeat){
-                                //incase we are on the first circle
+                if(table.getSeat(nextToAct).getCurrentBet()==pendingBet && table.getState().equals(TableState.PRE_FLOP)){
+                        //Is the next player the original player...
+                        if(nextToAct == firstToAct){
                                 bigBlindSeat = -1;
-                                //OPTION TO RAISE
-                                table.getSeat(nextToAct).triggerAction();
-                        }else{
                                 collectPot();
                                 triggerNextStep();
-                        }
-                }else if(pendingBet==0){
-                        if(nextToAct == bigBlindSeat){
-                                bigBlindSeat = -1;
-                                //OPTION TO RAISE
-                                table.getSeat(nextToAct).triggerAction();
                         }else{
                                 table.getSeat(nextToAct).triggerAction();
                         }
-                }else{
+                }else if(table.getSeat(nextToAct).getCurrentBet()==pendingBet && pendingBet!=0){
+                        //we have the same amount in as required to call therefore the round is over
+                        System.out.println("The round is over");
+                        collectPot();
+                        triggerNextStep();
+                }else if(table.getSeat(nextToAct).getCurrentBet()==pendingBet && pendingBet==0){
+                        //check if we are the first to act
+                        if(nextToAct == firstToAct){
+                                System.out.println("The round is over");
+                                collectPot();
+                                triggerNextStep();
+                        }else{
+                                System.out.println("Trigering next player");
+                                table.getSeat(nextToAct).triggerAction();
+                        }
+                }
+                else{
+                        System.out.println("Trigering next player");
                         table.getSeat(nextToAct).triggerAction();
                 }
         }
@@ -205,17 +215,23 @@ public class Dealer implements Runnable {
 
         private void dealRiver(){
                 table.setState(TableState.POST_RIVER);
+
                 table.dealCardToTable(deck.getTopCard());
-                Seat nextSeat = table.getSeat(findNextSeat(table.getDealerPosition(), 0));
+                firstToAct = findNextSeat(table.getDealerPosition(), 0);
+                Seat nextSeat = table.getSeat(firstToAct);
                 playerToAct = nextSeat.getPlayer().getAlias();
+                System.out.println("Frist to act after river: " + playerToAct);
                 nextSeat.triggerAction();
         }
 
         private void dealTurn(){
                 table.setState(TableState.PRE_RIVER);
+
                 table.dealCardToTable(deck.getTopCard());
-                Seat nextSeat = table.getSeat(findNextSeat(table.getDealerPosition(), 0));
+                firstToAct = findNextSeat(table.getDealerPosition(), 0);
+                Seat nextSeat = table.getSeat(firstToAct);
                 playerToAct = nextSeat.getPlayer().getAlias();
+                System.out.println("Frist to act after turn: " + playerToAct);
                 nextSeat.triggerAction();
         }
 
@@ -225,9 +241,10 @@ public class Dealer implements Runnable {
                         table.dealCardToTable(deck.getTopCard());
                 }
                 int nextSeatNumber = findNextSeat(table.getDealerPosition(), 0);
-
+                firstToAct = nextSeatNumber;
                 Seat nextSeat = table.getSeat(nextSeatNumber);
                 playerToAct = nextSeat.getPlayer().getAlias();
+                System.out.println("Frist to act after flop: " + playerToAct);
                 nextSeat.triggerAction();
         }
 

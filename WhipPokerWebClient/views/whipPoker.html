@@ -220,19 +220,19 @@
        <div style="width:100%; height:auto">
                  <table style="width:100%; height:auto">
                      <tr>
-                        <td><button ng-click="bet(bet.amount)">BET</button></td>
+                        <td><button  ng-disabled="notTurn" ng-show="showBetButtons" ng-click="bet(bet.amount)">BET</button></td>
                          <td>
                               <form name="myForm">
                  
-                          <label>Amount:
+                          <label  ng-disabled="notTurn" ng-show="showBetButtons">Amount:
                             <input type="text" name="input" ng-model="bet.amount"
                                    required ng-trim="false">
                           </label>
                                       
             </form>
                          </td>
-                         <td>  <button ng-click="call()">CALL</button></td>
-                         <td>  <button ng-click="fold()">FOLD</button></td>
+                         <td>  <button ng-click="call()" ng-disabled="notTurn" ng-show="showBetButtons">CALL</button></td>
+                         <td>  <button ng-click="fold()"  ng-disabled="notTurn" ng-show="showBetButtons">FOLD</button></td>
                      </tr>
                 </table>
                

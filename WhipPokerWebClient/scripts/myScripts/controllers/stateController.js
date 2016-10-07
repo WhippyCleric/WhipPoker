@@ -1,10 +1,36 @@
-var stateController = function ($scope, stateService, WEB_URLS, $window, $http) {
+var stateController = function ($rootScope, $scope, stateService, WEB_URLS, $window, $http) {
 
     $scope.initCont = function(){
-        $scope.showStartButton=true;
-        $scope.showBetButtons=false;
+        $rootScope.showStartButton=true;
+        $rootScope.showBetButtons=false;
       
-        $scope.notTurn=true;
+        $rootScope.cardSlot01 = "../../images/blank.png";
+        $rootScope.cardSlot02 = "../../images/blank.png";
+        $rootScope.cardSlot11 = "../../images/blank.png";
+        $rootScope.cardSlot12 = "../../images/blank.png";
+        $rootScope.cardSlot21 = "../../images/blank.png";
+        $rootScope.cardSlot22 = "../../images/blank.png";
+        $rootScope.cardSlot31 = "../../images/blank.png";
+        $rootScope.cardSlot32 = "../../images/blank.png";
+        $rootScope.cardSlot41 = "../../images/blank.png";
+        $rootScope.cardSlot42 = "../../images/blank.png";
+        $rootScope.cardSlot51 = "../../images/blank.png";
+        $rootScope.cardSlot52 = "../../images/blank.png";
+        $rootScope.cardSlot61 = "../../images/blank.png";
+        $rootScope.cardSlot62 = "../../images/blank.png";
+        $rootScope.cardSlot71 = "../../images/blank.png";
+        $rootScope.cardSlot72 = "../../images/blank.png";
+        $rootScope.cardSlot81 = "../../images/blank.png";
+        $rootScope.cardSlot82 = "../../images/blank.png";
+        $rootScope.cardSlot91 = "../../images/blank.png";
+        $rootScope.cardSlot92 = "../../images/blank.png";
+        $rootScope.centerCard1= "../../images/blank.png";
+        $rootScope.centerCard2= "../../images/blank.png";
+        $rootScope.centerCard3= "../../images/blank.png";
+        $rootScope.centerCard4= "../../images/blank.png";
+        $rootScope.centerCard5= "../../images/blank.png";
+        
+        $rootScope.notTurn=true;
         $scope.getState();
     };
     
@@ -28,10 +54,10 @@ var stateController = function ($scope, stateService, WEB_URLS, $window, $http) 
        
     $scope.bet = function(amount){
             var method = 'POST';
-            var dataSend = JSON.stringify(amount);
+            var dataSend = "";
             $http({
                 method: method
-                , url: WEB_URLS.BET + "?id=" + $scope.userSession.user
+                , url: WEB_URLS.BET + "?id=" + $scope.userSession.user + "&amount=" + amount
                 , data: dataSend
                 , headers: 'Content-Type:application/JSON'
                 , timeout: 60000

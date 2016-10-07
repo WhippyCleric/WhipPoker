@@ -19,6 +19,8 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                     $rootScope.showBetButtons=true;
                 }
                 
+                $rootScope.currentPot = response.data.table.currentPot;
+                
                 var cardsArray = response.data.table.currentCards;
                 if(cardsArray[0]!=null){
                     $rootScope.centerCard1= "../../images/" + cardsArray[0].suit + cardsArray[0].value + ".png";

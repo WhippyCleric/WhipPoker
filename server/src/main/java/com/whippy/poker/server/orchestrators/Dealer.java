@@ -197,20 +197,30 @@ public class Dealer implements Runnable {
                         dealRiver();
                         pendingBet=0;
                 }else{
+
                         List<Seat> seatsInHand = table.getSeatsInHand();
                         List<Seat> winningSeats = getWinningSeats(seatsInHand);
                         collectPot();
-                        for (Seat winningSeat : winningSeats) {
-                                winningSeat.getPlayer().giveChips(table.getPot()/winningSeats.size());
-                        }
-                        for (Seat seat : seatsInHand) {
-                                seat.setState(SeatState.OCCUPIED_NOHAND);
-                        }
-                        table.setCentreCards(new ArrayList<Card>());
-                        table.setDealerPosition(findNextDealer());
-                        table.setState(TableState.PENDING_DEAL);
+                        table.setState(TableState.SHOWDOWN);
+                        //Give the clients a few seconds to get the latest state:
+                                try {
+                                        Thread.sleep(6000);
+                                } catch (InterruptedException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                }
+                                for (Seat winningSeat : winningSeats) {
+                                        winningSeat.getPlayer().giveChips(table.getPot()/winningSeats.size());
+                                }
+                                for (Seat seat : seatsInHand) {
+                                        seat.setState(SeatState.OCCUPIED_NOHAND);
+                                }
+                                table.setCentreCards(new ArrayList<Card>());
+                                table.setDealerPosition(findNextDealer());
+                                table.setState(TableState.PENDING_DEAL);
                 }
                 bigBlindSeat = table.getDealerPosition();
+
         }
 
         private void dealRiver(){

@@ -50,18 +50,25 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                
                 if(seatsArray[0].player !=null){
                     $rootScope.seat0 = seatsArray[0];
+                    
                      if(seatsArray[0].state=='OCCUPIED_WAITING' || seatsArray[0].state=='OCCUPIED_ACTION'){
-                         if(seatsArray[0].player.alias!=username){
-                            $rootScope.cardSlot01 = "../../images/back.png";
-                            $rootScope.cardSlot02 = "../../images/back.png";
+                         if(response.data.table.state=="SHOWDOWN"){
+                              $rootScope.cardSlot01 = "../../images/" + seatsArray[0].hand.cards[0].suit + seatsArray[0].hand.cards[0].value + ".png";
+                                $rootScope.cardSlot02 = "../../images/" + seatsArray[0].hand.cards[1].suit + seatsArray[0].hand.cards[1].value + ".png";
+                             $rootScope.notTurn=true;
                          }else{
-                            $rootScope.cardSlot01 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
-                            $rootScope.cardSlot02 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
-                            if(seatsArray[0].state=='OCCUPIED_ACTION'){
-                                $rootScope.notTurn=false;
-                            }else{
-                                 $rootScope.notTurn=true;
-                            }
+                             if(seatsArray[0].player.alias!=username){
+                                $rootScope.cardSlot01 = "../../images/back.png";
+                                $rootScope.cardSlot02 = "../../images/back.png";
+                             }else{
+                                $rootScope.cardSlot01 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
+                                $rootScope.cardSlot02 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                                if(seatsArray[0].state=='OCCUPIED_ACTION'){
+                                    $rootScope.notTurn=false;
+                                }else{
+                                     $rootScope.notTurn=true;
+                                }
+                             }
                          }
                     }else{
                          $rootScope.cardSlot01 = "../../images/blank.png";
@@ -73,17 +80,23 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 if(seatsArray[1].player !=null){
                      $rootScope.seat1 = seatsArray[1];
                     if(seatsArray[1].state=='OCCUPIED_WAITING' || seatsArray[1].state=='OCCUPIED_ACTION'){
-                         if(seatsArray[1].player.alias!=username){
-                            $rootScope.cardSlot11 = "../../images/back.png";
-                            $rootScope.cardSlot12 = "../../images/back.png";
+                        if(response.data.table.state=="SHOWDOWN"){
+                              $rootScope.cardSlot11 = "../../images/" + seatsArray[1].hand.cards[0].suit + seatsArray[1].hand.cards[0].value + ".png";
+                                $rootScope.cardSlot12 = "../../images/" + seatsArray[1].hand.cards[1].suit + seatsArray[1].hand.cards[1].value + ".png";
+                            $rootScope.notTurn=true;
                          }else{
-                            $rootScope.cardSlot11 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
-                            $rootScope.cardSlot12 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
-                             if(seatsArray[1].state=='OCCUPIED_ACTION'){
-                                $rootScope.notTurn=false;
-                            }else{
-                                 $rootScope.notTurn=true;
-                            }
+                             if(seatsArray[1].player.alias!=username){
+                                $rootScope.cardSlot11 = "../../images/back.png";
+                                $rootScope.cardSlot12 = "../../images/back.png";
+                             }else{
+                                $rootScope.cardSlot11 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
+                                $rootScope.cardSlot12 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                                 if(seatsArray[1].state=='OCCUPIED_ACTION'){
+                                    $rootScope.notTurn=false;
+                                }else{
+                                     $rootScope.notTurn=true;
+                                }
+                             }
                          }
                     }else{
                          $rootScope.cardSlot11 = "../../images/blank.png";
@@ -94,17 +107,23 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 if(seatsArray[2].player !=null){
                      $rootScope.seat2 = seatsArray[2];
                     if(seatsArray[2].state=='OCCUPIED_WAITING' || seatsArray[2].state=='OCCUPIED_ACTION'){
-                         if(seatsArray[2].player.alias!=username){
-                            $rootScope.cardSlot21 = "../../images/back.png";
-                            $rootScope.cardSlot22 = "../../images/back.png";
+                        if(response.data.table.state=="SHOWDOWN"){
+                               $rootScope.cardSlot21 = "../../images/" + seatsArray[2].hand.cards[0].suit + seatsArray[2].hand.cards[0].value + ".png";
+                               $rootScope.cardSlot22 = "../../images/" + seatsArray[2].hand.cards[1].suit + seatsArray[2].hand.cards[1].value + ".png";
+                            $rootScope.notTurn=true;
                          }else{
-                            $rootScope.cardSlot21 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
-                            $rootScope.cardSlot22 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
-                             if(seatsArray[2].state=='OCCUPIED_ACTION'){
-                                $rootScope.notTurn=false;
-                            }else{
-                                 $rootScope.notTurn=true;
-                            }
+                             if(seatsArray[2].player.alias!=username){
+                                $rootScope.cardSlot21 = "../../images/back.png";
+                                $rootScope.cardSlot22 = "../../images/back.png";
+                             }else{
+                                $rootScope.cardSlot21 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
+                                $rootScope.cardSlot22 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                                 if(seatsArray[2].state=='OCCUPIED_ACTION'){
+                                    $rootScope.notTurn=false;
+                                }else{
+                                     $rootScope.notTurn=true;
+                                }
+                             }
                          }
                     }else{
                          $rootScope.cardSlot21 = "../../images/blank.png";
@@ -115,17 +134,23 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 if(seatsArray[3].player !=null){
                      $rootScope.seat3 = seatsArray[3];
                      if(seatsArray[3].state=='OCCUPIED_WAITING' || seatsArray[3].state=='OCCUPIED_ACTION'){
-                         if(seatsArray[3].player.alias!=username){
-                            $rootScope.cardSlot31 = "../../images/back.png";
-                            $rootScope.cardSlot32 = "../../images/back.png";
+                         if(response.data.table.state=="SHOWDOWN"){
+                              $rootScope.cardSlot31 = "../../images/" + seatsArray[3].hand.cards[0].suit + seatsArray[3].hand.cards[0].value + ".png";
+                                $rootScope.cardSlot32 = "../../images/" + seatsArray[3].hand.cards[1].suit + seatsArray[3].hand.cards[1].value + ".png";
+                             $rootScope.notTurn=true;
                          }else{
-                            $rootScope.cardSlot31 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
-                            $rootScope.cardSlot32 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
-                             if(seatsArray[3].state=='OCCUPIED_ACTION'){
-                                $rootScope.notTurn=false;
-                            }else{
-                                 $rootScope.notTurn=true;
-                            }
+                             if(seatsArray[3].player.alias!=username){
+                                $rootScope.cardSlot31 = "../../images/back.png";
+                                $rootScope.cardSlot32 = "../../images/back.png";
+                             }else{
+                                $rootScope.cardSlot31 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
+                                $rootScope.cardSlot32 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                                 if(seatsArray[3].state=='OCCUPIED_ACTION'){
+                                    $rootScope.notTurn=false;
+                                }else{
+                                     $rootScope.notTurn=true;
+                                }
+                             }
                          }
                     }else{
                          $rootScope.cardSlot31 = "../../images/blank.png";
@@ -136,17 +161,23 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 if(seatsArray[4].player !=null){
                      $rootScope.seat4 = seatsArray[4];
                      if(seatsArray[4].state=='OCCUPIED_WAITING' || seatsArray[4].state=='OCCUPIED_ACTION'){
-                         if(seatsArray[4].player.alias!=username){
-                            $rootScope.cardSlot41 = "../../images/back.png";
-                            $rootScope.cardSlot42 = "../../images/back.png";
+                         if(response.data.table.state=="SHOWDOWN"){
+                              $rootScope.cardSlot41 = "../../images/" + seatsArray[4].hand.cards[0].suit + seatsArray[4].hand.cards[0].value + ".png";
+                                $rootScope.cardSlot42 = "../../images/" + seatsArray[4].hand.cards[1].suit + seatsArray[4].hand.cards[1].value + ".png";
+                             $rootScope.notTurn=true;
                          }else{
-                            $rootScope.cardSlot41 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
-                            $rootScope.cardSlot42 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
-                             if(seatsArray[4].state=='OCCUPIED_ACTION'){
-                                $rootScope.notTurn=false;
-                            }else{
-                                 $rootScope.notTurn=true;
-                            }
+                             if(seatsArray[4].player.alias!=username){
+                                $rootScope.cardSlot41 = "../../images/back.png";
+                                $rootScope.cardSlot42 = "../../images/back.png";
+                             }else{
+                                $rootScope.cardSlot41 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
+                                $rootScope.cardSlot42 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                                 if(seatsArray[4].state=='OCCUPIED_ACTION'){
+                                    $rootScope.notTurn=false;
+                                }else{
+                                     $rootScope.notTurn=true;
+                                }
+                             }
                          }
                     }else{
                          $rootScope.cardSlot41 = "../../images/blank.png";
@@ -157,17 +188,23 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 if(seatsArray[5].player !=null){
                      $rootScope.seat5 = seatsArray[5];
                     if(seatsArray[5].state=='OCCUPIED_WAITING' || seatsArray[5].state=='OCCUPIED_ACTION'){
-                         if(seatsArray[5].player.alias!=username){
-                            $rootScope.cardSlot51 = "../../images/back.png";
-                            $rootScope.cardSlot52 = "../../images/back.png";
+                        if(response.data.table.state=="SHOWDOWN"){
+                              $rootScope.cardSlot51 = "../../images/" + seatsArray[5].hand.cards[0].suit + seatsArray[5].hand.cards[0].value + ".png";
+                                $rootScope.cardSlot52 = "../../images/" + seatsArray[5].hand.cards[1].suit + seatsArray[5].hand.cards[1].value + ".png";
+                            $rootScope.notTurn=true;
                          }else{
-                            $rootScope.cardSlot51 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
-                            $rootScope.cardSlot52 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
-                             if(seatsArray[5].state=='OCCUPIED_ACTION'){
-                                $rootScope.notTurn=false;
-                            }else{
-                                 $rootScope.notTurn=true;
-                            }
+                             if(seatsArray[5].player.alias!=username){
+                                $rootScope.cardSlot51 = "../../images/back.png";
+                                $rootScope.cardSlot52 = "../../images/back.png";
+                             }else{
+                                $rootScope.cardSlot51 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
+                                $rootScope.cardSlot52 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                                 if(seatsArray[5].state=='OCCUPIED_ACTION'){
+                                    $rootScope.notTurn=false;
+                                }else{
+                                     $rootScope.notTurn=true;
+                                }
+                             }
                          }
                     }else{
                          $rootScope.cardSlot51 = "../../images/blank.png";
@@ -178,17 +215,23 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 if(seatsArray[6].player !=null){
                      $rootScope.seat6 = seatsArray[6];
                      if(seatsArray[6].state=='OCCUPIED_WAITING' || seatsArray[6].state=='OCCUPIED_ACTION'){
-                         if(seatsArray[6].player.alias!=username){
-                            $rootScope.cardSlot61 = "../../images/back.png";
-                            $rootScope.cardSlot62 = "../../images/back.png";
+                         if(response.data.table.state=="SHOWDOWN"){
+                              $rootScope.cardSlot61 = "../../images/" + seatsArray[6].hand.cards[0].suit + seatsArray[6].hand.cards[0].value + ".png";
+                                $rootScope.cardSlot62 = "../../images/" + seatsArray[6].hand.cards[1].suit + seatsArray[6].hand.cards[1].value + ".png";
+                             $rootScope.notTurn=true;
                          }else{
-                            $rootScope.cardSlot61 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
-                            $rootScope.cardSlot62 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
-                             if(seatsArray[6].state=='OCCUPIED_ACTION'){
-                                $rootScope.notTurn=false;
-                            }else{
-                                 $rootScope.notTurn=true;
-                            }
+                             if(seatsArray[6].player.alias!=username){
+                                $rootScope.cardSlot61 = "../../images/back.png";
+                                $rootScope.cardSlot62 = "../../images/back.png";
+                             }else{
+                                $rootScope.cardSlot61 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
+                                $rootScope.cardSlot62 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                                 if(seatsArray[6].state=='OCCUPIED_ACTION'){
+                                    $rootScope.notTurn=false;
+                                }else{
+                                     $rootScope.notTurn=true;
+                                }
+                             }
                          }
                     }
                     else{
@@ -200,17 +243,23 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 if(seatsArray[7].player !=null){
                      $rootScope.seat7 = seatsArray[7];
                      if(seatsArray[7].state=='OCCUPIED_WAITING' || seatsArray[7].state=='OCCUPIED_ACTION'){
-                         if(seatsArray[7].player.alias!=username){
-                            $rootScope.cardSlot71 = "../../images/back.png";
-                            $rootScope.cardSlot72 = "../../images/back.png";
+                         if(response.data.table.state=="SHOWDOWN"){
+                              $rootScope.cardSlot71 = "../../images/" + seatsArray[7].hand.cards[0].suit + seatsArray[7].hand.cards[0].value + ".png";
+                                $rootScope.cardSlot72 = "../../images/" + seatsArray[7].hand.cards[1].suit + seatsArray[7].hand.cards[1].value + ".png";
+                             $rootScope.notTurn=true;
                          }else{
-                            $rootScope.cardSlot71 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
-                            $rootScope.cardSlot72 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
-                             if(seatsArray[7].state=='OCCUPIED_ACTION'){
-                                $rootScope.notTurn=false;
-                            }else{
-                                 $rootScope.notTurn=true;
-                            }
+                             if(seatsArray[7].player.alias!=username){
+                                $rootScope.cardSlot71 = "../../images/back.png";
+                                $rootScope.cardSlot72 = "../../images/back.png";
+                             }else{
+                                $rootScope.cardSlot71 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
+                                $rootScope.cardSlot72 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                                 if(seatsArray[7].state=='OCCUPIED_ACTION'){
+                                    $rootScope.notTurn=false;
+                                }else{
+                                     $rootScope.notTurn=true;
+                                }
+                             }
                          }
                     }
                     else{
@@ -222,17 +271,23 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 if(seatsArray[8].player !=null){
                      $rootScope.seat8 = seatsArray[8];
                      if(seatsArray[8].state=='OCCUPIED_WAITING' || seatsArray[8].state=='OCCUPIED_ACTION'){
-                         if(seatsArray[8].player.alias!=username){
-                            $rootScope.cardSlot81 = "../../images/back.png";
-                            $rootScope.cardSlot82 = "../../images/back.png";
+                         if(response.data.table.state=="SHOWDOWN"){
+                              $rootScope.cardSlot81 = "../../images/" + seatsArray[8].hand.cards[0].suit + seatsArray[8].hand.cards[0].value + ".png";
+                                $rootScope.cardSlot82 = "../../images/" + seatsArray[8].hand.cards[1].suit + seatsArray[8].hand.cards[1].value + ".png";
+                             $rootScope.notTurn=true;
                          }else{
-                            $rootScope.cardSlot81 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
-                            $rootScope.cardSlot82 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
-                             if(seatsArray[8].state=='OCCUPIED_ACTION'){
-                                $rootScope.notTurn=false;
-                            }else{
-                                 $rootScope.notTurn=true;
-                            }
+                             if(seatsArray[8].player.alias!=username){
+                                $rootScope.cardSlot81 = "../../images/back.png";
+                                $rootScope.cardSlot82 = "../../images/back.png";
+                             }else{
+                                $rootScope.cardSlot81 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
+                                $rootScope.cardSlot82 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                                 if(seatsArray[8].state=='OCCUPIED_ACTION'){
+                                    $rootScope.notTurn=false;
+                                }else{
+                                     $rootScope.notTurn=true;
+                                }
+                             }
                          }
                     }else{
                          $rootScope.cardSlot81 = "../../images/blank.png";
@@ -243,17 +298,23 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                 if(seatsArray[9].player !=null){
                      $rootScope.seat9 = seatsArray[9];
                     if(seatsArray[9].state=='OCCUPIED_WAITING' || seatsArray[9].state=='OCCUPIED_ACTION'){
-                         if(seatsArray[9].player.alias!=username){
-                            $rootScope.cardSlot91 = "../../images/back.png";
-                            $rootScope.cardSlot92 = "../../images/back.png";
+                        if(response.data.table.state=="SHOWDOWN"){
+                              $rootScope.cardSlot91 = "../../images/" + seatsArray[9].hand.cards[0].suit + seatsArray[9].hand.cards[0].value + ".png";
+                              $rootScope.cardSlot92 = "../../images/" + seatsArray[9].hand.cards[1].suit + seatsArray[9].hand.cards[1].value + ".png";
+                            $rootScope.notTurn=true;
                          }else{
-                            $rootScope.cardSlot91 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
-                            $rootScope.cardSlot92 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
-                             if(seatsArray[9].state=='OCCUPIED_ACTION'){
-                                $rootScope.notTurn=false;
-                            }else{
-                                 $rootScope.notTurn=true;
-                            }
+                             if(seatsArray[9].player.alias!=username){
+                                $rootScope.cardSlot91 = "../../images/back.png";
+                                $rootScope.cardSlot92 = "../../images/back.png";
+                             }else{
+                                $rootScope.cardSlot91 = "../../images/" + response.data.hand.cards[0].suit + response.data.hand.cards[0].value + ".png";
+                                $rootScope.cardSlot92 = "../../images/" + response.data.hand.cards[1].suit + response.data.hand.cards[1].value + ".png";
+                                 if(seatsArray[9].state=='OCCUPIED_ACTION'){
+                                    $rootScope.notTurn=false;
+                                }else{
+                                     $rootScope.notTurn=true;
+                                }
+                             }
                          }
                     }else{
                          $rootScope.cardSlot91 = "../../images/blank.png";

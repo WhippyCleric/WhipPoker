@@ -22,7 +22,7 @@ import com.whippy.poker.sever.analyser.HandAnalyser;
  *
  * @author mdunn
  */
-public class Dealer implements Runnable {
+public class Dealer {
 
         private Table table;
         private Deck deck;
@@ -50,9 +50,11 @@ public class Dealer implements Runnable {
          *
          */
         public void deal(){
+                System.out.println("dealing");
                 if(!table.getState().equals(TableState.PENDING_DEAL)){
                         throw new IllegalArgumentException("Hand is currently in play");
                 }else if(table.getSeatedPlayers()<2){
+                        table.setState(TableState.CLOSING);
                         throw new IllegalArgumentException("not enough players to deal");
                 }else{
                         table.updateTableState(TableState.PRE_FLOP);
@@ -110,11 +112,76 @@ public class Dealer implements Runnable {
                                 System.out.println("Trigering next player");
                                 table.getSeat(nextToAct).triggerAction();
                         }
+                }else if(table.getSeat(nextToAct).getCurrentBet()>table.getPendingBet()){
+                        //Logically this means everyone else is ALL IN
+                        System.out.println("Should give some money back...");
+                        table.getSeat(nextToAct).getPlayer().giveChips(table.getSeat(nextToAct).getCurrentBet()-table.getPendingBet());
+                        table.getSeat(nextToAct).setCurrentBet(table.getPendingBet());
+                        runAllIn();
                 }
                 else{
                         System.out.println("Trigering next player");
                         table.getSeat(nextToAct).triggerAction();
                 }
+        }
+
+        private void pause(int miliseconds){
+                try {
+                        Thread.sleep(miliseconds);
+                } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                }
+        }
+
+        private void runAllIn(){
+                System.out.println("ALLIN");
+                if(table.getState().equals(TableState.PRE_FLOP)){
+                        dealFlop();
+                        pause(2000);
+                        dealTurn();
+                        pause(2000);
+                        dealRiver();
+                        pause(2000);
+                        table.setPendingBet(0);
+                }else if(table.getState().equals(TableState.PRE_TURN)){
+                        dealTurn();
+                        pause(2000);
+                        dealRiver();
+                        pause(2000);
+                        table.setPendingBet(0);
+                }else if(table.getState().equals(TableState.PRE_RIVER)){
+                        dealRiver();
+                        pause(2000);
+                        table.setPendingBet(0);
+                }
+
+                List<Seat> seatsInHand = table.getSeatsInHand();
+                List<Seat> winningSeats = getWinningSeats(seatsInHand);
+                collectPot();
+                table.setState(TableState.SHOWDOWN);
+                //Give the clients a few seconds to get the latest state:
+                pause(6000);
+                for (Seat winningSeat : winningSeats) {
+                        winningSeat.getPlayer().giveChips(table.getPot()/winningSeats.size());
+                }
+                for (Seat seat : seatsInHand) {
+                        seat.setState(SeatState.OCCUPIED_NOHAND);
+                }
+                for(Seat seat : table.getSeats()){
+                        if(seat.getPlayer()!=null){
+                                if(seat.getPlayer().getChipCount()==0){
+                                        seat.setState(SeatState.EMPTY);
+                                        seat.seatPlayer(null);
+                                }
+                        }
+                }
+                table.emptyPot();
+                table.setCentreCards(new ArrayList<Card>());
+                table.setDealerPosition(findNextDealer());
+                table.setState(TableState.PENDING_DEAL);
+                pause(1500);
+                deal();
         }
 
         private void processCall(String playerAlias){
@@ -123,6 +190,7 @@ public class Dealer implements Runnable {
                 if(playerSeat.getPlayer().getChipCount()<=amount){
                         amount = playerSeat.getPlayer().getChipCount();
                         playerSeat.setCurrentBet(playerSeat.getCurrentBet()+amount);
+                        table.setPendingBet(playerSeat.getCurrentBet());
                 }else{
                         playerSeat.setCurrentBet(table.getPendingBet());
                 }
@@ -167,7 +235,8 @@ public class Dealer implements Runnable {
                                         table.setCentreCards(new ArrayList<Card>());
                                         table.setDealerPosition(findNextDealer());
                                         table.setState(TableState.PENDING_DEAL);
-
+                                        pause(1500);
+                                        deal();
                                         break;
                                 }
                         }
@@ -196,14 +265,23 @@ public class Dealer implements Runnable {
         }
 
         private void triggerNextStep(){
-                if(table.getState().equals(TableState.PRE_FLOP)){
-                        dealFlop();
+
+                int remainingChippedPlayers = 0;
+                for (Seat seat : table.getSeatsInHand()) {
+                        if(seat.getPlayer().getChipCount()>0){
+                                remainingChippedPlayers++;
+                        }
+                }
+                if(remainingChippedPlayers<2){
+                        runAllIn();
+                }else if(table.getState().equals(TableState.PRE_FLOP)){
+                        dealFlop().triggerAction();
                         table.setPendingBet(0);
                 }else if(table.getState().equals(TableState.PRE_TURN)){
-                        dealTurn();
+                        dealTurn().triggerAction();
                         table.setPendingBet(0);
                 }else if(table.getState().equals(TableState.PRE_RIVER)){
-                        dealRiver();
+                        dealRiver().triggerAction();
                         table.setPendingBet(0);
                 }else{
 
@@ -224,13 +302,24 @@ public class Dealer implements Runnable {
                                 for (Seat seat : seatsInHand) {
                                         seat.setState(SeatState.OCCUPIED_NOHAND);
                                 }
+                                for(Seat seat : table.getSeats()){
+                                        if(seat.getPlayer()!=null){
+                                                if(seat.getPlayer().getChipCount()==0){
+                                                        seat.setState(SeatState.EMPTY);
+                                                        seat.seatPlayer(null);
+                                                }
+                                        }
+                                }
+                                table.emptyPot();
                                 table.setCentreCards(new ArrayList<Card>());
                                 table.setDealerPosition(findNextDealer());
                                 table.setState(TableState.PENDING_DEAL);
+                                pause(1500);
+                                deal();
                 }
         }
 
-        private void dealRiver(){
+        private Seat dealRiver(){
                 table.setState(TableState.POST_RIVER);
 
                 table.dealCardToTable(deck.getTopCard());
@@ -238,10 +327,10 @@ public class Dealer implements Runnable {
                 Seat nextSeat = table.getSeat(firstToAct);
                 playerToAct = nextSeat.getPlayer().getAlias();
                 System.out.println("Frist to act after river: " + playerToAct);
-                nextSeat.triggerAction();
+                return nextSeat;
         }
 
-        private void dealTurn(){
+        private Seat dealTurn(){
                 table.setState(TableState.PRE_RIVER);
 
                 table.dealCardToTable(deck.getTopCard());
@@ -249,10 +338,10 @@ public class Dealer implements Runnable {
                 Seat nextSeat = table.getSeat(firstToAct);
                 playerToAct = nextSeat.getPlayer().getAlias();
                 System.out.println("Frist to act after turn: " + playerToAct);
-                nextSeat.triggerAction();
+                return nextSeat;
         }
 
-        private void dealFlop(){
+        private Seat dealFlop(){
                 table.setState(TableState.PRE_TURN);
                 for(int i=0;i<3;i++){
                         table.dealCardToTable(deck.getTopCard());
@@ -262,7 +351,7 @@ public class Dealer implements Runnable {
                 Seat nextSeat = table.getSeat(nextSeatNumber);
                 playerToAct = nextSeat.getPlayer().getAlias();
                 System.out.println("Frist to act after flop: " + playerToAct);
-                nextSeat.triggerAction();
+                return nextSeat;
         }
 
         private void collectPot(){
@@ -300,23 +389,13 @@ public class Dealer implements Runnable {
         }
 
 
-        @Override
+
         public void run() {
                 //Give starting stacks
                 giveStartingStack(STARTING_STACK);
 
-                //While the table is not being closed
-                while(!table.getState().equals(TableState.CLOSING)){
-                        try {
-                                Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                        }
-                        if(table.getState().equals(TableState.PENDING_DEAL)){
-                                deal();
-                        }
-                }
+                deal();
+
 
         }
 

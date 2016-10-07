@@ -37,10 +37,10 @@ public class GlobalOrchestrator {
         }
 
         public void start(){
-                Thread dealerThread = new Thread(dealer);
+
                 table.setState(TableState.PENDING_DEAL);
                 table.seatDealer();
-                dealerThread.start();
+                dealer.run();
         }
 
         public ClientState getState(String player){

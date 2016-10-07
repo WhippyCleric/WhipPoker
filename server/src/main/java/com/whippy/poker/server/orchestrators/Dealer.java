@@ -88,7 +88,12 @@ public class Dealer implements Runnable {
                                 collectPot();
                                 triggerNextStep();
                         }else{
-                                table.getSeat(nextToAct).triggerAction();
+                                if(table.getSeat(nextToAct).getCurrentBet()!=BIG_BLIND){
+                                        collectPot();
+                                        triggerNextStep();
+                                }else{
+                                        table.getSeat(nextToAct).triggerAction();
+                                }
                         }
                 }else if(table.getSeat(nextToAct).getCurrentBet()==table.getPendingBet() && table.getPendingBet()!=0){
                         //we have the same amount in as required to call therefore the round is over
@@ -114,19 +119,28 @@ public class Dealer implements Runnable {
 
         private void processCall(String playerAlias){
                 Seat playerSeat = table.getSeatForPlayer(playerAlias);
-                playerSeat.getPlayer().deductChips(table.getPendingBet()-playerSeat.getCurrentBet());
-                playerSeat.setCurrentBet(table.getPendingBet());
+                double amount = table.getPendingBet()-playerSeat.getCurrentBet();
+                if(playerSeat.getPlayer().getChipCount()<=amount){
+                        amount = playerSeat.getPlayer().getChipCount();
+                        playerSeat.setCurrentBet(playerSeat.getCurrentBet()+amount);
+                }else{
+                        playerSeat.setCurrentBet(table.getPendingBet());
+                }
+                playerSeat.getPlayer().deductChips(amount);
                 playerSeat.setState(SeatState.OCCUPIED_WAITING);
                 int nextToAct = findNextSeat(playerSeat.getNumber(), 0);
                 setupNextPlayer(nextToAct);
         }
 
-        private void processBet(String playerAlias, int amount){
+        private void processBet(String playerAlias, double amount){
                 if(amount>table.getSeatForPlayer(playerAlias).getPlayer().getChipCount()){
                         throw new IllegalArgumentException("Can not bet more chips than you have");
                 }
                 Seat playerSeat = table.getSeatForPlayer(playerAlias);
-                playerSeat.getPlayer().deductChips(amount + playerSeat.getCurrentBet());
+                if(playerSeat.getPlayer().getChipCount()<=amount){
+                        amount = playerSeat.getPlayer().getChipCount();
+                }
+                playerSeat.getPlayer().deductChips(amount);
                 table.setPendingBet(playerSeat.getCurrentBet() + amount);
                 playerSeat.setCurrentBet(playerSeat.getCurrentBet() + amount);
                 playerSeat.setState(SeatState.OCCUPIED_WAITING);

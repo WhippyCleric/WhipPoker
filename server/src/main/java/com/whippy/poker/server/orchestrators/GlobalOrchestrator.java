@@ -47,7 +47,7 @@ public class GlobalOrchestrator {
                 Seat[] seats = table.getSeats();
                 ClientSeat[] clientSeats = new ClientSeat[seats.length];
                 Hand hand = null;
-                int currentBet = 0;
+                double currentBet = 0;
                 for(int i=0; i<clientSeats.length;i++){
                         if(table.getState().equals(TableState.SHOWDOWN)){
                                 clientSeats[i] = new ClientSeat(seats[i].getPlayer(), seats[i].getState(), seats[i].getNumber(), seats[i].getCurrentBet(), seats[i].getHand());

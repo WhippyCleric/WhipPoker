@@ -9,11 +9,11 @@ public class ClientTable {
         private int id;
         private TableState state;
         private int dealerPosition;
-        private int currentPot;
+        private double currentPot;
         private List<Card> currentCards;
-        private int pendingBet;
+        private double pendingBet;
 
-        public ClientTable(ClientSeat[] seats, int id, TableState state, int dealerPosition, int currentPot, List<Card> currentCards, int pendingBet) {
+        public ClientTable(ClientSeat[] seats, int id, TableState state, int dealerPosition, double currentPot, List<Card> currentCards, double pendingBet) {
                 this.seats = seats;
                 this.id = id;
                 this.state = state;
@@ -59,11 +59,11 @@ public class ClientTable {
                 return dealerPosition;
         }
 
-        public int getCurrentPot() {
+        public double getCurrentPot() {
                 return currentPot;
         }
 
-        public void setCurrentPot(int currentPot) {
+        public void setCurrentPot(double currentPot) {
                 this.currentPot = currentPot;
         }
 
@@ -75,11 +75,11 @@ public class ClientTable {
                 this.currentCards = currentCards;
         }
 
-        public int getPendingBet() {
+        public double getPendingBet() {
                 return pendingBet;
         }
 
-        public void setPendingBet(int pendingBet) {
+        public void setPendingBet(double pendingBet) {
                 this.pendingBet = pendingBet;
         }
 

@@ -10,10 +10,10 @@ public class ClientSeat {
         private Player player;
         private SeatState state;
         private int number;
-        private int currentBet;
+        private double currentBet;
         private Hand hand;
 
-        public ClientSeat(Player player, SeatState state, int number, int currentBet, Hand hand) {
+        public ClientSeat(Player player, SeatState state, int number, double currentBet, Hand hand) {
                 this.player = player;
                 this.state = state;
                 this.number = number;
@@ -21,11 +21,11 @@ public class ClientSeat {
                 this.hand = hand;
         }
 
-        public int getCurrentBet() {
+        public double getCurrentBet() {
                 return currentBet;
         }
 
-        public void setCurrentBet(int currentBet) {
+        public void setCurrentBet(double currentBet) {
                 this.currentBet = currentBet;
         }
 

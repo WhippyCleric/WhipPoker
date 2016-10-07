@@ -16,7 +16,7 @@ public class Seat {
         private SeatState state;
         private Hand hand;
         private final int number;
-        private int currentBet = 0;
+        private double currentBet = 0;
 
 
         /**
@@ -53,11 +53,11 @@ public class Seat {
 
 
 
-        public int getCurrentBet() {
+        public double getCurrentBet() {
                 return currentBet;
         }
 
-        public void setCurrentBet(int currentBet) {
+        public void setCurrentBet(double currentBet) {
                 this.currentBet = currentBet;
         }
 

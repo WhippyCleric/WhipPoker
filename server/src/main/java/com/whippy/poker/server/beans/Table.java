@@ -23,9 +23,9 @@ public class Table {
         private int id;
         private TableState state;
         private int dealerPosition;
-        private int pot = 0;
+        private double pot = 0;
         private List<Card> centreCards = new ArrayList<Card>();
-        private int pendingBet;
+        private double pendingBet;
 
         /**
          * Create a table with a selection of empty seats
@@ -61,11 +61,11 @@ public class Table {
                 return seats;
         }
 
-        public void putIntoPut(int amount){
+        public void putIntoPut(double amount){
                 pot += amount;
         }
 
-        public int getPot(){
+        public double getPot(){
                 return pot;
         }
 
@@ -247,11 +247,11 @@ public class Table {
 
 
 
-        public int getPendingBet() {
+        public double getPendingBet() {
                 return pendingBet;
         }
 
-        public void setPendingBet(int pendingBet){
+        public void setPendingBet(double pendingBet){
                 this.pendingBet = pendingBet;
         }
 

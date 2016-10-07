@@ -9,9 +9,9 @@ public class ClientState {
 
         private ClientTable table;
         private Hand hand;
-        private int currentBet;
+        private double currentBet;
 
-        public ClientState(ClientTable table, Hand hand, int currentBet) {
+        public ClientState(ClientTable table, Hand hand, double currentBet) {
                 this.table = table;
                 this.hand = hand;
                 this.currentBet = currentBet;
@@ -37,11 +37,11 @@ public class ClientState {
                 return hand;
         }
 
-        public int getCurrentBet() {
+        public double getCurrentBet() {
                 return currentBet;
         }
 
-        public void setCurrentBet(int currentBet) {
+        public void setCurrentBet(double currentBet) {
                 this.currentBet = currentBet;
         }
 

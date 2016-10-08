@@ -42,6 +42,24 @@ public class Dealer {
                 state = DealerState.ACTING;
         }
 
+        public boolean activeTable(){
+                int count = 0;
+                for (Seat seat : table.getSeats()) {
+                        if(!seat.getState().equals(SeatState.EMPTY)){
+                                if(seat.getPlayer()!=null){
+                                        if(seat.getPlayer().getChipCount()>0){
+                                                count++;
+                                                System.out.println("adding seat " + seat + " to the count");
+
+                                        }
+                                }
+                        }
+
+                }
+                return count>1;
+        }
+
+
         /**
          *
          * Deal a new round of cards to the table.
@@ -53,7 +71,7 @@ public class Dealer {
                 System.out.println("dealing");
                 if(!table.getState().equals(TableState.PENDING_DEAL)){
                         throw new IllegalArgumentException("Hand is currently in play");
-                }else if(table.getSeatedPlayers()<2){
+                }else if(!activeTable()){
                         table.setState(TableState.CLOSING);
                         throw new IllegalArgumentException("not enough players to deal");
                 }else{

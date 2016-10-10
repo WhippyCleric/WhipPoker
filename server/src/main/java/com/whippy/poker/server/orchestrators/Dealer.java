@@ -185,6 +185,7 @@ public class Dealer {
                 }
                 for (Seat seat : seatsInHand) {
                         seat.setState(SeatState.OCCUPIED_NOHAND);
+                        seat.setHand(null);
                 }
                 for(Seat seat : table.getSeats()){
                         if(seat.getPlayer()!=null){
@@ -319,6 +320,7 @@ public class Dealer {
                                 }
                                 for (Seat seat : seatsInHand) {
                                         seat.setState(SeatState.OCCUPIED_NOHAND);
+                                        seat.setHand(null);
                                 }
                                 for(Seat seat : table.getSeats()){
                                         if(seat.getPlayer()!=null){

@@ -15,6 +15,7 @@ public class Seat {
         private Player player;
         private SeatState state;
         private Hand hand;
+
         private final int number;
         private double currentBet = 0;
 
@@ -26,6 +27,11 @@ public class Seat {
         public int getNumber() {
                 return number;
         }
+
+        public void setHand(Hand hand) {
+                this.hand = hand;
+        }
+
 
         /**
          * Create an empty seat

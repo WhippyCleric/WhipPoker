@@ -78,7 +78,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          $rootScope.cardSlot02 = "../../images/blank.png";
                     }
        
-                }
+                }else{
+                         $rootScope.cardSlot01 = "../../images/blank.png";
+                         $rootScope.cardSlot02 = "../../images/blank.png";
+                    }
                 
                 if(seatsArray[1].player !=null){
                      $rootScope.seat1 = seatsArray[1];
@@ -105,7 +108,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          $rootScope.cardSlot11 = "../../images/blank.png";
                          $rootScope.cardSlot12 = "../../images/blank.png";
                     }
-                }
+                }else{
+                         $rootScope.cardSlot11 = "../../images/blank.png";
+                         $rootScope.cardSlot12 = "../../images/blank.png";
+                    }
                 
                 if(seatsArray[2].player !=null){
                      $rootScope.seat2 = seatsArray[2];
@@ -132,7 +138,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          $rootScope.cardSlot21 = "../../images/blank.png";
                          $rootScope.cardSlot22 = "../../images/blank.png";
                     }
-                }
+                }else{
+                         $rootScope.cardSlot21 = "../../images/blank.png";
+                         $rootScope.cardSlot22 = "../../images/blank.png";
+                    }
                 
                 if(seatsArray[3].player !=null){
                      $rootScope.seat3 = seatsArray[3];
@@ -159,7 +168,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          $rootScope.cardSlot31 = "../../images/blank.png";
                          $rootScope.cardSlot32 = "../../images/blank.png";
                     }
-                }
+                }else{
+                         $rootScope.cardSlot31 = "../../images/blank.png";
+                         $rootScope.cardSlot32 = "../../images/blank.png";
+                    }
                 
                 if(seatsArray[4].player !=null){
                      $rootScope.seat4 = seatsArray[4];
@@ -186,7 +198,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          $rootScope.cardSlot41 = "../../images/blank.png";
                          $rootScope.cardSlot42 = "../../images/blank.png";
                     }
-                }
+                }else{
+                         $rootScope.cardSlot41 = "../../images/blank.png";
+                         $rootScope.cardSlot42 = "../../images/blank.png";
+                    }
                 
                 if(seatsArray[5].player !=null){
                      $rootScope.seat5 = seatsArray[5];
@@ -213,7 +228,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          $rootScope.cardSlot51 = "../../images/blank.png";
                          $rootScope.cardSlot52 = "../../images/blank.png";
                     }
-                }
+                }else{
+                         $rootScope.cardSlot51 = "../../images/blank.png";
+                         $rootScope.cardSlot52 = "../../images/blank.png";
+                    }
                 
                 if(seatsArray[6].player !=null){
                      $rootScope.seat6 = seatsArray[6];
@@ -241,7 +259,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          $rootScope.cardSlot61 = "../../images/blank.png";
                          $rootScope.cardSlot62 = "../../images/blank.png";
                     }
-                }
+                }else{
+                         $rootScope.cardSlot61 = "../../images/blank.png";
+                         $rootScope.cardSlot62 = "../../images/blank.png";
+                    }
                 
                 if(seatsArray[7].player !=null){
                      $rootScope.seat7 = seatsArray[7];
@@ -269,7 +290,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          $rootScope.cardSlot71 = "../../images/blank.png";
                          $rootScope.cardSlot72 = "../../images/blank.png";
                     }
-                }
+                }else{
+                         $rootScope.cardSlot71 = "../../images/blank.png";
+                         $rootScope.cardSlot72 = "../../images/blank.png";
+                    }
                 
                 if(seatsArray[8].player !=null){
                      $rootScope.seat8 = seatsArray[8];
@@ -296,7 +320,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          $rootScope.cardSlot81 = "../../images/blank.png";
                          $rootScope.cardSlot82 = "../../images/blank.png";
                     }
-                }
+                }else{
+                         $rootScope.cardSlot81 = "../../images/blank.png";
+                         $rootScope.cardSlot82 = "../../images/blank.png";
+                    }
                 
                 if(seatsArray[9].player !=null){
                      $rootScope.seat9 = seatsArray[9];
@@ -323,7 +350,10 @@ app.service('stateService',function($http,$rootScope,$q,WEB_URLS, $timeout, elap
                          $rootScope.cardSlot91 = "../../images/blank.png";
                          $rootScope.cardSlot92 = "../../images/blank.png";
                     }
-                }
+                }else{
+                         $rootScope.cardSlot91 = "../../images/blank.png";
+                         $rootScope.cardSlot92 = "../../images/blank.png";
+                    }
   
                 resolve(response.data);
             }, function (response) {

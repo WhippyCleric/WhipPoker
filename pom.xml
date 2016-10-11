@@ -10,5 +10,6 @@
 		<module>server</module>
 		<module>client</module>
 		<module>common</module>
+		<module>ai-utils</module>
 	</modules>
 </project>

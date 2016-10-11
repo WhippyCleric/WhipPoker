@@ -6,9 +6,9 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import com.whippy.poker.common.beans.Card;
+import com.whippy.poker.common.beans.Deck;
 import com.whippy.poker.common.beans.Suit;
 import com.whippy.poker.common.beans.Value;
-import com.whippy.poker.server.beans.Deck;
 
 
 public class DeckTest {

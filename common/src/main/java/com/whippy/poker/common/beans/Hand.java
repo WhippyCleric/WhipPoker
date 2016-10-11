@@ -2,27 +2,27 @@
 package com.whippy.poker.common.beans;
 
 /**
- * 
+ *
  * Represents a hand of 2 cards
- * 
+ *
  * @author mdunn
  *
  */
 public class Hand {
 
 	//~ ----------------------------------------------------------------------------------------------------------------
-	//~ Instance fields 
+	//~ Instance fields
 	//~ ----------------------------------------------------------------------------------------------------------------
 
 	private Card[] hand;
 
 	//~ ----------------------------------------------------------------------------------------------------------------
-	//~ Constructors 
+	//~ Constructors
 	//~ ----------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Create a new hand given 2 cards
-	 * 
+	 *
 	 * @param card1 the first card
 	 * @param card2 the second card
 	 */
@@ -33,7 +33,7 @@ public class Hand {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the cards in the hand
 	 */
 	public Card[] getCards(){
@@ -42,7 +42,7 @@ public class Hand {
 
 	@Override
 	public String toString(){
-		return hand[0].toString() + "\n" + hand[1].toString();
+		return hand[0].toString() + " " + hand[1].toString();
 	}
 }
 //J=

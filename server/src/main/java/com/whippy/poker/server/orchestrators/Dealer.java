@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.whippy.poker.common.beans.Card;
+import com.whippy.poker.common.beans.Deck;
 import com.whippy.poker.common.beans.Hand;
 import com.whippy.poker.common.beans.SeatState;
 import com.whippy.poker.common.beans.TableState;
@@ -12,7 +13,6 @@ import com.whippy.poker.common.events.BetEvent;
 import com.whippy.poker.common.events.PokerEvent;
 import com.whippy.poker.common.events.PokerEventType;
 import com.whippy.poker.server.beans.DealerState;
-import com.whippy.poker.server.beans.Deck;
 import com.whippy.poker.server.beans.Seat;
 import com.whippy.poker.server.beans.Table;
 import com.whippy.poker.sever.analyser.HandAnalyser;

@@ -31,7 +31,7 @@ public class WhipPokerClient {
                         HttpClient httpClient = HttpClientBuilder.create().build();
                         HttpPost postRequest = new HttpPost(
                                         "http://" + host + ":" + port + "/whip-poker-server-0.1/register/registerPlayer");
-                        StringEntity input = new StringEntity("{\"alias\":\"Player1\"}");
+                        StringEntity input = new StringEntity("{\"alias\":\""+alias+"\"}");
                         input.setContentType("application/json");
                         postRequest.setEntity(input);
                         HttpResponse response = httpClient.execute(postRequest);
@@ -60,7 +60,7 @@ public class WhipPokerClient {
 
                         HttpClient httpClient = HttpClientBuilder.create().build();
                         HttpGet getRequest = new HttpGet(
-                                        "http://" + host + ":" + port + "/whip-poker-server-0.1/state/currentState");
+                                        "http://" + host + ":" + port + "/whip-poker-server-0.1/state/currentState?id=" + alias);
                         getRequest.addHeader("accept", "application/json");
                         HttpResponse response = httpClient.execute(getRequest);
                         if(response.getStatusLine().getStatusCode()!=200){

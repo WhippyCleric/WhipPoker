@@ -52,6 +52,18 @@ public class Card implements Comparable<Card> {
                 return false;
         }
 
+        public Card() {
+                super();
+        }
+
+        public void setSuit(Suit suit) {
+                this.suit = suit;
+        }
+
+        public void setValue(Value value) {
+                this.value = value;
+        }
+
         @Override
         public int hashCode(){
                 return Integer.valueOf(suit.getNumericValue() + "" + value.getNumericValue());

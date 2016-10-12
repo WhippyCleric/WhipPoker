@@ -4,6 +4,7 @@ package com.whippy.poker.server.orchestrators;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.whippy.poker.common.analyser.HandAnalyser;
 import com.whippy.poker.common.beans.Card;
 import com.whippy.poker.common.beans.Deck;
 import com.whippy.poker.common.beans.Hand;
@@ -15,7 +16,6 @@ import com.whippy.poker.common.events.PokerEventType;
 import com.whippy.poker.server.beans.DealerState;
 import com.whippy.poker.server.beans.Seat;
 import com.whippy.poker.server.beans.Table;
-import com.whippy.poker.sever.analyser.HandAnalyser;
 
 /**
  * Acts as the dealer for a given table
@@ -49,7 +49,6 @@ public class Dealer {
                                 if(seat.getPlayer()!=null){
                                         if(seat.getPlayer().getChipCount()>0){
                                                 count++;
-                                                System.out.println("adding seat " + seat + " to the count");
 
                                         }
                                 }
@@ -82,6 +81,7 @@ public class Dealer {
                                 Seat seat = table.getSeat(i);
                                 if(seat.getState().equals(SeatState.OCCUPIED_NOHAND)){
                                         seat.giveHand(new Hand(deck.getTopCard(), deck.getTopCard()));
+                                        seat.setState(SeatState.OCCUPIED_WAITING);
                                 }
                         }
                         int smallBlindPosition = findNextSeat(table.getDealerPosition(), 0);

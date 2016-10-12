@@ -11,19 +11,23 @@ public class Distribution {
         private Map<Hand, Float> handToProbability = new HashMap<Hand, Float>();
 
         public void addHand(Hand hand, Float prob){
-                handToProbability.put(hand, prob);
+                getHandToProbability().put(hand, prob);
         }
 
         @Override
         public String toString(){
                 StringBuilder distString = new StringBuilder();
-                for (Hand hand : handToProbability.keySet()) {
+                for (Hand hand : getHandToProbability().keySet()) {
                         distString.append(hand);
                         distString.append(" : ");
-                        distString.append(handToProbability.get(hand));
+                        distString.append(getHandToProbability().get(hand));
                         distString.append("\n");
                 }
                 return distString.toString();
+        }
+
+        public Map<Hand, Float> getHandToProbability() {
+                return handToProbability;
         }
 
 }

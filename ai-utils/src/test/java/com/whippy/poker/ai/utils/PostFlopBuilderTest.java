@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.Ignore;
 
 import com.whippy.poker.ai.utils.beans.Distribution;
 import com.whippy.poker.ai.utils.beans.FullWinPercentages;
@@ -16,7 +16,7 @@ import com.whippy.poker.common.beans.Hand;
 public class PostFlopBuilderTest {
 
 
-	@Test
+	@Ignore
 	public void testIt() throws Exception{
 		/*
 		 * This will take an extreeeeeemly long time to execute....

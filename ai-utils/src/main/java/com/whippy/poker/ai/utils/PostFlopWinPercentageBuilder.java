@@ -56,7 +56,6 @@ public class PostFlopWinPercentageBuilder {
 			winPercentages.pushHand(result.getOpposingHand(),  result.getPossibleOutcomes());
 		}
 		try {
-			System.out.println("attempt to shutdown executor");
 			executor.shutdown();
 			executor.awaitTermination(120, TimeUnit.SECONDS);
 		}
@@ -68,7 +67,6 @@ public class PostFlopWinPercentageBuilder {
 				System.err.println("cancel non-finished tasks");
 			}
 			executor.shutdownNow();
-			System.out.println("shutdown finished");
 		}
 		winPercentages.setChances(new PossibleOutcomes(globalWinningChance, globalDrawChance, globalLossChance));
 		return winPercentages;

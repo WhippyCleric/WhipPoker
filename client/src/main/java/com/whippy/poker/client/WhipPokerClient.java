@@ -43,7 +43,7 @@ public class WhipPokerClient {
                 }
         }
 
-        public void bet(String alias, int amount) throws WhipPokerRequestException{
+        public void bet(String alias, double amount) throws WhipPokerRequestException{
                 sendEmptyPostRequest("http://" + host + ":" + port + "/whip-poker-server-0.1/event/bet?id=" + alias + "&amount=" + amount);
         }
 

@@ -27,14 +27,16 @@ import com.whippy.poker.common.beans.TableState;
 
 public class AiController {
 
+        private static final int SMALL_BLIND = 5;
+        private static double tightness = 70;
         private static final String WHIP_BOT = "WhipBot";
         private static WinningCalculator winningCalculator;
         private static Distribution currentOpponentDistribution = new Distribution();
 
         public static void main(String[] args) throws Exception {
+                winningCalculator = new WinningCalculator();
                 WhipPokerClient client = new WhipPokerClient("pmdunn-new", 8080);
                 client.register(WHIP_BOT);
-                winningCalculator = new WinningCalculator();
                 while(true){
                         Thread.sleep(1000);
                         ClientState state = client.getState(WHIP_BOT);
@@ -59,17 +61,10 @@ public class AiController {
                 if(state.getTable().getState().equals(TableState.PRE_FLOP)){
                         //Reset the opponent hand distribution
                         currentOpponentDistribution = DistributionBuilder.buildBasicDistribution(Arrays.asList(myHand.getHand()));
+                        //Randomise how tight we will play
+                        tightness = 40 + (Math.random()*40);
+                        System.out.println("Tightness: " + tightness);
                 }
-
-                /* if(state.getTable().getState().equals(TableState.PRE_RIVER) || state.getTable().getState().equals(TableState.POST_RIVER)){
-                        //We have a flop. Therefore we need to recalculate our win chances
-                        List<Card> knownCards = new ArrayList<Card>();
-                        knownCards.addAll(Arrays.asList(myHand.getHand()));
-                        knownCards.addAll(state.getTable().getCurrentCards());
-                        //This distribution represents all possible hands the opponent could have weighted equally
-                        Distribution opponentHandDistribution = DistributionBuilder.buildBasicDistribution(knownCards);
-                        myChances = PostFlopWinPercentageBuilder.calculateWinPercentages(myHand, state.getTable().getCurrentCards(), opponentHandDistribution);
-                }*/
 
                 if(myChances!=null){
                         double trueCurrentPot = getTrueCurrentPot(state);
@@ -86,7 +81,11 @@ public class AiController {
                                 BetToDistribution optimumBetDist = getOptimumEvBet(state, mySeat, myHand, state.getTable().getCurrentCards());
                                 if(optimumBetDist!=null && optimumBetDist.getBet()>0){
                                         currentOpponentDistribution = optimumBetDist.getDistribution();
-                                        client.bet(WHIP_BOT, (int)(optimumBetDist.getBet()));
+                                        if(optimumBetDist.getBet()>mySeat.getPlayer().getChipCount()){
+                                                client.bet(WHIP_BOT, mySeat.getPlayer().getChipCount());
+                                        }else{
+                                                client.bet(WHIP_BOT, (int)(optimumBetDist.getBet()));
+                                        }
                                 }else{
                                         client.call(WHIP_BOT);
                                 }
@@ -110,18 +109,53 @@ public class AiController {
                         }else{
                                 //It's before the flop. We call or fold simply based on our ev.
                                 //TODO this is where we need to improve to handle calling large bets, and raising it ourselves, and infering their hand based on bet
-                                if(callEv>0){
-                                        System.out.println(myHand + " preflop chance of win " + myChances.getChances().getWinChance() + " with ev of " + callEv + " call");
-                                        client.call(WHIP_BOT);
+                                Float preFlopWinChance = myChances.getChances().getWinChance();
+                                if(callCost == SMALL_BLIND){
+                                        //Call or raise
+                                        //We will raise when we have at least a 50% chance of winning
+                                        if(preFlopWinChance<0.5){
+                                                client.call(WHIP_BOT);
+                                        }else{
+                                                //for every 10% over we are that's the raise
+                                                double bet = ((preFlopWinChance*100) - 50)/10;
+                                                bet = (Math.round(bet/10) * 10) + 10;
+                                                bet = SMALL_BLIND + SMALL_BLIND*2 + bet;
+                                                if(bet>mySeat.getPlayer().getChipCount()){
+                                                        client.bet(WHIP_BOT, mySeat.getPlayer().getChipCount());
+                                                }else{
+                                                        client.bet(WHIP_BOT, (int) bet);
+                                                }
+                                        }
+                                }else if(callCost == 0){
+                                        //Check or raise
+                                        if(preFlopWinChance<0.5){
+                                                client.call(WHIP_BOT);
+                                        }else{
+                                                //for every 10% over we are that's the raise
+                                                double bet = ((preFlopWinChance*100) - 50)/10;
+                                                bet = (Math.round(bet/10) * 10) + 10;
+                                                bet = SMALL_BLIND*2 + bet;
+                                                if(bet>mySeat.getPlayer().getChipCount()){
+                                                        client.bet(WHIP_BOT, mySeat.getPlayer().getChipCount());
+                                                }else{
+                                                        client.bet(WHIP_BOT, (int) bet);
+                                                }
+                                        }
                                 }else{
-                                        System.out.println(myHand + " preflop chance of win " + myChances.getChances().getWinChance() + " with ev of " + callEv + " fold");
-                                        client.fold(WHIP_BOT);
+                                        //Call, raise or fold
+                                        if(callEv>0){
+                                                System.out.println(myHand + " preflop chance of win " + myChances.getChances().getWinChance() + " with ev of " + callEv + " call");
+                                                client.call(WHIP_BOT);
+                                        }else{
+                                                System.out.println(myHand + " preflop chance of win " + myChances.getChances().getWinChance() + " with ev of " + callEv + " fold");
+                                                client.fold(WHIP_BOT);
+                                        }
                                 }
                         }
 
 
                 }else{
-                        System.out.println("not yet got data for this hand " + myHand);
+                        System.err.println("not yet got data for this hand " + myHand);
                         client.fold(WHIP_BOT);
                 }
 
@@ -154,42 +188,44 @@ public class AiController {
                 Distribution  opponentHandsAtTenthPot = computeLikelyOpponentDistribution(0.1, myHand, flop);
                 FullWinPercentages myChancesAtTenthPot = PostFlopWinPercentageBuilder.calculateWinPercentages(myHand, state.getTable().getCurrentCards(), opponentHandsAtTenthPot);
 
-                for(int i =(int)(trueCurrentPot/10); i< myChips && i<=trueCurrentPot; i=i+(int)(trueCurrentPot/10)){
-                        double betSize = i;
-                        double postBetPot = trueCurrentPot + betSize;
-                        double postBetCallPot = postBetPot + betSize;
-                        double potPercentage = i / trueCurrentPot;
-
-                        /*
-                         * If opposing player call a pot sized bet it modified the % chance of hands he is holding
-                         * The same is true for smaller bets with a smaller shift in those %'s
-                         * Therefore when calculating my Ev of a bet P(W) should not be based on an even opponent hand distribution
-                         * It opponent hand distribution must be shifted as though they have called a bet of this size
-                         * This is only the case once the pot is larger than 3 BB, prior to this it is too small to matter
-                         */
-                        Float winChance = myChancesAtTenthPot.getChances().getWinChance();
-                        if(i>trueCurrentPot/10 && trueCurrentPot>30){
-                                Distribution  opponentHands = computeLikelyOpponentDistribution(potPercentage, myHand, flop);
-                                FullWinPercentages myChances = PostFlopWinPercentageBuilder.calculateWinPercentages(myHand, state.getTable().getCurrentCards(), opponentHands);
-                                winChance = myChances.getChances().getWinChance();
-                                Float betEv = new Float((winChance * postBetCallPot) - betSize);
-                                System.out.println(betEv + " for bet size " + betSize);
-                                                if(betEv>prevBest){
-                                                        prevBest = betEv;
-                                                        optimumBet = betSize;
-                                                        toReturn = new BetToDistribution(optimumBet, opponentHands);
-                                                }
+                for(int i =0; i< myChips && i<=trueCurrentPot; i=i+(int)(trueCurrentPot/10)){
+                        if(i!=0 && (i < 10 || i < (trueCurrentPot/10))){
+                                //Do nothing since this would be weird sized bet
                         }else{
-                                Float betEv = new Float((winChance * postBetCallPot) - betSize);
-                                System.out.println(betEv + " for bet size " + betSize);
-                                if(betEv>prevBest){
-                                        prevBest = betEv;
-                                        optimumBet = betSize;
-                                        toReturn = new BetToDistribution(optimumBet, opponentHandsAtTenthPot);
+                                double betSize = i;
+                                double postBetPot = trueCurrentPot + betSize;
+                                double postBetCallPot = postBetPot + betSize;
+                                double potPercentage = i / trueCurrentPot;
+
+                                /*
+                                 * If opposing player call a pot sized bet it modified the % chance of hands he is holding
+                                 * The same is true for smaller bets with a smaller shift in those %'s
+                                 * Therefore when calculating my Ev of a bet P(W) should not be based on an even opponent hand distribution
+                                 * It opponent hand distribution must be shifted as though they have called a bet of this size
+                                 * This is only the case once the pot is larger than 3 BB, prior to this it is too small to matter
+                                 */
+                                Float winChance = myChancesAtTenthPot.getChances().getWinChance();
+                                if(i>trueCurrentPot/10 && trueCurrentPot>30){
+                                        Distribution  opponentHands = computeLikelyOpponentDistribution(potPercentage, myHand, flop);
+                                        FullWinPercentages myChances = PostFlopWinPercentageBuilder.calculateWinPercentages(myHand, state.getTable().getCurrentCards(), opponentHands);
+                                        winChance = myChances.getChances().getWinChance();
+                                        Float betEv = new Float((winChance * postBetCallPot) - betSize);
+                                        System.out.println(betEv + " for bet size " + betSize);
+                                                        if(betEv>prevBest){
+                                                                prevBest = betEv;
+                                                                optimumBet = betSize;
+                                                                toReturn = new BetToDistribution(optimumBet, opponentHands);
+                                                        }
+                                }else{
+                                        Float betEv = new Float((winChance * postBetCallPot) - betSize);
+                                        System.out.println(betEv + " for bet size " + betSize);
+                                        if(betEv>prevBest){
+                                                prevBest = betEv;
+                                                optimumBet = betSize;
+                                                toReturn = new BetToDistribution(optimumBet, opponentHandsAtTenthPot);
+                                        }
                                 }
                         }
-
-
                 }
 
                 return toReturn;
@@ -436,8 +472,8 @@ public class AiController {
 
                 for (Hand hand : fullDistribution.getHandToProbability().keySet()) {
                         double strength = calculatehandStrength(hand, centerCards);
-                        //So in pot bet we need at least a 70 strength hand to call
-                        if(strength>potBetPercentage*70){
+                        //So in pot bet we need at least a tightness strength hand to call
+                        if(strength>potBetPercentage*tightness){
                                 realisticHands.add(hand);
                         }
                 }

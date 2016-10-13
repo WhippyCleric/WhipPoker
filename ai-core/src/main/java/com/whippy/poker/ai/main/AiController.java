@@ -50,6 +50,45 @@ public class AiController {
 
 
 
+        private static boolean checkInstead(Hand myHand, List<Card> centerCards){
+                FiveCardHand myBestHand = HandAnalyser.getBestHand(myHand, centerCards);
+                if(centerCards.size()<5){
+                        if(myBestHand.getHandValue().getValue()>HandValue.STRAIGHT.getValue()){
+                                //We have a made hand with no concern of draws
+                                if(Math.random()<0.5){
+                                        return true;
+                                }else{
+                                        return false;
+                                }
+                        }else if(HandAnalyser.hasSuitMatchings(centerCards, 3)){
+                                return false;
+                        }else if(HandAnalyser.hasSuitMatchings(centerCards, 2) && centerCards.size()==3){
+                                //We have some concern over draws since the flop has 2 of the same suit
+                                if(Math.random()<0.15){
+                                        return true;
+                                }else{
+                                        return false;
+                                }
+                        }else if(HandAnalyser.hasSuitMatchings(centerCards, 2) && centerCards.size()==4){
+                                //We have a minor concern over draws
+                                if(Math.random()<0.35){
+                                        return true;
+                                }else{
+                                        return false;
+                                }
+                        }else{
+                                if(Math.random()<0.5){
+                                        return true;
+                                }else{
+                                        return false;
+                                }
+                        }
+                }else{
+                        //dont check bet on the river
+                        return false;
+                }
+        }
+
 
         private static void processState(ClientState state, ClientSeat mySeat, WhipPokerClient client) throws Exception{
                 //Maybe we have to do something...
@@ -81,10 +120,14 @@ public class AiController {
                                 BetToDistribution optimumBetDist = getOptimumEvBet(state, mySeat, myHand, state.getTable().getCurrentCards());
                                 if(optimumBetDist!=null && optimumBetDist.getBet()>0){
                                         currentOpponentDistribution = optimumBetDist.getDistribution();
-                                        if(optimumBetDist.getBet()>mySeat.getPlayer().getChipCount()){
-                                                client.bet(WHIP_BOT, mySeat.getPlayer().getChipCount());
+                                        if(checkInstead(myHand, state.getTable().getCurrentCards())){
+                                                client.call(WHIP_BOT);
                                         }else{
-                                                client.bet(WHIP_BOT, (int)(optimumBetDist.getBet()));
+                                                if(optimumBetDist.getBet()>mySeat.getPlayer().getChipCount()){
+                                                        client.bet(WHIP_BOT, mySeat.getPlayer().getChipCount());
+                                                }else{
+                                                        client.bet(WHIP_BOT, (int)(optimumBetDist.getBet()));
+                                                }
                                         }
                                 }else{
                                         client.call(WHIP_BOT);

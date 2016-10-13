@@ -613,6 +613,26 @@ public class HandAnalyser {
                 return null;
         }
 
+        public static boolean hasSuitMatchings(List<Card> cards, int number){
+                Map<Suit, List<Card>> suitToInt = new HashMap<Suit, List<Card>>();
+                for (Card card : cards) {
+                        if(suitToInt.containsKey(card.getSuit())){
+                                List<Card> suitedCards = suitToInt.get(card.getSuit());
+                                suitedCards.add(card);
+                                suitToInt.put(card.getSuit(), suitedCards);
+                        }else{
+                                suitToInt.put(card.getSuit(),   new ArrayList<Card>(Arrays.asList(card)));
+                        }
+                }
+
+                for(Suit suit : suitToInt.keySet()){
+                        if(suitToInt.get(suit).size()>=number){
+                                return true;
+                        }
+                }
+                return false;
+        }
+
 
 
 

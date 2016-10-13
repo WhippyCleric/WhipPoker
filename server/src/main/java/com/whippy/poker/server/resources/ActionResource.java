@@ -48,7 +48,7 @@ public class ActionResource {
         @Consumes({ MediaType.APPLICATION_JSON })
         @Produces({ MediaType.APPLICATION_JSON })
         @Path("/bet")
-        public Response bet(@QueryParam("id") String playerAlais, @QueryParam("amount") int chipAmount){
+        public Response bet(@QueryParam("id") String playerAlais, @QueryParam("amount") double chipAmount){
                 PokerEvent event = new BetEvent(playerAlais, chipAmount);
                 orchestrator.processEvent(event);
                 return Response.ok().build();

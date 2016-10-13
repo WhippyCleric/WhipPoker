@@ -13,7 +13,7 @@ public class BetEvent implements PokerEvent {
         //~ ----------------------------------------------------------------------------------------------------------------
 
         private String playerAlias;
-        private int chipAmount;
+        private double chipAmount;
 
         //~ ----------------------------------------------------------------------------------------------------------------
         //~ Constructors
@@ -25,7 +25,7 @@ public class BetEvent implements PokerEvent {
          * @param playerAlias The alias of the player performing the action
          * @param chipAmount the size of the bet
          */
-        public BetEvent(String playerAlias, int chipAmount) {
+        public BetEvent(String playerAlias, double chipAmount) {
                 this.playerAlias = playerAlias;
                 this.chipAmount = chipAmount;
         }
@@ -49,7 +49,7 @@ public class BetEvent implements PokerEvent {
          *
          * @return the amount of the bet
          */
-        public int getChipAmount() {
+        public double getChipAmount() {
                 return this.chipAmount;
         }
 

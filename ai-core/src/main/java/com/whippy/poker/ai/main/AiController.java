@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.whippy.poker.ai.beans.BetToDistribution;
 import com.whippy.poker.ai.utils.DistributionBuilder;
 import com.whippy.poker.ai.utils.PostFlopWinPercentageBuilder;
 import com.whippy.poker.ai.utils.WinningCalculator;
@@ -28,6 +29,7 @@ public class AiController {
 
         private static final String WHIP_BOT = "WhipBot";
         private static WinningCalculator winningCalculator;
+        private static Distribution currentOpponentDistribution = new Distribution();
 
         public static void main(String[] args) throws Exception {
                 WhipPokerClient client = new WhipPokerClient("pmdunn-new", 8080);
@@ -45,6 +47,8 @@ public class AiController {
         }
 
 
+
+
         private static void processState(ClientState state, ClientSeat mySeat, WhipPokerClient client) throws Exception{
                 //Maybe we have to do something...
                 Hand myHand = state.getHand();
@@ -52,7 +56,12 @@ public class AiController {
                 FullWinPercentages myChances = winningCalculator.getAllHandsFullWin().get(myHand);
                 //Time to do something
 
-                if(state.getTable().getState().equals(TableState.PRE_RIVER) || state.getTable().getState().equals(TableState.POST_RIVER)){
+                if(state.getTable().getState().equals(TableState.PRE_FLOP)){
+                        //Reset the opponent hand distribution
+                        currentOpponentDistribution = DistributionBuilder.buildBasicDistribution(Arrays.asList(myHand.getHand()));
+                }
+
+                /* if(state.getTable().getState().equals(TableState.PRE_RIVER) || state.getTable().getState().equals(TableState.POST_RIVER)){
                         //We have a flop. Therefore we need to recalculate our win chances
                         List<Card> knownCards = new ArrayList<Card>();
                         knownCards.addAll(Arrays.asList(myHand.getHand()));
@@ -60,7 +69,7 @@ public class AiController {
                         //This distribution represents all possible hands the opponent could have weighted equally
                         Distribution opponentHandDistribution = DistributionBuilder.buildBasicDistribution(knownCards);
                         myChances = PostFlopWinPercentageBuilder.calculateWinPercentages(myHand, state.getTable().getCurrentCards(), opponentHandDistribution);
-                }
+                }*/
 
                 if(myChances!=null){
                         double trueCurrentPot = getTrueCurrentPot(state);
@@ -74,15 +83,15 @@ public class AiController {
                                 System.out.println("Can check or raise...");
                                 //If it's post flop
                                 System.out.println("Post Flop Calculations");
-                                double optimumBet = getOptimumEvBet(state, mySeat, myHand, state.getTable().getCurrentCards());
-                                if(optimumBet>0){
-                                        client.bet(WHIP_BOT, (int)(optimumBet));
+                                BetToDistribution optimumBetDist = getOptimumEvBet(state, mySeat, myHand, state.getTable().getCurrentCards());
+                                if(optimumBetDist!=null && optimumBetDist.getBet()>0){
+                                        currentOpponentDistribution = optimumBetDist.getDistribution();
+                                        client.bet(WHIP_BOT, (int)(optimumBetDist.getBet()));
                                 }else{
                                         client.call(WHIP_BOT);
                                 }
                         }else if(!state.getTable().getState().equals(TableState.PRE_FLOP)){
                                 // Do we want to call the bet?
-                                double currentBet = state.getCurrentBet();
                                 double pendingBet = state.getTable().getPendingBet();
                                 double potPercentage = (state.getTable().getPendingBet()-state.getCurrentBet()) / trueCurrentPot;
                                 Distribution  opponentHands = computeLikelyOpponentDistribution(potPercentage, myHand, state.getTable().getCurrentCards());
@@ -91,6 +100,7 @@ public class AiController {
                                 Float trueCallEv = new Float((winChance * (trueCurrentPot + pendingBet - state.getCurrentBet())) - (pendingBet - state.getCurrentBet()));
                                 System.out.println(callEv + " for calling");
                                 if(trueCallEv>0){
+                                        currentOpponentDistribution = opponentHands;
                                         System.out.println(myHand + " chance of win " + myChancesPostFlop.getChances().getWinChance() + " with ev of " + trueCallEv + " call");
                                         client.call(WHIP_BOT);
                                 }else{
@@ -98,6 +108,8 @@ public class AiController {
                                         client.fold(WHIP_BOT);
                                 }
                         }else{
+                                //It's before the flop. We call or fold simply based on our ev.
+                                //TODO this is where we need to improve to handle calling large bets, and raising it ourselves, and infering their hand based on bet
                                 if(callEv>0){
                                         System.out.println(myHand + " preflop chance of win " + myChances.getChances().getWinChance() + " with ev of " + callEv + " call");
                                         client.call(WHIP_BOT);
@@ -115,25 +127,38 @@ public class AiController {
 
         }
 
-        private static double getOptimumEvBet(ClientState state, ClientSeat mySeat, Hand myHand, List<Card> flop) throws Exception{
+        private static Distribution cleanDistributionbasedOnPrevious(Distribution toClean){
+                Distribution cleaned = new Distribution();
+                List<Hand> handsToAdd = new ArrayList<Hand>();
+                for (Hand hand : toClean.getHandToProbability().keySet()) {
+                        if(currentOpponentDistribution.getHandToProbability().keySet().contains(hand)){
+                                handsToAdd.add(hand);
+                        }
+                }
+                Float prob = 1.0f;
+                prob = prob / handsToAdd.size();
+                for (Hand hand : handsToAdd) {
+                        cleaned.addHand(hand, prob);
+                }
+                return cleaned;
+        }
+
+        private static BetToDistribution getOptimumEvBet(ClientState state, ClientSeat mySeat, Hand myHand, List<Card> flop) throws Exception{
                 double myChips = mySeat.getPlayer().getChipCount();
                 double optimumBet = 0;
                 Float prevBest = 0f;
                 double trueCurrentPot = getTrueCurrentPot(state);
+                BetToDistribution toReturn = null;
 
 
-                Distribution  opponentHandsAtHalfPot = computeLikelyOpponentDistribution(0.1, myHand, flop);
-                FullWinPercentages myChancesAtHalfPot = PostFlopWinPercentageBuilder.calculateWinPercentages(myHand, state.getTable().getCurrentCards(), opponentHandsAtHalfPot);
+                Distribution  opponentHandsAtTenthPot = computeLikelyOpponentDistribution(0.1, myHand, flop);
+                FullWinPercentages myChancesAtTenthPot = PostFlopWinPercentageBuilder.calculateWinPercentages(myHand, state.getTable().getCurrentCards(), opponentHandsAtTenthPot);
 
-                for(int i =0; i< myChips && i<=trueCurrentPot; i=i+(int)(trueCurrentPot/10)){
+                for(int i =(int)(trueCurrentPot/10); i< myChips && i<=trueCurrentPot; i=i+(int)(trueCurrentPot/10)){
                         double betSize = i;
                         double postBetPot = trueCurrentPot + betSize;
                         double postBetCallPot = postBetPot + betSize;
                         double potPercentage = i / trueCurrentPot;
-
-
-                        //We assume a call every time. However we should take into account the fact that a call here implies a different win chance.
-                        //For now we limit our bet size to the current pot
 
                         /*
                          * If opposing player call a pot sized bet it modified the % chance of hands he is holding
@@ -142,22 +167,32 @@ public class AiController {
                          * It opponent hand distribution must be shifted as though they have called a bet of this size
                          * This is only the case once the pot is larger than 3 BB, prior to this it is too small to matter
                          */
-                        Float winChance = myChancesAtHalfPot.getChances().getWinChance();
+                        Float winChance = myChancesAtTenthPot.getChances().getWinChance();
                         if(i>trueCurrentPot/10 && trueCurrentPot>30){
                                 Distribution  opponentHands = computeLikelyOpponentDistribution(potPercentage, myHand, flop);
                                 FullWinPercentages myChances = PostFlopWinPercentageBuilder.calculateWinPercentages(myHand, state.getTable().getCurrentCards(), opponentHands);
                                 winChance = myChances.getChances().getWinChance();
+                                Float betEv = new Float((winChance * postBetCallPot) - betSize);
+                                System.out.println(betEv + " for bet size " + betSize);
+                                                if(betEv>prevBest){
+                                                        prevBest = betEv;
+                                                        optimumBet = betSize;
+                                                        toReturn = new BetToDistribution(optimumBet, opponentHands);
+                                                }
+                        }else{
+                                Float betEv = new Float((winChance * postBetCallPot) - betSize);
+                                System.out.println(betEv + " for bet size " + betSize);
+                                if(betEv>prevBest){
+                                        prevBest = betEv;
+                                        optimumBet = betSize;
+                                        toReturn = new BetToDistribution(optimumBet, opponentHandsAtTenthPot);
+                                }
                         }
 
-                        Float betEv = new Float((winChance * postBetCallPot) - betSize);
-                        System.out.println(betEv + " for bet size " + betSize);
-                        if(betEv>prevBest){
-                                prevBest = betEv;
-                                optimumBet = betSize;
-                        }
 
                 }
-                return optimumBet;
+
+                return toReturn;
         }
 
         private static double calculatehandStrength(Hand hand, List<Card> centerCards){
@@ -195,13 +230,14 @@ public class AiController {
                         }
                 }
 
-                //First case is post flop
                 if(centerCards.size()==3){
+                        //First case is post flop
                         strength = getStrength(centerCards, bestHand, strength, pairedBoard, tripBoard, quadBoard, highCard, otherCard, true, false, false);
                 }else if(centerCards.size()==4){
-                        strength = getStrength(centerCards, bestHand, strength, pairedBoard, tripBoard, quadBoard, highCard, otherCard, false, true, false);
                         //We are at the turn
+                        strength = getStrength(centerCards, bestHand, strength, pairedBoard, tripBoard, quadBoard, highCard, otherCard, false, true, false);
                 }else{
+                        //Its the river
                         strength = getStrength(centerCards, bestHand, strength, pairedBoard, tripBoard, quadBoard, highCard, otherCard, false, false, true);
                 }
 
@@ -211,6 +247,7 @@ public class AiController {
 
         private static double getStrength(List<Card> centerCards, FiveCardHand bestHand, double strength,
                         boolean pairedBoard, boolean tripBoard, boolean quadBoard, Card highCard, Card otherCard, boolean isFlop, boolean isTurn, boolean isRiver) {
+                //TODO change strength based on number of shown cards
                 //We have flopped a straight or better
                 if(bestHand.getHandValue().getValue()>3){
                         strength =  100;
@@ -227,12 +264,22 @@ public class AiController {
                                 //The highest card is more important than the other
                                 //Max strength here is AK giving 61.5 strength with a good high card draw
                                 strength = (highCardValue*3) + (secondCardValue*1.5);
+                                //The exception to the above is on the turn. Since although there is a set out
+                                //If we have a flush draw we still have some additional strength
+                                if(isTurn){
+                                        if(hasFlushDraw(highCard, otherCard, centerCards)){
+                                                strength += 20;
+                                        }
+                                }else if(isRiver){
+                                        //If we're on the river then we've missed all our draws and are playing the board with our high card, strength is not as good
+                                        strength = (highCardValue*2) + (secondCardValue*1);
+                                }
                         }else if(pairedBoard){
                                 //There's a pair on the board, so we hit three of a kind which is great, but not as good as getting it from pockets
                                 int highCardValue = highCard.getValue().getNumericValue();
                                 strength = 80 + highCardValue;
                         }else{
-                                //We flopped a set, it's going to be call anything time
+                                //We have a set, it's going to be call anything time
                                 strength = 100;
                         }
                 }
@@ -240,12 +287,23 @@ public class AiController {
                 if(bestHand.getHandValue().equals(HandValue.TWO_PAIR)){
                         if(pairedBoard){
                                 //The board is paired which accounts for one of our pairs, hitting the other is good though depending on it's value
-                                //Check which card is the other pair;
                                 int pairValue = getPairValue(highCard, otherCard, centerCards);
-                                strength = 60 + pairValue*2;
+                                if(isFlop){
+                                        strength = 50 + pairValue*2;
+                                }else if(isTurn){
+                                        strength = 40 + pairValue*2;
+                                }else{
+                                        strength = 30 + pairValue*2;
+                                }
                         }else{
-                                //We've paired both our cards which is a very good flop
-                                strength = 80;
+                                //We've paired both our cards which is good
+                                if(isFlop){
+                                        strength = 80;
+                                }else if(isTurn){
+                                        strength = 75;
+                                }else{
+                                        strength = 70;
+                                }
                         }
                 }
                 if(bestHand.getHandValue().equals(HandValue.PAIR)){
@@ -255,7 +313,13 @@ public class AiController {
                                 strength = getHighCardStrength(highCard, otherCard, centerCards, 10);
                         }else{
                                 int pairValue = getPairValue(highCard, otherCard, centerCards);
-                                strength = 40 + pairValue*2;
+                                if(isFlop){
+                                        strength = 40 + pairValue*2;
+                                }else if(isTurn){
+                                        strength = 30 + pairValue*2;
+                                }else{
+                                        strength = 20 + pairValue*2;
+                                }
                         }
                 }
                 if(bestHand.getHandValue().equals(HandValue.HIGH_CARD)){
@@ -263,10 +327,29 @@ public class AiController {
                 }
                 if(hasFlushDraw(highCard, otherCard, centerCards)){
                         //We have a flush draw
-                        if(strength<60){
-                                strength = 60 + highCard.getValue().getNumericValue();
+                        if(isFlop){
+                                if(strength<60){
+                                        strength = 60 + highCard.getValue().getNumericValue();
+                                }
+                        }else if(isTurn){
+                                if(strength<50){
+                                        strength = 50 + highCard.getValue().getNumericValue();
+                                }
                         }
                 }
+
+                //We have not hit a flush or better
+                if(bestHand.getHandValue().getValue()<5) {
+                        //It's the river
+                        if(isRiver){
+                                //Lets check if there's 4 of one suit on the board
+                                if(hasFlushDraw(centerCards.get(0), centerCards.get(1), centerCards.subList(2, centerCards.size()))){
+                                        //Ok given there's 4 of one suit on the board and we have not hit a flush we must modify our strength accordingly
+                                        strength = strength /2;
+                                }
+                        }
+                }
+
                 //TODO Straight draw
                 return strength;
         }
@@ -366,54 +449,10 @@ public class AiController {
                         realisticDistribution.addHand(hand, prob);
                 }
 
-                return realisticDistribution;
+                return cleanDistributionbasedOnPrevious(realisticDistribution);
 
         }
 
-        private static FullWinPercentages shiftChancesAtFlop(FullWinPercentages original, double potBetPercentage, List<Card> flop){
-
-                FullWinPercentages updated = new FullWinPercentages();
-                updated.setMyHand(original.getMyHand());
-
-                Float globalWinningChance = new Float(0.0);
-                Float globalDrawChance = new Float(0.0);
-                Float globalLossChance = new Float(0.0);
-
-                for (Hand opponentHand : original.getHandToProbability().keySet()) {
-
-                        Float handChance = 1.0f;
-                        handChance = handChance/original.getHandToProbability().keySet().size();
-
-                        /*
-                         * In order to decide how to shift the hand chance we need to understand what the opponent would consider a good hand
-                         * So firstly we need to calculate, given the opponent hand and the current available cards, what does he view his chance of winning as
-                         * We will assume he does not adjust his beliefs based on our bet when doing this calculation
-                         * With the result of what he thinks his hand is worth, we can deduce the likely hood of him calling a bet of our size with this hand
-                         * To do this we take the % chance of him winning from his perspective called P(OW)
-                         *
-                         * Lets say P(OW) > 0.5 , opponent beliefs he will win
-                         * For a pot sized bet opponent will calculate his Ev as always increasing with a bet, so if he calls it could be any hand where P(OW) > 0.5
-                         *
-                         * Now for smaller P(OW) his Ev will change.
-                         * We should calculate the opponents Ev by the following:
-                         * OppEv = P(OW) * (currentPot + (2*betAmount)) - betAmount
-                         * If OppEv > 0 then it would be profitable for him to call assuming he is not inferring any information about our hand.
-                         *
-                         * Now we will remove any hand with an OppEv < 0 assume the player is good at what he does
-                         *
-                         * Then we can recalculate the handChance based on the resulting number of hands
-                         *
-                         */
-
-                        globalWinningChance = globalWinningChance + (handChance * original.getHandToProbability().get(opponentHand).getWinChance());
-                        globalDrawChance = globalDrawChance + (handChance * original.getHandToProbability().get(opponentHand).getDrawChance());
-                        globalLossChance = globalLossChance + (handChance * original.getHandToProbability().get(opponentHand).getLossChance());
-
-                }
-
-
-                return updated;
-        }
 
         private static double getCallCost(ClientState state){
                 double currentBet = state.getCurrentBet();
